@@ -30,7 +30,7 @@ env:
   ANDROID_SIGNING_KEY: "${{ secrets.ANDROID_SIGNING_KEY }}"
   UPLOAD_ARTIFACT: "true"
 
-
+jobs:
 
   build-for-windows-flutter:
     name: ${{ matrix.job.target }}
