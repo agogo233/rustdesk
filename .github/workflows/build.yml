@@ -85,6 +85,14 @@ jobs:
           cd $(dirname $(dirname $(which flutter)))
           [[ "3.24.5" == ${{env.FLUTTER_VERSION}} ]] && git apply flutter_3.24.4_dropdown_menu_enableFilter.diff
 
+      - name: Generate flutter_rust_bridge files
+        shell: bash
+        run: |
+          cd flutter
+          flutter pub get
+          cargo install flutter_rust_bridge_codegen --version 1.80.1 --features uuid --locked
+          ~/.cargo/bin/flutter_rust_bridge_codegen --rust-input ../src/flutter_ffi.rs --dart-output ./lib/generated_bridge.dart
+
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@e97e2d8cc328f1b50210efc529dca0028893a2d9 # v1
         with:
@@ -333,6 +341,13 @@ jobs:
         with:
           ndk-version: ${{ env.NDK_VERSION }}
           add-to-path: true
+
+      - name: Generate flutter_rust_bridge files
+        run: |
+          cd flutter
+          flutter pub get
+          cargo install flutter_rust_bridge_codegen --version 1.80.1 --features uuid --locked
+          ~/.cargo/bin/flutter_rust_bridge_codegen --rust-input ../src/flutter_ffi.rs --dart-output ./lib/generated_bridge.dart
 
       - name: Setup vcpkg with Github Actions binary cache
         uses: lukka/run-vcpkg@b1a0dd252f06b9e25b3c022a9a03bd7a427fb6a2 # v11
