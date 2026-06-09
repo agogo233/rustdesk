@@ -239,6 +239,16 @@ jobs:
         run: |
           BASE_URL=${{ env.SIGN_BASE_URL }} SECRET_KEY=${{ secrets.SIGN_SECRET_KEY }} python3 res/job.py sign_files ./SignOutput
 
+      - name: Upload release artifacts
+        if: env.UPLOAD_ARTIFACT == 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: rustdesk-windows-${{ matrix.job.arch }}
+          path: |
+            SignOutput/rustdesk-${{ env.VERSION }}-${{ matrix.job.arch }}.exe
+            SignOutput/rustdesk-${{ env.VERSION }}-${{ matrix.job.arch }}.msi
+            SignOutput/rustdesk-${{ env.VERSION }}-${{ matrix.job.arch }}.zip
+
   build-rustdesk-android:
     name: build rustdesk android apk ${{ matrix.job.target }}
     runs-on: ${{ matrix.job.os }}
