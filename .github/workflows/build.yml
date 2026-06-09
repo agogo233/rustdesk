@@ -195,7 +195,7 @@ jobs:
           path: rustdesk
 
       - name: Sign rustdesk files
-        if: env.UPLOAD_ARTIFACT == 'true' && env.SIGN_BASE_URL != '-2'
+        if: env.UPLOAD_ARTIFACT == 'true' && env.SIGN_BASE_URL != null && env.SIGN_BASE_URL != '-2'
         shell: bash
         run: |
           pip3 install requests argparse
@@ -234,7 +234,7 @@ jobs:
           7z a -tzip ./SignOutput/rustdesk-${{ env.VERSION }}-${{ matrix.job.arch }}.zip ./rustdesk-${{ env.VERSION }}-${{ matrix.job.arch }}
 
       - name: Sign rustdesk self-extracted file
-        if: env.UPLOAD_ARTIFACT == 'true' && env.SIGN_BASE_URL != '-2'
+        if: env.UPLOAD_ARTIFACT == 'true' && env.SIGN_BASE_URL != null && env.SIGN_BASE_URL != '-2'
         shell: bash
         run: |
           BASE_URL=${{ env.SIGN_BASE_URL }} SECRET_KEY=${{ secrets.SIGN_SECRET_KEY }} python3 res/job.py sign_files ./SignOutput
