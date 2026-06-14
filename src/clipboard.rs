@@ -14,7 +14,8 @@ pub const FILE_CLIPBOARD_NAME: &'static str = "file-clipboard";
 pub const CLIPBOARD_INTERVAL: u64 = 333;
 
 // This format is used to store the flag in the clipboard.
-const RUSTDESK_CLIPBOARD_OWNER_FORMAT: &'static str = "dyn.com.rustdesk.owner";
+const MYDESK_CLIPBOARD_OWNER_FORMAT: &'static str = "dyn.com.mydesk.owner";
+>>>>>>> f2c788c0f (refactor: rebrand remaining runtime-visible rustdesk symbols to mydesk (Phase 4))
 
 // Add special format for Excel XML Spreadsheet
 const CLIPBOARD_FORMAT_EXCEL_XML_SPREADSHEET: &'static str = "XML Spreadsheet";
@@ -47,7 +48,7 @@ const SUPPORTED_FORMATS: &[ClipboardFormat] = &[
     #[cfg(feature = "unix-file-copy-paste")]
     ClipboardFormat::FileUrl,
     ClipboardFormat::Special(CLIPBOARD_FORMAT_EXCEL_XML_SPREADSHEET),
-    ClipboardFormat::Special(RUSTDESK_CLIPBOARD_OWNER_FORMAT),
+    ClipboardFormat::Special(MYDESK_CLIPBOARD_OWNER_FORMAT),
 ];
 
 #[cfg(not(target_os = "android"))]
@@ -98,7 +99,7 @@ fn read_clipboard_message(
 }
 
 #[cfg(all(feature = "unix-file-copy-paste", target_os = "macos"))]
-pub fn is_file_url_set_by_rustdesk(url: &Vec<String>) -> bool {
+pub fn is_file_url_set_by_mydesk(url: &Vec<String>) -> bool {
     if url.len() != 1 {
         return false;
     }
@@ -262,7 +263,7 @@ fn do_update_clipboard_(mut to_update_data: Vec<ClipboardData>, side: ClipboardS
 #[cfg(not(target_os = "android"))]
 fn append_owner_marker(mut data: Vec<ClipboardData>, side: ClipboardSide) -> Vec<ClipboardData> {
     data.push(ClipboardData::Special((
-        RUSTDESK_CLIPBOARD_OWNER_FORMAT.to_owned(),
+        MYDESK_CLIPBOARD_OWNER_FORMAT.to_owned(),
         side.get_owner_data(),
     )));
     data
@@ -390,7 +391,7 @@ impl ClipboardContext {
         if !force {
             for c in data.iter() {
                 if let ClipboardData::Special((s, d)) = c {
-                    if s == RUSTDESK_CLIPBOARD_OWNER_FORMAT && side.is_owner(d) {
+                    if s == MYDESK_CLIPBOARD_OWNER_FORMAT && side.is_owner(d) {
                         return Ok(vec![]);
                     }
                 }
@@ -399,7 +400,7 @@ impl ClipboardContext {
         Ok(data
             .into_iter()
             .filter(|c| match c {
-                ClipboardData::Special((s, _)) => s != RUSTDESK_CLIPBOARD_OWNER_FORMAT,
+                ClipboardData::Special((s, _)) => s != MYDESK_CLIPBOARD_OWNER_FORMAT,
                 // Skip synchronizing empty text to the remote clipboard
                 ClipboardData::Text(text) => !text.is_empty(),
                 _ => true,
@@ -416,7 +417,7 @@ impl ClipboardContext {
         let data = self.get_formats_filter(
             &[
                 ClipboardFormat::FileUrl,
-                ClipboardFormat::Special(RUSTDESK_CLIPBOARD_OWNER_FORMAT),
+                ClipboardFormat::Special(MYDESK_CLIPBOARD_OWNER_FORMAT),
             ],
             side,
             force,
@@ -452,13 +453,13 @@ impl ClipboardContext {
     }
 
     #[cfg(all(feature = "unix-file-copy-paste", target_os = "macos"))]
-    fn get_file_urls_set_by_rustdesk(
+    fn get_file_urls_set_by_mydesk(
         data: Vec<ClipboardData>,
         _side: ClipboardSide,
     ) -> Vec<String> {
         for item in data.into_iter() {
             if let ClipboardData::FileUrl(urls) = item {
-                if is_file_url_set_by_rustdesk(&urls) {
+                if is_file_url_set_by_mydesk(&urls) {
                     return urls;
                 }
             }
@@ -467,7 +468,7 @@ impl ClipboardContext {
     }
 
     #[cfg(all(feature = "unix-file-copy-paste", target_os = "linux"))]
-    fn get_file_urls_set_by_rustdesk(data: Vec<ClipboardData>, side: ClipboardSide) -> Vec<String> {
+    fn get_file_urls_set_by_mydesk(data: Vec<ClipboardData>, side: ClipboardSide) -> Vec<String> {
         let exclude_path =
             clipboard::platform::unix::fuse::get_exclude_paths(side == ClipboardSide::Client);
         data.into_iter()
@@ -487,7 +488,7 @@ impl ClipboardContext {
     fn try_empty_clipboard_files(&mut self, side: ClipboardSide) {
         let _lock = ARBOARD_MTX.lock().unwrap();
         if let Ok(data) = self.get_formats(&[ClipboardFormat::FileUrl]) {
-            let urls = Self::get_file_urls_set_by_rustdesk(data, side);
+            let urls = Self::get_file_urls_set_by_mydesk(data, side);
             if !urls.is_empty() {
                 // FIXME:
                 // The host-side clear file clipboard `let _ = self.inner.clear();`,
@@ -510,7 +511,7 @@ impl ClipboardContext {
                     .set_formats(&[
                         ClipboardData::Text(clear_holder_text),
                         ClipboardData::Special((
-                            RUSTDESK_CLIPBOARD_OWNER_FORMAT.to_owned(),
+                            MYDESK_CLIPBOARD_OWNER_FORMAT.to_owned(),
                             side.get_owner_data(),
                         )),
                     ])

@@ -239,10 +239,11 @@ class PlatformFFI {
   }
 
   /// Start listening to the Rust core's events and frames.
-  void _startListenEvent(RustdeskImpl rustdeskImpl) {
+void _startListenEvent(MydeskImpl mydeskImpl) {
+>>>>>>> f2c788c0f (refactor: rebrand remaining runtime-visible rustdesk symbols to mydesk (Phase 4))
     final appType =
         _appType == kAppTypeDesktopRemote ? '$_appType,$kWindowId' : _appType;
-    var sink = rustdeskImpl.startGlobalEventStream(appType: appType);
+    var sink = mydeskImpl.startGlobalEventStream(appType: appType);
     sink.listen((message) {
       () async {
         try {

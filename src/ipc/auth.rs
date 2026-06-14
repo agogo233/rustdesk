@@ -1011,7 +1011,7 @@ mod tests {
     #[cfg(all(windows, not(feature = "flutter")))]
     fn test_portable_service_helper_trust_requires_content_match() {
         let unique = format!(
-            "rustdesk-portable-helper-trust-test-{}-{}",
+            "mydesk-portable-helper-trust-test-{}-{}",
             std::process::id(),
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
@@ -1037,7 +1037,7 @@ mod tests {
     #[cfg(all(windows, not(feature = "flutter")))]
     fn test_portable_service_helper_trust_accepts_matching_content() {
         let unique = format!(
-            "rustdesk-portable-helper-trust-match-test-{}-{}",
+            "mydesk-portable-helper-trust-match-test-{}-{}",
             std::process::id(),
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
