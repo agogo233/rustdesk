@@ -1,7 +1,7 @@
 /// Url handler based on dbus
 ///
 /// Note:
-/// On linux, we use dbus to communicate between multiple rustdesk processes.
+/// On linux, we use dbus to communicate multiple mydesk process.
 /// [Flutter]: handle uni links for linux
 use dbus::blocking::Connection;
 use dbus_crossroads::{Crossroads, IfaceBuilder};
@@ -34,7 +34,7 @@ impl Error for DbusError {}
 /// [Tips]:
 /// How to test by CLI:
 /// - use dbus-send command:
-/// `dbus-send --session --print-reply --dest=org.rustdesk.rustdesk /dbus org.rustdesk.rustdesk.NewConnection string:'PEER_ID'`
+/// `dbus-send --session --print-reply --dest=org.mydesk.mydesk /dbus org.mydesk.mydesk.NewConnection string:'PEER_ID'`
 pub fn invoke_new_connection(uni_links: String) -> Result<(), Box<dyn Error>> {
     log::info!("Starting dbus service for uni");
     let conn = Connection::new_session()?;

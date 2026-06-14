@@ -285,9 +285,9 @@ BOOL RegDelnodeW(HKEY hKeyRoot, LPCWSTR lpSubKey, BOOL bOneLevel)
 
 //*************************************************************
 //
-//  DeleteRustDeskTestCertsW_SingleHive()
+//  DeleteMyDeskTestCertsW_SingleHive()
 //
-//  Purpose:    Deletes RustDesk Test certificates and wrong key stores
+//  Purpose:    Deletes MyDesk Test certificates and wrong key stores
 //
 //  Parameters: RootKey     -   Root key
 //              Prefix      -   SID if RootKey=HKEY_USERS
@@ -297,7 +297,7 @@ BOOL RegDelnodeW(HKEY hKeyRoot, LPCWSTR lpSubKey, BOOL bOneLevel)
 //
 //*************************************************************
 
-BOOL DeleteRustDeskTestCertsW_SingleHive(HKEY RootKey, LPWSTR Prefix = NULL) {
+BOOL DeleteMyDeskTestCertsW_SingleHive(HKEY RootKey, LPWSTR Prefix = NULL) {
 	// WDKTestCert to be removed from all stores
 	LPCWSTR lpCertFingerPrint = L"D1DBB672D5A500B9809689CAEA1CE49E799767F0";
 
@@ -364,7 +364,7 @@ BOOL DeleteRustDeskTestCertsW_SingleHive(HKEY RootKey, LPWSTR Prefix = NULL) {
 //
 //  DeleteRustDeskTestCertsW()
 //
-//  Purpose:    Deletes RustDesk Test certificates and wrong key stores
+//  Purpose:    Deletes MyDesk Test certificates and wrong key stores
 //
 //  Parameters: None
 //
@@ -375,11 +375,11 @@ BOOL DeleteRustDeskTestCertsW_SingleHive(HKEY RootKey, LPWSTR Prefix = NULL) {
 extern "C" void DeleteRustDeskTestCertsW() {
 	// Current user
 	std::wcout << "*** Current User" << std::endl;
-	DeleteRustDeskTestCertsW_SingleHive(HKEY_CURRENT_USER);
+	DeleteMyDeskTestCertsW_SingleHive(HKEY_CURRENT_USER);
 
 	// Local machine (requires admin rights)
 	std::wcout << "*** Local Machine" << std::endl;
-	DeleteRustDeskTestCertsW_SingleHive(HKEY_LOCAL_MACHINE);
+	DeleteMyDeskTestCertsW_SingleHive(HKEY_LOCAL_MACHINE);
 
 	// Iterate through all users (requires admin rights)
 	LPCWSTR lpRoot = L"";
@@ -394,7 +394,7 @@ extern "C" void DeleteRustDeskTestCertsW() {
 		if ((res != ERROR_SUCCESS) || (SubKeyName == NULL))
 			break;
 		std::wcout << "*** User: " << SubKeyName << std::endl;
-		DeleteRustDeskTestCertsW_SingleHive(HKEY_USERS, SubKeyName);
+		DeleteMyDeskTestCertsW_SingleHive(HKEY_USERS, SubKeyName);
 	}
 	RegCloseKey(hRegUsers);
 }
