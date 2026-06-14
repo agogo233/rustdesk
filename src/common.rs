@@ -2080,7 +2080,41 @@ pub fn mydesk_interval(i: Interval) -> ThrottledInterval {
     ThrottledInterval::new(i)
 }
 
+pub fn inject_env_vars() {
+    macro_rules! inject_default {
+        ($var:expr, $key:expr) => {
+            if let Some(val) = option_env!($var) {
+                if !val.is_empty() {
+                    config::DEFAULT_SETTINGS
+                        .write()
+                        .unwrap()
+                        .insert($key.to_string(), val.to_string());
+                }
+            }
+        };
+    }
+    macro_rules! inject_builtin {
+        ($var:expr, $key:expr) => {
+            if let Some(val) = option_env!($var) {
+                if !val.is_empty() {
+                    config::BUILTIN_SETTINGS
+                        .write()
+                        .unwrap()
+                        .insert($key.to_string(), val.to_string());
+                }
+            }
+        };
+    }
+    inject_default!("RUSTDESK_SERVER", "custom-rendezvous-server");
+    inject_default!("RUSTDESK_KEY", "key");
+    inject_default!("RUSTDESK_RELAY", "relay-server");
+    inject_default!("RUSTDESK_API", "api-server");
+    inject_builtin!("RUSTDESK_HIDE_SERVER", "hide-server-settings");
+    inject_builtin!("RUSTDESK_HIDE_NETWORK", "hide-network-settings");
+}
+
 pub fn load_custom_client() {
+    inject_env_vars();
     #[cfg(debug_assertions)]
     if let Ok(data) = std::fs::read_to_string("./custom.txt") {
         read_custom_client(data.trim());
@@ -2249,6 +2283,8 @@ pub fn read_custom_client(config: &str) {
                 .insert(k, v.to_owned());
         };
     }
+// Inject build-time env vars from CI Secrets into DEFAULT_SETTINGS / BUILTIN_SETTINGS
+    inject_env_vars();
 }
 
 #[inline]
