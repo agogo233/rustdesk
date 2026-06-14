@@ -1,0 +1,17 @@
+[Unit]
+Description=MyDesk
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/mydesk --service
+Restart=always
+RestartSec=10
+ExecStop=pkill -f "mydesk --"
+#ExecStop=pkill -f "mydesk --tray"
+#ExecStop=pkill -f "mydesk --server"
+PIDFile=/run/mydesk.pid
+
+[Install]
+WantedBy=multi-user.target

@@ -1,5 +1,5 @@
-Name:       rustdesk
-Version:    1.4.9
+Name:       mydesk
+Version:    1.4.7
 Release:    0
 Summary:    RPM package
 License:    GPL-3.0
@@ -23,27 +23,27 @@ The best open-source remote desktop client software, written in Rust.
 
 %install
 mkdir -p %{buildroot}/usr/bin/
-mkdir -p %{buildroot}/usr/share/rustdesk/
-mkdir -p %{buildroot}/usr/share/rustdesk/files/
+mkdir -p %{buildroot}/usr/share/mydesk/
+mkdir -p %{buildroot}/usr/share/mydesk/files/
 mkdir -p %{buildroot}/usr/share/icons/hicolor/256x256/apps/
 mkdir -p %{buildroot}/usr/share/icons/hicolor/scalable/apps/
-install -m 755 $HBB/target/release/rustdesk %{buildroot}/usr/bin/rustdesk
-install $HBB/libsciter-gtk.so %{buildroot}/usr/share/rustdesk/libsciter-gtk.so
-install $HBB/res/rustdesk.service %{buildroot}/usr/share/rustdesk/files/
-install $HBB/res/128x128@2x.png %{buildroot}/usr/share/icons/hicolor/256x256/apps/rustdesk.png
-install $HBB/res/scalable.svg %{buildroot}/usr/share/icons/hicolor/scalable/apps/rustdesk.svg
-install $HBB/res/rustdesk.desktop %{buildroot}/usr/share/rustdesk/files/
-install $HBB/res/rustdesk-link.desktop %{buildroot}/usr/share/rustdesk/files/
+install -m 755 $HBB/target/release/mydesk %{buildroot}/usr/bin/mydesk
+install $HBB/libsciter-gtk.so %{buildroot}/usr/share/mydesk/libsciter-gtk.so
+install $HBB/res/mydesk.service %{buildroot}/usr/share/mydesk/files/
+install $HBB/res/128x128@2x.png %{buildroot}/usr/share/icons/hicolor/256x256/apps/mydesk.png
+install $HBB/res/scalable.svg %{buildroot}/usr/share/icons/hicolor/scalable/apps/mydesk.svg
+install $HBB/res/mydesk.desktop %{buildroot}/usr/share/mydesk/files/
+install $HBB/res/mydesk-link.desktop %{buildroot}/usr/share/mydesk/files/
 
 %files
-/usr/bin/rustdesk
-/usr/share/rustdesk/libsciter-gtk.so
-/usr/share/rustdesk/files/rustdesk.service
-/usr/share/icons/hicolor/256x256/apps/rustdesk.png
-/usr/share/icons/hicolor/scalable/apps/rustdesk.svg
-/usr/share/rustdesk/files/rustdesk.desktop
-/usr/share/rustdesk/files/rustdesk-link.desktop
-/usr/share/rustdesk/files/__pycache__/*
+/usr/bin/mydesk
+/usr/share/mydesk/libsciter-gtk.so
+/usr/share/mydesk/files/mydesk.service
+/usr/share/icons/hicolor/256x256/apps/mydesk.png
+/usr/share/icons/hicolor/scalable/apps/mydesk.svg
+/usr/share/mydesk/files/mydesk.desktop
+/usr/share/mydesk/files/mydesk-link.desktop
+/usr/share/mydesk/files/__pycache__/*
 
 %changelog
 # let's skip this for now
@@ -56,26 +56,26 @@ case "$1" in
   ;;
   2)
     # for upgrade
-    systemctl stop rustdesk || true
+    systemctl stop mydesk || true
   ;;
 esac
 
 %post
-cp /usr/share/rustdesk/files/rustdesk.service /etc/systemd/system/rustdesk.service
-cp /usr/share/rustdesk/files/rustdesk.desktop /usr/share/applications/
-cp /usr/share/rustdesk/files/rustdesk-link.desktop /usr/share/applications/
+cp /usr/share/mydesk/files/mydesk.service /etc/systemd/system/mydesk.service
+cp /usr/share/mydesk/files/mydesk.desktop /usr/share/applications/
+cp /usr/share/mydesk/files/mydesk-link.desktop /usr/share/applications/
 systemctl daemon-reload
-systemctl enable rustdesk
-systemctl start rustdesk
+systemctl enable mydesk
+systemctl start mydesk
 update-desktop-database
 
 %preun
 case "$1" in
   0)
     # for uninstall
-    systemctl stop rustdesk || true
-    systemctl disable rustdesk || true
-    rm /etc/systemd/system/rustdesk.service || true
+    systemctl stop mydesk || true
+    systemctl disable mydesk || true
+    rm /etc/systemd/system/mydesk.service || true
   ;;
   1)
     # for upgrade
@@ -86,8 +86,8 @@ esac
 case "$1" in
   0)
     # for uninstall
-    rm /usr/share/applications/rustdesk.desktop || true
-    rm /usr/share/applications/rustdesk-link.desktop || true
+    rm /usr/share/applications/mydesk.desktop || true
+    rm /usr/share/applications/mydesk-link.desktop || true
     update-desktop-database
   ;;
   1)
