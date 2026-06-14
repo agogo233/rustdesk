@@ -752,7 +752,7 @@ UINT __stdcall AddRegSoftwareSASGeneration(__in MSIHANDLE hInstall)
         goto LExit;
     }
 
-    result = RegSetValueExW(hKey, valueName, 0, valueType, reinterpret_cast<const BYTE*>(valueData), valueDataSize);
+    result = RegSetValueExW(hKey, valueName, 0, valueType, reinterpret_cast<const BYTE*>(&valueData), valueDataSize);
     if (result != ERROR_SUCCESS) {
         WcaLog(LOGMSG_STANDARD, "Failed to set registry value: %d", result);
         RegCloseKey(hKey);
@@ -850,8 +850,8 @@ void TryCreateStartServiceByShell(LPWSTR svcName, LPWSTR svcBinary, LPWSTR szSvc
     DWORD cchCmd = sizeof(szCmd) / sizeof(szCmd[0]);
     SERVICE_STATUS_PROCESS svcStatus;
     DWORD lastErrorCode = 0;
-    int i = 0;
-    int j = 0;
+    DWORD i = 0;
+    DWORD j = 0;
 
     WcaLog(LOGMSG_STANDARD, "TryCreateStartServiceByShell, service: %ls", svcName);
 
