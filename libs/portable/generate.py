@@ -76,8 +76,8 @@ def build_portable(output_folder: str, target: str):
     finally:
         os.chdir(current_dir)
 
-# Linux: python3 generate.py -f ../rustdesk-portable-packer/test -o . -e ./test/main.py
-# Windows: python3 .\generate.py -f ..\rustdesk\flutter\build\windows\runner\Debug\ -o . -e ..\rustdesk\flutter\build\windows\runner\Debug\rustdesk.exe
+# Linux: python3 generate.py -f ../mydesk-portable-packer/test -o . -e ./test/main.py
+# Windows: python3 .\generate.py -f ..\mydesk\flutter\build\windows\runner\Debug\ -o . -e ..\mydesk\flutter\build\windows\runner\Debug\mydesk.exe
 
 
 if __name__ == '__main__':
@@ -93,7 +93,7 @@ if __name__ == '__main__':
     parser.add_option("-l", "--level", dest="level", type="int",
                       help="compression level, default is 11, highest", default=11)
     (options, args) = parser.parse_args()
-    folder = options.folder or './rustdesk'
+    folder = options.folder or './mydesk'
     output_folder = os.path.abspath(options.output_folder or './')
 
     if not options.executable:

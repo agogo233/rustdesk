@@ -183,7 +183,7 @@ def generate_build_script_for_docker():
             vcpkg/bootstrap-vcpkg.sh
             popd
             $VCPKG_ROOT/vcpkg install --x-install-root="$VCPKG_ROOT/installed"
-            # build rustdesk
+            # build mydesk
             ./build.py --flutter --hwcodec
         ''')
     system2("chmod +x /tmp/build.sh")
@@ -502,7 +502,7 @@ def main():
             build_flutter_windows(version, features, args.skip_portable_pack)
             return
         system2('cargo build --locked --release --features ' + features)
-        # system2('upx.exe target/release/rustdesk.exe')
+        # system2('upx.exe target/release/mydesk.exe')
         system2('mv target/release/mydesk.exe target/release/MyDesk.exe')
         pa = os.environ.get('P')
         if pa:
@@ -533,7 +533,7 @@ def main():
             system2('HBB=`pwd` makepkg -f')
         system2('mv mydesk-%s-0-x86_64.pkg.tar.zst mydesk-%s-manjaro-arch.pkg.tar.zst' % (
             version, version))
-        # pacman -U ./rustdesk.pkg.tar.zst
+        # pacman -U ./mydesk.pkg.tar.zst
     elif os.path.isfile('/usr/bin/yum'):
         system2('cargo build --locked --release --features ' + features)
         system2('strip target/release/mydesk')
@@ -543,7 +543,7 @@ def main():
         system2(
             'mv $HOME/rpmbuild/RPMS/x86_64/mydesk-%s-0.x86_64.rpm ./mydesk-%s-fedora28-centos8.rpm' % (
                 version, version))
-        # yum localinstall rustdesk.rpm
+        # yum localinstall mydesk.rpm
     elif os.path.isfile('/usr/bin/zypper'):
         system2('cargo build --locked --release --features ' + features)
         system2('strip target/release/mydesk')
@@ -553,7 +553,7 @@ def main():
         system2(
             'mv $HOME/rpmbuild/RPMS/x86_64/mydesk-%s-0.x86_64.rpm ./mydesk-%s-suse.rpm' % (
                 version, version))
-        # yum localinstall rustdesk.rpm
+        # yum localinstall mydesk.rpm
     else:
         if flutter:
             if osx:
@@ -561,7 +561,7 @@ def main():
                 pass
             else:
                 # system2(
-                #     'mv target/release/bundle/deb/rustdesk*.deb ./flutter/rustdesk.deb')
+                #     'mv target/release/bundle/deb/mydesk*.deb ./flutter/mydesk.deb')
                 build_flutter_deb(version, features)
         else:
             system2('cargo --locked bundle --release --features ' + features)

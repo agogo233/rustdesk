@@ -127,7 +127,7 @@ apply_standard_settings(${BINARY_NAME})
 target_link_libraries(${BINARY_NAME} PRIVATE flutter)
 target_link_libraries(${BINARY_NAME} PRIVATE PkgConfig::GTK)
 target_link_libraries(${BINARY_NAME} PRIVATE ${CMAKE_DL_LIBS})
-# target_link_libraries(${BINARY_NAME} PRIVATE librustdesk)
+# target_link_libraries(${BINARY_NAME} PRIVATE libmydesk)
 
 # Wayland support for keyboard shortcuts inhibit
 if(HAS_KEYBOARD_SHORTCUTS_INHIBIT)
