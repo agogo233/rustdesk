@@ -960,12 +960,12 @@ class _SettingsState extends State<SettingsPage> with WidgetsBindingObserver {
                 title: Text(translate("Version: ") + version),
                 value: Padding(
                   padding: EdgeInsets.symmetric(vertical: 8),
-                child: Text('mydesk.com',
-                    style: TextStyle(
-                      decoration: TextDecoration.underline,
-                    )),
-          ),
-          leading: Icon(Icons.info)),
+                  child: Text('mydesk.com',
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                      )),
+                ),
+                leading: Icon(Icons.info)),
             SettingsTile(
                 title: Text(translate("Build Date")),
                 value: Padding(
@@ -1103,12 +1103,12 @@ void showAbout(OverlayDialogManager dialogManager) {
             },
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 8),
-          child: Text('mydesk.com',
-                      style: TextStyle(
-                        decoration: TextDecoration.underline,
-                      )),
-                ),
-        ]),
+              child: Text('mydesk.com',
+                  style: TextStyle(
+                    decoration: TextDecoration.underline,
+                  )),
+            )),
+      ]),
       actions: [],
     );
   }, clickMaskDismiss: true, backDismiss: true);
