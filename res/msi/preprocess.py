@@ -130,7 +130,7 @@ def insert_components_between_tags(lines, index_start, app_name, dist_dir):
             # "Error WIX0130	The primary key 'xxxx' is duplicated in table 'Directory'"
             to_insert_lines = f"""
 {indent}<Component Guid="{uuid.uuid4()}" {dir_attr}>
-{indent}{g_indent_unit}<File Source="{file_path.as_posix()}" KeyPath="yes" Checksum="yes" Language="0" />
+{indent}{g_indent_unit}<File Source="{file_path.as_posix()}" KeyPath="yes" Checksum="yes" Language="2052" />
 {indent}</Component>
 """
             lines.insert(index_start + 1, to_insert_lines[1:])
