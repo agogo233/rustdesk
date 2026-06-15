@@ -1053,10 +1053,10 @@ pub fn get_api_server(api: String, custom: String) -> String {
         res.pop();
     }
     if res.starts_with("https")
-        && res.ends_with(":21114")
-        && get_builtin_option(keys::OPTION_ALLOW_HTTPS_21114) != "Y"
+        && res.ends_with(":31114")
+        && get_builtin_option(keys::OPTION_ALLOW_HTTPS_31114) != "Y"
     {
-        return res.replace(":21114", "");
+        return res.replace(":31114", "");
     }
     res
 }
@@ -2832,7 +2832,7 @@ mod tests {
             "https://admin.example.com"
         ));
         assert!(should_use_tcp_proxy_for_api_url(
-            "https://admin.example.com:21114/api/login",
+            "https://admin.example.com:31114/api/login",
             "https://admin.example.com"
         ));
         assert!(!should_use_tcp_proxy_for_api_url(
@@ -2979,8 +2979,8 @@ mod tests {
     #[test]
     fn test_tcp_proxy_log_target_brackets_ipv6_host_with_port() {
         assert_eq!(
-            tcp_proxy_log_target("https://[2001:db8::1]:21114/api/heartbeat?token=secret"),
-            "https://[2001:db8::1]:21114/api/heartbeat"
+            tcp_proxy_log_target("https://[2001:db8::1]:31114/api/heartbeat?token=secret"),
+            "https://[2001:db8::1]:31114/api/heartbeat"
         );
     }
 

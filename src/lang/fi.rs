@@ -726,7 +726,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("Allow insecure TLS fallback", "Salli turvaton TLS-varajärjestely"),
         ("allow-insecure-tls-fallback-tip", "Oletuksena MyDesk vahvistaa palvelimen varmenteen TLS:ää käyttävissä protokollissa.\nKun tämä asetus on käytössä, MyDesk ohittaa vahvistusvaiheen ja jatkaa toimintaa, jos vahvistus epäonnistuu."),
         ("Disable UDP", "Poista UDP käytöstä"),
-        ("disable-udp-tip", "Määrittää, käytetäänkö vain TCP:tä.\nKun tämä asetus on käytössä, MyDesk ei enää käytä UDP-porttia 21116, vaan sen sijaan käytetään TCP-porttia 21116."),
+        ("disable-udp-tip", "Määrittää, käytetäänkö vain TCP:tä.\nKun tämä asetus on käytössä, MyDesk ei enää käytä UDP-porttia 31116, vaan sen sijaan käytetään TCP-porttia 31116."),
         ("server-oss-not-support-tip", "HUOMAUTUS: MyDesk-palvelimen OSS ei sisällä tätä ominaisuutta."),
         ("input note here", "syötä muistiinpano tähän"),
         ("note-at-conn-end-tip", "Kysy muistiinpanoa yhteyden päättyessä"),
