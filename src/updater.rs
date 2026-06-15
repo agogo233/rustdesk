@@ -30,7 +30,7 @@ pub fn update_controlling_session_count(count: usize) {
 
 #[allow(dead_code)]
 pub fn start_auto_update() {
-    let _sender = TX_MSG.lock().unwrap();
+    // Version update disabled per security policy.
 }
 
 #[allow(dead_code)]
@@ -76,9 +76,8 @@ fn has_no_controlling_conns() -> bool {
 }
 
 fn start_auto_update_check() -> Sender<UpdateMsg> {
-    let (tx, rx) = channel();
-    std::thread::spawn(move || start_auto_update_check_(rx));
-    return tx;
+    let (tx, _rx) = channel();
+    tx
 }
 
 fn start_auto_update_check_(rx_msg: Receiver<UpdateMsg>) {
