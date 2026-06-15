@@ -1180,6 +1180,10 @@ pub fn main_http_request(url: String, method: String, body: Option<String>, head
 }
 
 pub fn main_get_local_option(key: String) -> SyncReturn<String> {
+    #[cfg(windows)]
+    if key == config::keys::OPTION_START_ON_BOOT {
+        return SyncReturn(crate::platform::get_start_on_boot());
+    }
     SyncReturn(get_local_option(key))
 }
 
@@ -1223,6 +1227,11 @@ pub fn main_set_env(key: String, value: Option<String>) -> SyncReturn<()> {
 pub fn main_set_local_option(key: String, value: String) {
     let is_texture_render_key = key.eq(config::keys::OPTION_TEXTURE_RENDER);
     let is_d3d_render_key = key.eq(config::keys::OPTION_ALLOW_D3D_RENDER);
+    #[cfg(windows)]
+    if key == config::keys::OPTION_START_ON_BOOT {
+        crate::platform::set_start_on_boot(value == "Y");
+        return;
+    }
     set_local_option(key, value.clone());
     let is_render_target =
         |session: &crate::flutter::FlutterSession| session.is_default() || session.is_view_camera();

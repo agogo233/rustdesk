@@ -1951,6 +1951,51 @@ pub fn is_installed() -> bool {
     std::fs::metadata(exe).is_ok()
 }
 
+pub fn set_start_on_boot(enabled: bool) {
+    let hkcu = RegKey::predef(HKEY_CURRENT_USER);
+    let run_key = hkcu
+        .open_subkey_with_flags(
+            "Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+            KEY_WRITE,
+        )
+        .ok();
+    if let Some(run_key) = run_key {
+        let app_name = crate::get_app_name();
+        if enabled {
+            if let Ok(exe_path) = std::env::current_exe() {
+                let exe_str = exe_path.to_string_lossy().to_string();
+                let _ = run_key.set_value(app_name, &format!("\"{}\"", exe_str));
+            }
+        } else {
+            let _ = run_key.delete_value(app_name);
+        }
+    }
+}
+
+pub fn get_start_on_boot() -> String {
+    let hkcu = RegKey::predef(HKEY_CURRENT_USER);
+    let run_key = hkcu
+        .open_subkey_with_flags(
+            "Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+            KEY_READ,
+        )
+        .ok();
+    if let Some(run_key) = run_key {
+        let app_name = crate::get_app_name();
+        if let Ok(v) = run_key.get_value::<String, _>(app_name) {
+            if !v.is_empty() {
+                if let Ok(exe_path) = std::env::current_exe() {
+                    let exe_str = exe_path.to_string_lossy().to_string();
+                    if v.contains(&exe_str) {
+                        return "Y".to_owned();
+                    }
+                }
+            }
+        }
+    }
+    "N".to_owned()
+}
+
 pub fn get_reg(name: &str) -> String {
     let (subkey, _, _, _) = get_install_info();
     get_reg_of(&subkey, name)
