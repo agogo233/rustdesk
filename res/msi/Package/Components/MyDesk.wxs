@@ -50,8 +50,8 @@
 			<Custom Action="CustomActionHello" Before="InstallFinalize" />
 
 			<!--Shortcut is in InstallValidate section. So we just let it be created, then try delete if stopping service.-->
-			<Custom Action="TryDeleteStartupShortcut" After="InstallFinalize" Condition="STOP_SERVICE=&quot;&apos;Y&apos;&quot;" />
-			<Custom Action="TryDeleteStartupShortcut.SetParam" Before="SetPropertyIsServiceRunning" Condition="STOP_SERVICE=&quot;&apos;Y&apos;&quot;" />
+			<Custom Action="TryDeleteStartupShortcut" After="InstallFinalize" Condition="STOP_SERVICE=&quot;&apos;Y&apos;&quot; AND STARTUPSHORTCUTS &lt;&gt; 1" />
+			<Custom Action="TryDeleteStartupShortcut.SetParam" Before="SetPropertyIsServiceRunning" Condition="STOP_SERVICE=&quot;&apos;Y&apos;&quot; AND STARTUPSHORTCUTS &lt;&gt; 1" />
 
 			<!-- Launch ClientLauncher if installing or already installed and not uninstalling -->
 			<!-- https://learn.microsoft.com/en-us/windows/win32/msi/uilevel -->

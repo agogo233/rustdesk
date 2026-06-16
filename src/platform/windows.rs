@@ -1952,48 +1952,118 @@ pub fn is_installed() -> bool {
 }
 
 pub fn set_start_on_boot(enabled: bool) {
-    let hkcu = RegKey::predef(HKEY_CURRENT_USER);
-    let run_key = hkcu
-        .open_subkey_with_flags(
-            "Software\\Microsoft\\Windows\\CurrentVersion\\Run",
-            KEY_WRITE,
-        )
-        .ok();
-    if let Some(run_key) = run_key {
-        let app_name = crate::get_app_name();
-        if enabled {
-            if let Ok(exe_path) = std::env::current_exe() {
-                let exe_str = exe_path.to_string_lossy().to_string();
-                let _ = run_key.set_value(app_name, &format!("\"{}\"", exe_str));
-            }
+    // Always clean both mechanisms to prevent dual-startup
+    delete_hkcu_run();
+    delete_startup_shortcut();
+
+    if enabled {
+        if is_installed() {
+            // MSI version: create startup folder shortcut with --tray
+            create_startup_shortcut();
         } else {
-            let _ = run_key.delete_value(app_name);
+            // Portable version: HKCU Run
+            if let Ok(exe_path) = std::env::current_exe() {
+                let hkcu = RegKey::predef(HKEY_CURRENT_USER);
+                if let Some(run_key) = hkcu
+                    .open_subkey_with_flags(
+                        "Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+                        KEY_WRITE,
+                    )
+                    .ok()
+                {
+                    let exe_str = exe_path.to_string_lossy().to_string();
+                    let _ = run_key.set_value(crate::get_app_name(), &format!("\"{}\"", exe_str));
+                }
+            }
         }
     }
 }
 
 pub fn get_start_on_boot() -> String {
-    let hkcu = RegKey::predef(HKEY_CURRENT_USER);
-    let run_key = hkcu
-        .open_subkey_with_flags(
-            "Software\\Microsoft\\Windows\\CurrentVersion\\Run",
-            KEY_READ,
-        )
-        .ok();
-    if let Some(run_key) = run_key {
-        let app_name = crate::get_app_name();
-        if let Ok(v) = run_key.get_value::<String, _>(app_name) {
-            if !v.is_empty() {
-                if let Ok(exe_path) = std::env::current_exe() {
-                    let exe_str = exe_path.to_string_lossy().to_string();
-                    if v.contains(&exe_str) {
-                        return "Y".to_owned();
+    if is_installed() {
+        // MSI version: check startup folder shortcut
+        let shortcut = startup_shortcut_path();
+        if shortcut.exists() {
+            return "Y".to_owned();
+        }
+    } else {
+        // Portable version: check HKCU Run
+        let hkcu = RegKey::predef(HKEY_CURRENT_USER);
+        if let Some(run_key) = hkcu
+            .open_subkey_with_flags(
+                "Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+                KEY_READ,
+            )
+            .ok()
+        {
+            if let Ok(v) = run_key.get_value::<String, _>(crate::get_app_name()) {
+                if !v.is_empty() {
+                    if let Ok(exe_path) = std::env::current_exe() {
+                        let exe_str = exe_path.to_string_lossy().to_string();
+                        if v.contains(&exe_str) {
+                            return "Y".to_owned();
+                        }
                     }
                 }
             }
         }
     }
     "N".to_owned()
+}
+
+fn startup_shortcut_name() -> String {
+    format!("{} Tray.lnk", crate::get_app_name())
+}
+
+fn startup_shortcut_path() -> PathBuf {
+    let appdata = std::env::var("APPDATA").unwrap_or_default();
+    PathBuf::from(appdata).join(r"Microsoft\Windows\Start Menu\Programs\Startup")
+        .join(startup_shortcut_name())
+}
+
+fn create_startup_shortcut() {
+    let Some(exe) = std::env::current_exe().ok() else {
+        return;
+    };
+    let exe_str = exe.to_string_lossy().to_string();
+    let shortcut_path = startup_shortcut_path().to_string_lossy().to_string();
+    let shortcut_icon_location = get_shortcut_icon_location("", &exe_str);
+    if let Ok(script) = write_cmds(
+        format!(
+            "Set oWS = WScript.CreateObject(\"WScript.Shell\")\n\
+             sLinkFile = \"{shortcut_path}\"\n\
+             Set oLink = oWS.CreateShortcut(sLinkFile)\n\
+             \toLink.TargetPath = \"{exe_str}\"\n\
+             \toLink.Arguments = \"--tray\"\n\
+             \t{shortcut_icon_location}\n\
+             oLink.Save\n"
+        ),
+        "vbs",
+        "startup_shortcut",
+    ) {
+        let _ = std::process::Command::new("cscript")
+            .arg(script.to_str().unwrap_or(""))
+            .creation_flags(CREATE_NO_WINDOW)
+            .output();
+        let _ = std::fs::remove_file(script);
+    }
+}
+
+fn delete_startup_shortcut() {
+    let _ = std::fs::remove_file(startup_shortcut_path());
+}
+
+fn delete_hkcu_run() {
+    let hkcu = RegKey::predef(HKEY_CURRENT_USER);
+    if let Some(run_key) = hkcu
+        .open_subkey_with_flags(
+            "Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+            KEY_WRITE,
+        )
+        .ok()
+    {
+        let _ = run_key.delete_value(crate::get_app_name());
+    }
 }
 
 pub fn get_reg(name: &str) -> String {
