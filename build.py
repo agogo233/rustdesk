@@ -14,7 +14,7 @@ from pathlib import Path
 windows = platform.platform().startswith('Windows')
 osx = platform.platform().startswith(
     'Darwin') or platform.platform().startswith("macOS")
-hbb_name = 'rustdesk' + ('.exe' if windows else '')
+hbb_name = 'mydesk' + ('.exe' if windows else '')
 exe_path = 'target/release/' + hbb_name
 if windows:
     win_arch = 'arm64' if platform.machine().lower() in ('arm64', 'aarch64') else 'x64'
@@ -298,8 +298,8 @@ Section: net
 Priority: optional
 Version: %s
 Architecture: %s
-Maintainer: mydesk <info@rustdesk.com>
-Homepage: https://rustdesk.com
+Maintainer: mydesk <info@mydesk.com>
+Homepage: https://mydesk.com
 Depends: libgtk-3-0t64 | libgtk-3-0, libxcb-randr0, libxdo3 | libxdo4, libxfixes3, libxcb-shape0, libxcb-xfixes0, libasound2t64 | libasound2, libsystemd0, curl, libva2, libva-drm2, libva-x11-2, libgstreamer-plugins-base1.0-0, libpam0g, gstreamer1.0-pipewire%s
 Recommends: libayatana-appindicator3-1
 Description: A remote control software.
@@ -407,9 +407,7 @@ def build_flutter_dmg(version, features):
         # set minimum osx build target, now is 10.14, which is the same as the flutter xcode project
         system2(
             f'MACOSX_DEPLOYMENT_TARGET=10.14 cargo build --locked --features {features} --release')
-    # copy dylib
-    system2(
-        "cp target/release/libmydesk.dylib target/release/libmydesk.dylib")
+# copy dylib (Xcode project references liblibmydesk.dylib from target/release/)
     os.chdir('flutter')
 # cargo builds a single-arch dylib for the host; restrict Xcode to the same arch
     # so the universal-by-default ARCHS_STANDARD doesn't try to link a missing slice.
@@ -453,19 +451,19 @@ def build_flutter_windows(version, features, skip_portable_pack):
     os.chdir('libs/portable')
     system2('pip3 install -r requirements.txt')
     system2(
-        f'python3 ./generate.py -f ../../{flutter_build_dir_2} -o . -e ../../{flutter_build_dir_2}/rustdesk.exe')
+        f'python3 ./generate.py -f ../../{flutter_build_dir_2} -o . -e ../../{flutter_build_dir_2}/mydesk.exe')
     os.chdir('../..')
 if os.path.exists('./mydesk_portable.exe'):
         os.replace('./target/release/mydesk-portable-packer.exe',
                    './mydesk_portable.exe')
     else:
-        os.rename('./target/release/rustdesk-portable-packer.exe',
-                  './rustdesk_portable.exe')
+        os.rename('./target/release/mydesk-portable-packer.exe',
+                  './mydesk_portable.exe')
     print(
-        f'output location: {os.path.abspath(os.curdir)}/rustdesk_portable.exe')
-    os.rename('./rustdesk_portable.exe', f'./rustdesk-{version}-install.exe')
+        f'output location: {os.path.abspath(os.curdir)}/mydesk_portable.exe')
+    os.rename('./mydesk_portable.exe', f'./mydesk-{version}-install.exe')
     print(
-        f'output location: {os.path.abspath(os.curdir)}/rustdesk-{version}-install.exe')
+        f'output location: {os.path.abspath(os.curdir)}/mydesk-{version}-install.exe')
 
 
 def main():
@@ -503,10 +501,9 @@ def main():
             return
         system2('cargo build --locked --release --features ' + features)
         # system2('upx.exe target/release/mydesk.exe')
-        system2('mv target/release/mydesk.exe target/release/MyDesk.exe')
+system2('mv target/release/mydesk.exe target/release/mydesk.exe')
         pa = os.environ.get('P')
         if pa:
-            # https://certera.com/kb/tutorial-guide-for-safenet-authentication-client-for-code-signing/
             system2(
                 f'signtool sign /a /v /p {pa} /debug /f .\\cert.pfx /t http://timestamp.digicert.com  '
                 'target\\release\\mydesk.exe')
@@ -514,7 +511,7 @@ def main():
             print('Not signed')
         os.makedirs(res_dir, exist_ok=True)
         system2(
-            f'cp -rf target/release/MyDesk.exe {res_dir}')
+            f'cp -rf target/release/mydesk.exe {res_dir}')
         os.chdir('libs/portable')
         system2('pip3 install -r requirements.txt')
         system2(
