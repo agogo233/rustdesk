@@ -8,7 +8,7 @@
 * `src/platform/` platform-specific code
 * `src/ui/` legacy Sciter UI (deprecated)
 * `flutter/` current UI
-* `libs/hbb_common/` config / proto / shared utils
+* `libs/hbb_common/` submodule of agogo233/hbb_common (Mod branch), source repo at `/home/git/working/hbb_common/`
 * `libs/scrap/` screen capture
 * `libs/enigo/` input control
 * `libs/clipboard/` clipboard
@@ -84,3 +84,14 @@ Then translate that source into the file's target language (infer the language f
 * Preserve placeholders (`{}`) and escape sequences (`\n`, `\"`) exactly as in the source.
 * Do not translate brand or technical tokens: `RustDesk`, `Socks5`, `TLS`, `UAC`, `Wayland`, `X11`, `TCP`, `UDP`, `2FA`, `RDP`, `D3D`, etc.
 * Copy URL values (e.g. `doc_*` keys) verbatim from `en.rs`.
+
+## hbb_common 子模块工作流
+
+源仓库（独立克隆）：`/home/git/working/hbb_common/`（agogo233/hbb_common Mod 分支）
+子模块路径：`libs/hbb_common/`（由父仓库管理的检出副本，不应直接编辑其中的文件或用 `git -C libs/hbb_common` 操作）
+
+操作顺序：
+1. 修改源码 → 直接编辑 `/home/git/working/hbb_common/` 下的文件
+2. 提交推送 → `git -C /home/git/working/hbb_common add -A && git commit -m "..." && git push origin Mod`
+3. 同步子模块 → `git submodule update --remote libs/hbb_common`
+4. 更新指针 → `git add libs/hbb_common && git commit -m "fix: update hbb_common submodule pointer"`

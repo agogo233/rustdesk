@@ -673,10 +673,10 @@ UINT __stdcall TryDeleteStartupShortcut(__in MSIHANDLE hInstall)
     ExitOnFailure(hr, "Failed to compose a resource identifier string");
 
     if (DeleteFileW(pwszTemp)) {
-        WcaLog(LOGMSG_STANDARD, "Failed to delete startup shortcut of : \"%ls\"", pwszTemp);
+        WcaLog(LOGMSG_STANDARD, "Startup shortcut is deleted : \"%ls\"", pwszTemp);
     }
     else {
-        WcaLog(LOGMSG_STANDARD, "Startup shortcut is deleted : \"%ls\"", pwszTemp);
+        WcaLog(LOGMSG_STANDARD, "Failed to delete startup shortcut of : \"%ls\"", pwszTemp);
     }
 
 LExit:

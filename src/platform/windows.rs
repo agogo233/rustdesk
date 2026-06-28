@@ -111,6 +111,7 @@ pub const SET_FOREGROUND_WINDOW: &'static str = "SET_FOREGROUND_WINDOW";
 
 const REG_NAME_INSTALL_DESKTOPSHORTCUTS: &str = "DESKTOPSHORTCUTS";
 const REG_NAME_INSTALL_STARTMENUSHORTCUTS: &str = "STARTMENUSHORTCUTS";
+pub const REG_NAME_INSTALL_STARTUPSHORTCUTS: &str = "STARTUPSHORTCUTS";
 pub const REG_NAME_INSTALL_PRINTER: &str = "PRINTER";
 
 pub fn get_focused_display(displays: Vec<DisplayInfo>) -> Option<usize> {
@@ -1956,10 +1957,16 @@ pub fn set_start_on_boot(enabled: bool) {
     delete_hkcu_run();
     delete_startup_shortcut();
 
+    if is_installed() && !enabled {
+        // Sync MSI registry property so repair/modify won't recreate the shortcut
+        set_msi_startup_shortcut_property(false);
+    }
+
     if enabled {
         if is_installed() {
             // MSI version: create startup folder shortcut with --tray
             create_startup_shortcut();
+            set_msi_startup_shortcut_property(true);
         } else {
             // Portable version: HKCU Run
             if let Ok(exe_path) = std::env::current_exe() {
@@ -1979,11 +1986,19 @@ pub fn set_start_on_boot(enabled: bool) {
     }
 }
 
+fn set_msi_startup_shortcut_property(enabled: bool) {
+    let subkey = format!(".{}", crate::get_app_name().to_lowercase());
+    let hkcr = RegKey::predef(HKEY_CLASSES_ROOT);
+    if let Ok(key) = hkcr.open_subkey_with_flags(subkey, KEY_WRITE) {
+        let _ = key.set_value(REG_NAME_INSTALL_STARTUPSHORTCUTS, if enabled { "1" } else { "0" });
+    }
+}
+
 pub fn get_start_on_boot() -> String {
     if is_installed() {
-        // MSI version: check startup folder shortcut
-        let shortcut = startup_shortcut_path();
-        if shortcut.exists() {
+        // MSI version: check MSI registry property
+        let subkey = format!(".{}", crate::get_app_name().to_lowercase());
+        if get_reg_of_hkcr(&subkey, REG_NAME_INSTALL_STARTUPSHORTCUTS).as_deref() == Some("1") {
             return "Y".to_owned();
         }
     } else {
@@ -2015,18 +2030,21 @@ fn startup_shortcut_name() -> String {
     format!("{} Tray.lnk", crate::get_app_name())
 }
 
-fn startup_shortcut_path() -> PathBuf {
-    let appdata = std::env::var("APPDATA").unwrap_or_default();
-    PathBuf::from(appdata).join(r"Microsoft\Windows\Start Menu\Programs\Startup")
-        .join(startup_shortcut_name())
+fn startup_shortcut_path() -> Option<PathBuf> {
+    let appdata = std::env::var("APPDATA").ok()?;
+    Some(PathBuf::from(appdata).join(r"Microsoft\Windows\Start Menu\Programs\Startup")
+        .join(startup_shortcut_name()))
 }
 
 fn create_startup_shortcut() {
     let Some(exe) = std::env::current_exe().ok() else {
         return;
     };
+    let Some(shortcut_path) = startup_shortcut_path() else {
+        return;
+    };
     let exe_str = exe.to_string_lossy().to_string();
-    let shortcut_path = startup_shortcut_path().to_string_lossy().to_string();
+    let shortcut_path = shortcut_path.to_string_lossy().to_string();
     let shortcut_icon_location = get_shortcut_icon_location("", &exe_str);
     if let Ok(script) = write_cmds(
         format!(
@@ -2050,7 +2068,9 @@ fn create_startup_shortcut() {
 }
 
 fn delete_startup_shortcut() {
-    let _ = std::fs::remove_file(startup_shortcut_path());
+    if let Some(path) = startup_shortcut_path() {
+        let _ = std::fs::remove_file(path);
+    }
 }
 
 fn delete_hkcu_run() {
