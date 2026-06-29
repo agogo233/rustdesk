@@ -1990,7 +1990,7 @@ fn set_msi_startup_shortcut_property(enabled: bool) {
     let subkey = format!(".{}", crate::get_app_name().to_lowercase());
     let hkcr = RegKey::predef(HKEY_CLASSES_ROOT);
     if let Ok(key) = hkcr.open_subkey_with_flags(subkey, KEY_WRITE) {
-        let _ = key.set_value(REG_NAME_INSTALL_STARTUPSHORTCUTS, if enabled { "1" } else { "0" });
+        let _ = key.set_value(REG_NAME_INSTALL_STARTUPSHORTCUTS, &if enabled { "1" } else { "0" });
     }
 }
 

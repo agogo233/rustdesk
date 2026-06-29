@@ -194,7 +194,7 @@ pub mod rustdesk_idd {
 
     #[inline]
     fn get_device_names() -> Vec<String> {
-        windows::get_device_names(Some(super::RUSTDESK_IDD_DEVICE_STRING))
+        windows::get_device_names(Some(super::MYDESK_IDD_DEVICE_STRING))
     }
 
     pub fn plug_in_headless() -> ResultType<()> {
