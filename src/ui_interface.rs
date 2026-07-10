@@ -1537,11 +1537,13 @@ async fn check_id(
     )
     .await
     {
+        let pk = Config::get_key_pair().1;
         let mut msg_out = Message::new();
         msg_out.set_register_pk(RegisterPk {
             old_id,
             id,
             uuid,
+            pk: pk.into(),
             ..Default::default()
         });
         let mut ok = false;
