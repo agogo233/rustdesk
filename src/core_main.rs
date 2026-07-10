@@ -288,7 +288,7 @@ pub fn core_main() -> Option<Vec<String>> {
                 #[cfg(windows)]
                 if crate::virtual_display_manager::is_virtual_display_supported() {
                     hbb_common::allow_err!(
-                        crate::virtual_display_manager::rustdesk_idd::install_update_driver()
+                        crate::virtual_display_manager::mydesk_idd::install_update_driver()
                     );
                 }
                 return None;

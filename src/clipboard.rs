@@ -15,7 +15,6 @@ pub const CLIPBOARD_INTERVAL: u64 = 333;
 
 // This format is used to store the flag in the clipboard.
 const MYDESK_CLIPBOARD_OWNER_FORMAT: &'static str = "dyn.com.mydesk.owner";
->>>>>>> f2c788c0f (refactor: rebrand remaining runtime-visible rustdesk symbols to mydesk (Phase 4))
 
 // Add special format for Excel XML Spreadsheet
 const CLIPBOARD_FORMAT_EXCEL_XML_SPREADSHEET: &'static str = "XML Spreadsheet";
@@ -106,7 +105,7 @@ pub fn is_file_url_set_by_mydesk(url: &Vec<String>) -> bool {
     url.iter()
         .next()
         .map(|s| {
-            for prefix in &["file:///tmp/.rustdesk_", "//tmp/.rustdesk_"] {
+            for prefix in &["file:///tmp/.mydesk_", "//tmp/.mydesk_"] {
                 if s.starts_with(prefix) {
                     return s[prefix.len()..].parse::<uuid::Uuid>().is_ok();
                 }
@@ -502,7 +501,7 @@ impl ClipboardContext {
                 #[cfg(target_os = "macos")]
                 let is_kde_x11 = false;
                 let clear_holder_text = if is_kde_x11 {
-                    "RustDesk placeholder to clear the file clipboard"
+                    "MyDesk placeholder to clear the file clipboard"
                 } else {
                     ""
                 }

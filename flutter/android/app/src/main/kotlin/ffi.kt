@@ -9,7 +9,7 @@ import com.mydesk.mydesk.RdClipboardManager
 
 object FFI {
     init {
-        System.loadLibrary("rustdesk")
+        System.loadLibrary("mydesk")
     }
 
     external fun init(ctx: Context)

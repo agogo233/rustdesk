@@ -18,7 +18,7 @@ AppDir:
 id: mydesk
     name: mydesk
     icon: mydesk
-    version: 1.4.7
+    version: 1.4.9
     exec: usr/share/mydesk/mydesk
     exec_args: $@
   apt:

@@ -73,7 +73,7 @@ lazy_static::lazy_static! {
             log::warn!("Not running as root, SUDO_E_PRESERVES_ENV check skipped");
             false
         } else {
-            let key = format!("__RUSTDESK_SUDO_E_TEST_{}", std::process::id());
+            let key = format!("__MYDESK_SUDO_E_TEST_{}", std::process::id());
             let val = "1";
             let expected = format!("{key}={val}");
             Command::new("sudo")

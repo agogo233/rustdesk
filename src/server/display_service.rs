@@ -255,7 +255,7 @@ pub(super) fn get_original_resolution(
     h: usize,
 ) -> MessageField<Resolution> {
     #[cfg(windows)]
-let is_mydesk_virtual_display =
+    let is_mydesk_virtual_display =
         crate::virtual_display_manager::mydesk_idd::is_virtual_display(&display_name);
     #[cfg(not(windows))]
     let is_mydesk_virtual_display = false;

@@ -16,7 +16,6 @@ use std::{
 };
 
 const MSG_TO_MYDESK_TARGET: &str = "mydesk";
->>>>>>> f2c788c0f (refactor: rebrand remaining runtime-visible rustdesk symbols to mydesk (Phase 4))
 const MSG_TO_PEER_TARGET: &str = "peer";
 const MSG_TO_UI_TARGET: &str = "ui";
 const MSG_TO_CONFIG_TARGET: &str = "config";
@@ -48,7 +47,7 @@ lazy_static::lazy_static! {
 }
 
 #[derive(Deserialize)]
-pub struct MsgToRustDesk {
+pub struct MsgToMyDesk {
     pub r#type: String,
     pub data: Vec<u8>,
 }
@@ -250,7 +249,7 @@ fn handle_msg_to_mydesk(id: String, content: *const c_void, len: usize) -> Plugi
         ERR_CALLBACK_INVALID_MSG,
         "parse msg string"
     );
-let msg_to_mydesk = early_return_value!(
+    let msg_to_mydesk = early_return_value!(
         serde_json::from_str::<MsgToMyDesk>(s),
         ERR_CALLBACK_INVALID_MSG,
         "parse msg '{}'",

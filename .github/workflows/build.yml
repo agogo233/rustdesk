@@ -1,0 +1,503 @@
+name: Build MyDesk (Win x86_64 + Android arm64)
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - '[0-9]+.[0-9]+.[0-9]+'
+      - 'v[0-9]+.[0-9]+.[0-9]+-[0-9]+'
+      - '[0-9]+.[0-9]+.[0-9]+-[0-9]+'
+
+# NOTE: F-Droid builder script 'flutter/build_fdroid.sh' reads environment
+# variables from this workflow!
+#
+# It does NOT read build steps, however, so please fix 'flutter/build_fdroid.sh
+# whenever you add changes to Android CI build action ('build-mydesk-android')
+# in this file!
+
+env:
+  RUST_VERSION: "1.75"
+  CARGO_NDK_VERSION: "3.1.2"
+  LLVM_VERSION: "15.0.6"
+  FLUTTER_VERSION: "3.24.5"
+  ANDROID_FLUTTER_VERSION: "3.24.5"
+  TAG_NAME: "${{ github.ref_name }}"
+  VCPKG_COMMIT_ID: "120deac3062162151622ca4860575a33844ba10b"
+  VERSION: "1.4.8"
+  NDK_VERSION: "r28c"
+  ANDROID_SIGNING_KEY: "${{ secrets.ANDROID_SIGNING_KEY }}"
+  UPLOAD_ARTIFACT: "true"
+  RUSTDESK_SERVER: "${{ secrets.RUSTDESK_SERVER }}"
+  RUSTDESK_KEY: "${{ secrets.RUSTDESK_KEY }}"
+  RUSTDESK_RELAY: "${{ secrets.RUSTDESK_RELAY }}"
+  RUSTDESK_API: "${{ secrets.RUSTDESK_API }}"
+  RUSTDESK_HIDE_SERVER: "${{ secrets.RUSTDESK_HIDE_SERVER }}"
+  RUSTDESK_HIDE_NETWORK: "${{ secrets.RUSTDESK_HIDE_NETWORK }}"
+  SIGN_BASE_URL: "${{ secrets.SIGN_BASE_URL }}-2"
+
+permissions:
+  actions: write  # 允许删除 runs 和 artifacts
+  contents: read  # 保持其他读取权限
+
+jobs:
+
+  build-for-windows-flutter:
+    name: ${{ matrix.job.target }}
+    runs-on: ${{ matrix.job.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        job:
+          - {
+              target: x86_64-pc-windows-msvc,
+              os: windows-2022,
+              arch: x86_64,
+              vcpkg-triplet: x64-windows-static,
+            }
+    steps:
+      - name: Clean up old workflow runs
+        if: env.UPLOAD_ARTIFACT == 'true'
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          retain_days: 1
+          keep_minimum_runs: 1
+          delete_workflow_pattern: ${{ github.workflow }}
+
+      - name: Export GitHub Actions cache environment variables
+        uses: actions/github-script@v8
+        with:
+          script: |
+            core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
+            core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
+
+      - name: Checkout source code
+        uses: actions/checkout@v6 # node24
+        with:
+          submodules: recursive
+
+      - name: Install LLVM and Clang
+        uses: KyleMayes/install-llvm-action@v2 # node24
+        with:
+          version: ${{ env.LLVM_VERSION }}
+
+      - name: Install flutter
+        uses: subosito/flutter-action@2783a3f08e1baf891508463f8c6653c258246225  # v2.12.0; https://github.com/subosito/flutter-action/issues/277
+        with:
+          channel: "stable"
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+
+      # https://github.com/flutter/flutter/issues/155685
+      - name: Replace engine with mydesk custom flutter engine
+        run: |
+          flutter doctor -v
+          flutter precache --windows
+          Invoke-WebRequest -Uri https://github.com/rustdesk/engine/releases/download/main/windows-x64-release.zip -OutFile windows-x64-release.zip
+          Expand-Archive -Path windows-x64-release.zip -DestinationPath windows-x64-release
+          mv -Force windows-x64-release/*  C:/hostedtoolcache/windows/flutter/stable-${{ env.FLUTTER_VERSION }}-x64/bin/cache/artifacts/engine/windows-x64-release/
+
+      - name: Patch flutter
+        shell: bash
+        run: |
+          cp .github/patches/flutter_3.24.4_dropdown_menu_enableFilter.diff $(dirname $(dirname $(which flutter)))
+          cd $(dirname $(dirname $(which flutter)))
+          [[ "3.24.5" == ${{env.FLUTTER_VERSION}} ]] && git apply flutter_3.24.4_dropdown_menu_enableFilter.diff
+
+      - name: Generate flutter_rust_bridge files
+        shell: bash
+        run: |
+          cd flutter
+          flutter pub get
+          cargo install flutter_rust_bridge_codegen --version 1.80.1 --features uuid --locked
+          ~/.cargo/bin/flutter_rust_bridge_codegen --rust-input ../src/flutter_ffi.rs --dart-output ./lib/generated_bridge.dart
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@e97e2d8cc328f1b50210efc529dca0028893a2d9 # v1
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+          targets: ${{ matrix.job.target }}
+          components: "rustfmt"
+
+      - uses: Swatinem/rust-cache@e18b497796c12c097a38f9edb9d0641fb99eee32 # v2
+        continue-on-error: true
+        with:
+          prefix-key: ${{ matrix.job.os }}
+
+      - name: Cache vcpkg installed (Windows)
+        uses: actions/cache@v4
+        continue-on-error: true
+        with:
+          path: C:\vcpkg\installed
+          key: vcpkg-windows-${{ env.VCPKG_COMMIT_ID }}-${{ hashFiles('vcpkg.json', 'res/vcpkg/**/vcpkg.json') }}
+          restore-keys: |
+            vcpkg-windows-
+
+      - name: Setup vcpkg
+        uses: lukka/run-vcpkg@b1a0dd252f06b9e25b3c022a9a03bd7a427fb6a2 # v11
+        continue-on-error: true
+        with:
+          vcpkgDirectory: C:\vcpkg
+          vcpkgGitCommitId: ${{ env.VCPKG_COMMIT_ID }}
+          doNotCache: true
+
+      - name: Install vcpkg dependencies
+        env:
+          VCPKG_DEFAULT_HOST_TRIPLET: ${{ matrix.job.vcpkg-triplet }}
+        run: |
+          if ! $VCPKG_ROOT/vcpkg \
+            install \
+            --triplet ${{ matrix.job.vcpkg-triplet }} \
+            --x-install-root="$VCPKG_ROOT/installed"; then
+            find "${VCPKG_ROOT}/" -name "*.log" | while read -r _1; do
+              echo "$_1:"
+              echo "======"
+              cat "$_1"
+              echo "======"
+              echo ""
+            done
+            exit 1
+          fi
+          head -n 100 "${VCPKG_ROOT}/buildtrees/ffmpeg/build-${{ matrix.job.vcpkg-triplet }}-rel-out.log" || true
+        shell: bash
+
+      - name: Build mydesk
+        run: |
+          # Windows: build MyDesk
+          python3 .\build.py --portable --hwcodec --flutter --vram --skip-portable-pack
+          mv ./flutter/build/windows/x64/runner/Release ./mydesk
+
+          # Download usbmmidd_v2.zip and extract it to ./mydesk
+          Invoke-WebRequest -Uri https://github.com/rustdesk-org/rdev/releases/download/usbmmidd_v2/usbmmidd_v2.zip -OutFile usbmmidd_v2.zip
+          Expand-Archive usbmmidd_v2.zip -DestinationPath .
+          Remove-Item -Path usbmmidd_v2\Win32 -Recurse
+          Remove-Item -Path "usbmmidd_v2\deviceinstaller64.exe", "usbmmidd_v2\deviceinstaller.exe", "usbmmidd_v2\usbmmidd.bat"
+          mv -Force .\usbmmidd_v2 ./mydesk
+
+          # Download printer driver files and extract them to ./mydesk
+          try {
+            Invoke-WebRequest -Uri https://github.com/rustdesk/hbb_common/releases/download/driver/rustdesk_printer_driver_v4-1.4.zip -OutFile mydesk_printer_driver_v4-1.4.zip
+            Invoke-WebRequest -Uri https://github.com/rustdesk/hbb_common/releases/download/driver/printer_driver_adapter.zip -OutFile printer_driver_adapter.zip
+            Invoke-WebRequest -Uri https://github.com/rustdesk/hbb_common/releases/download/driver/sha256sums -OutFile sha256sums
+
+            # Check and move the files
+            $checksum_driver = (Select-String -Path .\sha256sums -Pattern '^([a-fA-F0-9]{64}) \*rustdesk_printer_driver_v4-1.4\.zip$').Matches.Groups[1].Value
+            $downloadsum_driver = Get-FileHash -Path mydesk_printer_driver_v4-1.4.zip -Algorithm SHA256
+            $checksum_adapter = (Select-String -Path .\sha256sums -Pattern '^([a-fA-F0-9]{64}) \*printer_driver_adapter\.zip$').Matches.Groups[1].Value
+            $downloadsum_adapter = Get-FileHash -Path printer_driver_adapter.zip -Algorithm SHA256
+            if ($checksum_driver -eq $downloadsum_driver.Hash -and $checksum_adapter -eq $downloadsum_adapter.Hash) {
+                Write-Output "mydesk_printer_driver_v4-1.4, checksums match, extract the file."
+                Expand-Archive mydesk_printer_driver_v4-1.4.zip -DestinationPath .
+                mkdir ./mydesk/drivers
+                mv -Force .\rustdesk_printer_driver_v4-1.4 ./mydesk/drivers/MyDeskPrinterDriver
+                Expand-Archive printer_driver_adapter.zip -DestinationPath .
+                mv -Force .\printer_driver_adapter.dll ./mydesk
+            } elseif ($checksum_driver -ne $downloadsum_driver.Hash) {
+                Write-Output "mydesk_printer_driver_v4-1.4, checksums do not match, ignore the file."
+            } else {
+                Write-Output "printer_driver_adapter.dll, checksums do not match, ignore the file."
+            }
+          } catch {
+              Write-Host "Ingore the printer driver error."
+          }
+
+      - name: find Runner.res
+        # Windows: find Runner.res (compiled from ./flutter/windows/runner/Runner.rc), copy to ./Runner.res
+        # Runner.rc does not contain actual version, but Runner.res does
+        continue-on-error: true
+        shell: bash
+        run: |
+          runner_res=$(find . -name "Runner.res");
+          if [ "$runner_res" == "" ]; then
+            echo "Runner.res: not found";
+          else
+            echo "Runner.res: $runner_res";
+            cp $runner_res ./libs/portable/Runner.res;
+            echo "list ./libs/portable/Runner.res";
+            ls -l ./libs/portable/Runner.res;
+          fi
+
+      - name: Sign mydesk files
+        if: env.UPLOAD_ARTIFACT == 'true' && env.SIGN_BASE_URL != '-2'
+        shell: bash
+        run: |
+          pip3 install requests argparse
+          BASE_URL=${{ env.SIGN_BASE_URL }} SECRET_KEY=${{ secrets.SIGN_SECRET_KEY }} python3 res/job.py sign_files ./mydesk/
+
+      - name: Build self-extracted executable
+        shell: bash
+        if: env.UPLOAD_ARTIFACT == 'true'
+        run: |
+          sed -i '/dpiAware/d' res/manifest.xml
+          pushd ./libs/portable
+          pip3 install -r requirements.txt
+          python3 ./generate.py -f ../../mydesk/ -o . -e ../../mydesk/mydesk.exe
+          popd
+          mkdir -p ./SignOutput
+          mv ./target/release/mydesk-portable-packer.exe ./SignOutput/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.exe
+
+      - name: Add MSBuild to PATH
+        uses: microsoft/setup-msbuild@v3 # node24
+
+      - name: Build msi
+        if: env.UPLOAD_ARTIFACT == 'true'
+        run: |
+          pushd ./res/msi
+          python preprocess.py --arp -d ../../mydesk --app-name mydesk
+          nuget restore msi.sln
+          msbuild msi.sln -p:Configuration=Release -p:Platform=x64 /p:TargetVersion=Windows10 /p:Culture=zh-cn
+          mv ./Package/bin/x64/Release/zh-cn/Package.msi ../../SignOutput/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.msi
+          sha256sum ../../SignOutput/mydesk-*.msi
+
+      - name: Build zip package
+        shell: bash
+        if: env.UPLOAD_ARTIFACT == 'true'
+        run: |
+          mv ./mydesk ./mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}
+          7z a -tzip ./SignOutput/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.zip ./mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}
+
+      - name: Sign mydesk self-extracted file
+        if: env.UPLOAD_ARTIFACT == 'true' && env.SIGN_BASE_URL != '-2'
+        shell: bash
+        run: |
+          BASE_URL=${{ env.SIGN_BASE_URL }} SECRET_KEY=${{ secrets.SIGN_SECRET_KEY }} python3 res/job.py sign_files ./SignOutput
+
+      - name: Encrypt artifacts
+        if: env.UPLOAD_ARTIFACT == 'true'
+        shell: bash
+        run: |
+          mkdir -p ./EncryptOutput
+          # 加密自解压 exe
+          7z a -tzip -p"${{ secrets.ZIP_PASSWORD }}" -mem=AES256 \
+            ./EncryptOutput/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.exe.zip \
+            ./SignOutput/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.exe
+          # 加密 msi
+          7z a -tzip -p"${{ secrets.ZIP_PASSWORD }}" -mem=AES256 \
+            ./EncryptOutput/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.msi.zip \
+            ./SignOutput/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.msi
+          # 加密 zip（原始文件压缩包）
+          7z a -tzip -p"${{ secrets.ZIP_PASSWORD }}" -mem=AES256 \
+            ./EncryptOutput/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.zip.zip \
+            ./SignOutput/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.zip
+
+      - name: Upload exe artifact
+        if: env.UPLOAD_ARTIFACT == 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.exe
+          path: EncryptOutput/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.exe.zip
+
+      - name: Upload msi artifact
+        if: env.UPLOAD_ARTIFACT == 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.msi
+          path: EncryptOutput/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.msi.zip
+
+      - name: Upload zip artifact
+        if: env.UPLOAD_ARTIFACT == 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.zip
+          path: EncryptOutput/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.zip.zip
+
+  build-mydesk-android:
+    name: build mydesk android apk ${{ matrix.job.target }}
+    runs-on: ${{ matrix.job.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        job:
+          - {
+              arch: aarch64,
+              target: aarch64-linux-android,
+              os: ubuntu-24.04,
+              reltype: release,
+              suffix: "",
+            }
+    steps:
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be # v1.3.1
+        with:
+          tool-cache: false
+          android: false
+          dotnet: true
+          haskell: true
+          large-packages: false
+          docker-images: true
+          swap-storage: false
+
+      - name: Export GitHub Actions cache environment variables
+        uses: actions/github-script@v8
+        with:
+          script: |
+            core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
+            core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+               clang \
+               cmake \
+               curl \
+               gcc-multilib \
+               git \
+               g++ \
+               g++-multilib \
+               libayatana-appindicator3-dev \
+               libasound2-dev \
+               libc6-dev \
+               libclang-dev \
+               libunwind-dev \
+               libgstreamer1.0-dev \
+               libgstreamer-plugins-base1.0-dev \
+               libgtk-3-dev \
+               libpam0g-dev \
+               libpulse-dev \
+               libva-dev \
+               libxcb-randr0-dev \
+               libxcb-shape0-dev \
+               libxcb-xfixes0-dev \
+               libxdo-dev \
+               libxfixes-dev \
+               llvm-dev \
+               nasm \
+               ninja-build \
+               openjdk-17-jdk-headless \
+               pkg-config \
+               tree \
+               wget
+
+      - name: Checkout source code
+        uses: actions/checkout@v6 # node24
+        with:
+          submodules: recursive
+
+      - name: Install flutter
+        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
+        with:
+          channel: "stable"
+          flutter-version: ${{ env.ANDROID_FLUTTER_VERSION }}
+
+      - name: Patch flutter
+        run: |
+          cd $(dirname $(dirname $(which flutter)))
+          [[ "3.24.5" == ${{env.ANDROID_FLUTTER_VERSION}} ]] && git apply ${{ github.workspace }}/.github/patches/flutter_3.24.4_dropdown_menu_enableFilter.diff
+
+      - uses: nttld/setup-ndk@ed92fe6cadad69be94a966a7ee3271275e62f779 # v1
+        id: setup-ndk
+        with:
+          ndk-version: ${{ env.NDK_VERSION }}
+          add-to-path: true
+
+      - name: Generate flutter_rust_bridge files
+        run: |
+          cd flutter
+          flutter pub get
+          cargo install flutter_rust_bridge_codegen --version 1.80.1 --features uuid --locked
+          ~/.cargo/bin/flutter_rust_bridge_codegen --rust-input ../src/flutter_ffi.rs --dart-output ./lib/generated_bridge.dart
+
+      - name: Cache vcpkg installed (Android)
+        uses: actions/cache@v4
+        continue-on-error: true
+        with:
+          path: /opt/artifacts/vcpkg/installed
+          key: vcpkg-android-${{ env.VCPKG_COMMIT_ID }}-${{ hashFiles('vcpkg.json', 'res/vcpkg/**/vcpkg.json') }}
+          restore-keys: |
+            vcpkg-android-
+
+      - name: Setup vcpkg
+        uses: lukka/run-vcpkg@b1a0dd252f06b9e25b3c022a9a03bd7a427fb6a2 # v11
+        continue-on-error: true
+        with:
+          vcpkgDirectory: /opt/artifacts/vcpkg
+          vcpkgGitCommitId: ${{ env.VCPKG_COMMIT_ID }}
+          doNotCache: true
+
+      - name: Install vcpkg dependencies
+        run: |
+          ANDROID_TARGET=arm64-v8a
+          if ! ./flutter/build_android_deps.sh "${ANDROID_TARGET}"; then
+            find "${VCPKG_ROOT}/" -name "*.log" | while read -r _1; do
+              echo "$_1:"
+              echo "======"
+              cat "$_1"
+              echo "======"
+              echo ""
+            done
+            exit 1
+          fi
+        shell: bash
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@e97e2d8cc328f1b50210efc529dca0028893a2d9 # v1
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+          components: "rustfmt"
+
+      - uses: Swatinem/rust-cache@e18b497796c12c097a38f9edb9d0641fb99eee32 # v2
+        continue-on-error: true
+        with:
+          prefix-key: mydesk-lib-cache-android
+          key: ${{ matrix.job.target }}
+
+      - name: Build mydesk lib
+        env:
+          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+          ANDROID_NDK_ROOT: ${{ steps.setup-ndk.outputs.ndk-path }}
+        run: |
+          rustup target add ${{ matrix.job.target }}
+          cargo install cargo-ndk --version ${{ env.CARGO_NDK_VERSION }} --locked
+          ./flutter/ndk_arm64.sh
+          mkdir -p ./flutter/android/app/src/main/jniLibs/arm64-v8a
+          cp ./target/${{ matrix.job.target }}/release/liblibmydesk.so ./flutter/android/app/src/main/jniLibs/arm64-v8a/libmydesk.so
+
+      - name: Setup Android release signing
+        if: env.ANDROID_SIGNING_KEY != ''
+        env:
+          SIGNING_KEY: ${{ secrets.ANDROID_SIGNING_KEY }}
+          ALIAS: ${{ secrets.ANDROID_ALIAS }}
+          STORE_PASS: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
+          KEY_PASS: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          echo "$SIGNING_KEY" | base64 -d > ${{ github.workspace }}/android_keystore.jks
+          echo "storeFile=${{ github.workspace }}/android_keystore.jks" > flutter/android/key.properties
+          echo "keyAlias=$ALIAS" >> flutter/android/key.properties
+          echo "storePassword=$STORE_PASS" >> flutter/android/key.properties
+          echo "keyPassword=$KEY_PASS" >> flutter/android/key.properties
+
+      - name: Build mydesk
+        shell: bash
+        env:
+          JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
+        run: |
+          export PATH=/usr/lib/jvm/java-17-openjdk-amd64/bin:$PATH
+          # Increase Gradle JVM memory for CI builds
+          sed -i "s/org.gradle.jvmargs=-Xmx1024M/org.gradle.jvmargs=-Xmx2g/g" ./flutter/android/gradle.properties
+          mkdir -p ./flutter/android/app/src/main/jniLibs/arm64-v8a
+          cp ${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libc++_shared.so ./flutter/android/app/src/main/jniLibs/arm64-v8a/
+          cp ./target/${{ matrix.job.target }}/release/liblibmydesk.so ./flutter/android/app/src/main/jniLibs/arm64-v8a/libmydesk.so
+          pushd flutter
+          flutter build apk "--${{ matrix.job.reltype }}" --target-platform android-arm64 --split-per-abi
+          mv build/app/outputs/flutter-apk/app-arm64-v8a-${{ matrix.job.reltype }}.apk ../mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}${{ matrix.job.suffix }}.apk
+          popd
+          mkdir -p signed-apk; pushd signed-apk
+          mv ../mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}${{ matrix.job.suffix }}.apk .
+
+      - name: Encrypt artifacts
+        if: env.UPLOAD_ARTIFACT == 'true'
+        run: |
+          7z a -tzip -p"${{ secrets.ZIP_PASSWORD }}" -mem=AES256 \
+            ${{ github.workspace }}/signed-apk/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.apk.zip \
+            ${{ github.workspace }}/signed-apk/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.apk
+        shell: bash
+
+      - name: Upload Artifacts
+        if: env.UPLOAD_ARTIFACT == 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.apk
+          path: signed-apk/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.apk.zip
+

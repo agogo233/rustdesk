@@ -644,7 +644,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("one-way-file-transfer-tip", "コントロールをされる側では一方向のファイル転送が有効になります。"),
         ("Authentication Required", "認証が必要です"),
         ("Authenticate", "認証"),
-("web_id_input_tip", "同じサーバー内の ID を入力できます。Web クライアントでは直接 IP アドレスによるアクセスはサポートされていません。\n別のサーバー上のデバイスにアクセスする場合は、サーバーアドレス (<id>@<server_address>?key=<key_value>) を入力してください。\n 例: 9123456234@192.168.16.1:31117?key=5Qbwsde3unUcJBtrx9ZkvUmwFNoExHzpryHuPUdqlWM=\nパブリックサーバー上のデバイスにアクセスする場合は、「<id>@public」と入力してください。パブリックサーバーはキーは不要です。"),
+        ("web_id_input_tip", "同じサーバー内の ID を入力できます。Web クライアントでは直接 IP アドレスによるアクセスはサポートされていません。\n別のサーバー上のデバイスにアクセスする場合は、サーバーアドレス (<id>@<server_address>?key=<key_value>) を入力してください。\n 例: 9123456234@192.168.16.1:31117?key=5Qbwsde3unUcJBtrx9ZkvUmwFNoExHzpryHuPUdqlWM=\nパブリックサーバー上のデバイスにアクセスする場合は、「<id>@public」と入力してください。パブリックサーバーはキーは不要です。"),
         ("Download", "ダウンロード"),
         ("Upload folder", "フォルダーをアップロード"),
         ("Upload files", "ファイルをアップロード"),

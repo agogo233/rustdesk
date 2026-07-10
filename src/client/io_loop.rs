@@ -69,7 +69,7 @@ pub struct Remote<T: InvokeUiSession> {
     read_jobs: Vec<fs::TransferJob>,
     write_jobs: Vec<fs::TransferJob>,
     remove_jobs: HashMap<i32, RemoveJob>,
-    timer: crate::RustDeskInterval,
+    timer: crate::MyDeskInterval,
     last_update_jobs_status: (Instant, HashMap<i32, u64>),
     is_connected: bool,
     first_frame: bool,
@@ -98,7 +98,7 @@ impl ParsedPeerInfo {
     fn is_support_virtual_display(&self) -> bool {
         self.is_installed
             && self.platform == "Windows"
-            && (self.idd_impl == "rustdesk_idd" || self.idd_impl == "amyuni_idd")
+            && (self.idd_impl == "mydesk_idd" || self.idd_impl == "amyuni_idd")
     }
 }
 

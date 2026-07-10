@@ -543,7 +543,7 @@ class _GeneralState extends State<_General> {
               isServer: false,
             ),
           ),
-if (!isWeb && !bind.isCustomClient())
+        if (!isWeb && !bind.isCustomClient())
           _OptionCheckBox(
             context,
             'Check for software update on startup',
@@ -2436,7 +2436,7 @@ class _AboutState extends State<_About> {
       final scrollController = ScrollController();
       return SingleChildScrollView(
         controller: scrollController,
-        child: _Card(title: translate('About RustDesk'), children: [
+        child: _Card(title: translate('About MyDesk'), children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
