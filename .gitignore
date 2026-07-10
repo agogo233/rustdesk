@@ -56,7 +56,5 @@ vcpkg_installed
 flutter/lib/generated_plugin_registrant.dart
 libsciter.dylib
 flutter/web/
-CHANGELOG.md
-
-# merge strategy prompt (local-only, not tracked)
-docs/UPSTREAM_MERGE_PROMPT.md
+# CHANGELOG.md — 内容已合并到 UPSTREAM_MERGE_PROMPT.md
+# docs/UPSTREAM_MERGE_PROMPT.md — 内容已合并到根目录 UPSTREAM_MERGE_PROMPT.md
