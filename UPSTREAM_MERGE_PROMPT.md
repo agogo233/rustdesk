@@ -253,6 +253,8 @@ sed -i \
 
 > **注意**：`sed` 批量替换是「安全检查后」的加速手段。推荐流程：先 `git checkout --ours` 接受本地版本 → `git add` → 运行 sed 确保一致。不要对上游新增的、包含复杂逻辑的文件直接运行 sed。
 
+> **注意（cherry-pick rebase 方式）**：如果使用 cherry-pick 而非 merge 来合并上游，冲突解决可能导致品牌命名从 `MyDesk` 回退为 `RustDesk`。修复方法：从备份分支 `backup-pre-squash` 检出文件覆盖（`git checkout backup-pre-squash -- <目录>`），再手动合并上游功能变更。本操作中有 82 个 `flutter/` 和 `src/` 文件通过此方式修复。
+
 ---
 
 ### P1 — 安全策略变更（手动确认）
@@ -277,6 +279,16 @@ sed -i \
 
 ---
 
+### P1.5 — RegisterPk 公钥保留
+
+**上游变更**：优化移除了 `RegisterPk` 消息中的 `pk` 字段（`src/ui_interface.rs`）。
+
+**本地保留原因**：本 fork 的自定义服务端（`rustdesk-server`）使用纯 TCP，无法从 TLS 获取客户端公钥，`RegisterPk.pk` 是服务端获取公钥的唯一途径。服务端 `process_register_pk()` 行 435 含硬性检查 `rk.pk.is_empty()`，空 pk 将导致注册/改 ID 被丢弃。
+
+**操作**：已回退此变更，恢复 `pk: pk.into()`。后续合并上游时需确保此变更不被覆盖。
+
+---
+
 ### P2 — 功能新增冲突（逐个审查）
 
 本地新增的功能需要与上游新代码融合：
@@ -290,23 +302,25 @@ sed -i \
 
 ---
 
-### P3 — CI/CD 工作流冲突
+### P3 — CI/CD 工作流
 
-**本地有自己完整的一套 workflow**（`.github/workflows/build.yml`），与上游完全不同。
+**本地 CI 只保留 `.github/workflows/build.yml`**（来自上游旧版的单文件，包含 Windows 编译 + Android APK 构建）。
+
+上游在 force-push 后新增了 11 个 workflow 文件（`bridge.yml`、`ci.yml`、`flutter-build.yml` 等），**已全部删除不保留**。
 
 ```bash
-# 直接保留本地版本
-git checkout --ours -- .github/workflows/
-git add .github/workflows/
+# 删除上游新增的 workflow 文件
+git ls-tree -r HEAD --name-only -- .github/ | while read f; do
+  if ! git ls-tree -r backup-pre-squash --name-only -- .github/ | grep -qx "$f"; then
+    git rm "$f"
+  fi
+done
 ```
 
-如果上游新增了 workflow 文件且本地需要，则手动挑选合并。
-
-**具体 workflow 差异**：
-- 本地移除了 9 个上游 workflow，重建了 1 个精简版 `build.yml`
-- 本地构建缩减为仅 Windows x86_64 + Android arm64
-- 本地没有 GitHub Release 发布权限（上传步骤已删除）
-- 本地增加了 AES-256 加密和自动清理
+**当前 workflow 说明**：
+- 仅保留 `build.yml`（Windows x86_64 + Android arm64）
+- 无 GitHub Release 发布权限
+- 包含 AES-256 加密和自动清理
 
 ---
 
@@ -340,6 +354,18 @@ url = https://github.com/agogo233/hbb_common.git
 | Android 条件签名 | `flutter/android/app/build.gradle` 中的 signingConfigs |
 | CI Node.js 版本 | 确认 workflow 使用 node20（非已弃用的 node16/node12） |
 | dependabot 禁用 | 确认 `.github/dependabot.yml` 不存在或配置正确 |
+
+---
+
+### P6 — 保留的上游功能变更
+
+以下上游变更经评估后认为安全且有益，在合并过程中主动保留：
+
+| 变更 | 文件 | 说明 |
+|------|------|------|
+| 签名配置简化 | `flutter/android/app/build.gradle` | 去掉条件判断，硬编码 `signingConfigs.release`（CI 始终有 key） |
+| kotlin-stdlib 锁定 | `flutter/android/app/build.gradle` | 版本锁定 `strictly("1.9.10")` |
+| buildscript 移除 + jcenter→mavenCentral | `flutter/android/build.gradle` | JCenter 已关停必须替换 |
 
 ---
 
@@ -518,12 +544,14 @@ echo "=== 合并完成 ==="
 
 | 优先级 | 类别 | 处理方式 | 涉及文件数 |
 |--------|------|---------|-----------|
-| P0 | 品牌重命名 | `git checkout --ours` + 批量 sed | ~269 个 |
+| P0 | 品牌重命名 | `git checkout --ours` + 批量 sed | ~269 个（cherry-pick 需注意命名回退） |
 | P1 | 安全策略 | 手动确认 3 个关键函数 | 3 个 |
+| P1.5 | RegisterPk 公钥保留 | 保留 `pk: pk.into()` | 1 个 |
 | P2 | 功能新增 | 逐个审查融合 | ~8 个 |
-| P3 | CI/CD | 直接取本地版本 | ~10 个 |
+| P3 | CI/CD | 只保留 build.yml，删除上游新增 | 1 个 |
 | P4 | 子模块 | 取本地指针（hbb_common 内部见 AGENTS.md） | 1 个 |
 | P5 | 杂项 | 按清单检查 | 若干 |
+| P6 | 上游功能保留 | 主动保留 | 3 个 |
 
 ---
 
