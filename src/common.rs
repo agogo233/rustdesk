@@ -53,7 +53,7 @@ pub enum GrabState {
 pub type NotifyMessageBox = fn(String, String, String, String) -> dyn Future<Output = ()>;
 
 // the executable name of the portable version
-pub const PORTABLE_APPNAME_RUNTIME_ENV_KEY: &str = "RUSTDESK_APPNAME";
+pub const PORTABLE_APPNAME_RUNTIME_ENV_KEY: &str = "MYDESK_APPNAME";
 
 pub const PLATFORM_WINDOWS: &str = "Windows";
 pub const PLATFORM_LINUX: &str = "Linux";
@@ -939,13 +939,8 @@ pub fn is_modifier(evt: &KeyEvent) -> bool {
 }
 
 pub fn check_software_update() {
-    if is_custom_client() {
-        return;
-    }
-    let opt = LocalConfig::get_option(keys::OPTION_ENABLE_CHECK_UPDATE);
-    if config::option2bool(keys::OPTION_ENABLE_CHECK_UPDATE, &opt) {
-        std::thread::spawn(move || allow_err!(do_check_software_update()));
-    }
+    // Disabled: automatic update check to api.rustdesk.com removed per security audit.
+    // Manual update check via do_check_software_update() remains available.
 }
 
 // No need to check `danger_accept_invalid_cert` for now.
@@ -2028,7 +2023,7 @@ impl ThrottledInterval {
     }
 }
 
-pub type RustDeskInterval = ThrottledInterval;
+pub type MyDeskInterval = ThrottledInterval;
 
 #[inline]
 pub fn mydesk_interval(i: Interval) -> ThrottledInterval {
@@ -2241,7 +2236,8 @@ pub fn read_custom_client(config: &str) {
                 .insert(k, v.to_owned());
         };
     }
-// Inject build-time env vars from CI Secrets into DEFAULT_SETTINGS / BUILTIN_SETTINGS
+
+    // Inject build-time env vars from CI Secrets into DEFAULT_SETTINGS / BUILTIN_SETTINGS
     inject_env_vars();
 }
 
@@ -2650,7 +2646,7 @@ mod tests {
     // ThrottledInterval tick at the same time as tokio interval, if no sleeps
     #[allow(non_snake_case)]
     #[tokio::test]
-    async fn test_RustDesk_interval() {
+    async fn test_MyDesk_interval() {
         let base_intervals = [interval_maker, interval_at_maker];
         for maker in base_intervals.into_iter() {
             let mut tokio_timer = maker();
@@ -2699,7 +2695,7 @@ mod tests {
     // ThrottledInterval tick less times than tokio interval, if there're sleeps
     #[allow(non_snake_case)]
     #[tokio::test]
-    async fn test_RustDesk_interval_sleep() {
+    async fn test_MyDesk_interval_sleep() {
         let base_intervals = [interval_maker, interval_at_maker];
         for (i, maker) in base_intervals.into_iter().enumerate() {
             let mut timer = mydesk_interval(maker());

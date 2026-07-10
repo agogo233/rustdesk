@@ -1,15 +1,15 @@
 [package]
-name = "rustdesk"
+name = "mydesk"
 version = "1.4.9"
-authors = ["rustdesk <info@rustdesk.com>"]
+authors = ["mydesk <info@mydesk.com>"]
 edition = "2021"
 build= "build.rs"
-description = "RustDesk Remote Desktop"
-default-run = "rustdesk"
+description = "MyDesk Remote Desktop"
+default-run = "mydesk"
 rust-version = "1.75"
 
 [lib]
-name = "librustdesk"
+name = "libmydesk"
 crate-type = ["cdylib", "staticlib", "rlib"]
 
 [[bin]]
@@ -210,10 +210,10 @@ exclude = ["vdi/host", "examples/custom_plugin"]
 libxdo-sys = { path = "libs/libxdo-sys-stub" }
 
 [package.metadata.winres]
-LegalCopyright = "Copyright © 2026 Purslane Tech Pte. Ltd. All rights reserved."
-ProductName = "RustDesk"
-FileDescription = "RustDesk Remote Desktop"
-OriginalFilename = "rustdesk.exe"
+LegalCopyright = "Copyright © 2026 Purslane Ltd. All rights reserved."
+ProductName = "MyDesk"
+FileDescription = "MyDesk Remote Desktop"
+OriginalFilename = "mydesk.exe"
 
 [target.'cfg(target_os="windows")'.build-dependencies]
 winres = "0.1"

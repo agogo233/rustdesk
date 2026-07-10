@@ -407,9 +407,9 @@ def build_flutter_dmg(version, features):
         # set minimum osx build target, now is 10.14, which is the same as the flutter xcode project
         system2(
             f'MACOSX_DEPLOYMENT_TARGET=10.14 cargo build --locked --features {features} --release')
-# copy dylib (Xcode project references liblibmydesk.dylib from target/release/)
+    # copy dylib (Xcode project references liblibmydesk.dylib from target/release/)
     os.chdir('flutter')
-# cargo builds a single-arch dylib for the host; restrict Xcode to the same arch
+    # cargo builds a single-arch dylib for the host; restrict Xcode to the same arch
     # so the universal-by-default ARCHS_STANDARD doesn't try to link a missing slice.
     # FLUTTER_XCODE_* env vars are forwarded to xcodebuild as build settings.
     mac_arch = 'arm64' if platform.machine().lower() in ('arm64', 'aarch64') else 'x86_64'
@@ -453,7 +453,7 @@ def build_flutter_windows(version, features, skip_portable_pack):
     system2(
         f'python3 ./generate.py -f ../../{flutter_build_dir_2} -o . -e ../../{flutter_build_dir_2}/mydesk.exe')
     os.chdir('../..')
-if os.path.exists('./mydesk_portable.exe'):
+    if os.path.exists('./mydesk_portable.exe'):
         os.replace('./target/release/mydesk-portable-packer.exe',
                    './mydesk_portable.exe')
     else:
@@ -501,14 +501,6 @@ def main():
             return
         system2('cargo build --locked --release --features ' + features)
         # system2('upx.exe target/release/mydesk.exe')
-system2('mv target/release/mydesk.exe target/release/mydesk.exe')
-        pa = os.environ.get('P')
-        if pa:
-            system2(
-                f'signtool sign /a /v /p {pa} /debug /f .\\cert.pfx /t http://timestamp.digicert.com  '
-                'target\\release\\mydesk.exe')
-        else:
-            print('Not signed')
         os.makedirs(res_dir, exist_ok=True)
         system2(
             f'cp -rf target/release/mydesk.exe {res_dir}')
@@ -558,7 +550,7 @@ system2('mv target/release/mydesk.exe target/release/mydesk.exe')
                 pass
             else:
                 # system2(
-                #     'mv target/release/bundle/deb/mydesk*.deb ./flutter/mydesk.deb')
+                #     'mv target/release/bundle/deb/rustdesk*.deb ./flutter/rustdesk.deb')
                 build_flutter_deb(version, features)
         else:
             system2('cargo --locked bundle --release --features ' + features)
@@ -594,7 +586,7 @@ system2('mv target/release/mydesk.exe target/release/mydesk.exe')
     #rcodesign sign --p12-file ~/.p12/mydesk-developer-id.p12 --p12-password-file ~/.p12/.cert-pass --code-signature-flags runtime ./mydesk-{1}.dmg
     codesign -s "Developer ID Application: {0}" --force --options runtime ./mydesk-{1}.dmg
     # https://appstoreconnect.apple.com/access/api
-    # https://gregoryszorc.com/docs/apple-codesign/stable/apple_codesign_getting_started.html#apple-codesign-apple-store-connect-api-key
+    # https://gregoryszorc.com/docs/apple-codesign/stable/apple_codesign_getting_started.html#apple-codesign-app-store-connect-api-key
     # p8 file is generated when you generate api key (can download only once)
     rcodesign notary-submit --api-key-path ../.p12/api-key.json  --staple mydesk-{1}.dmg
     # verify:  spctl -a -t exec -v /Applications/MyDesk.app
