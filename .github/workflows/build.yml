@@ -24,7 +24,6 @@ env:
   ANDROID_FLUTTER_VERSION: "3.24.5"
   TAG_NAME: "${{ github.ref_name }}"
   VCPKG_COMMIT_ID: "120deac3062162151622ca4860575a33844ba10b"
-  VERSION: "1.4.8"
   NDK_VERSION: "r28c"
   ANDROID_SIGNING_KEY: "${{ secrets.ANDROID_SIGNING_KEY }}"
   UPLOAD_ARTIFACT: "true"
@@ -77,6 +76,12 @@ jobs:
         uses: actions/checkout@v6 # node24
         with:
           submodules: recursive
+
+      - name: Get version from Cargo.toml
+        shell: bash
+        run: |
+          ver=$(grep '^version = ' Cargo.toml | head -1 | sed 's/version = "\(.*\)"/\1/')
+          echo "VERSION=$ver" >> $GITHUB_ENV
 
       - name: Install LLVM and Clang
         uses: KyleMayes/install-llvm-action@v2 # node24
@@ -374,6 +379,12 @@ jobs:
         uses: actions/checkout@v6 # node24
         with:
           submodules: recursive
+
+      - name: Get version from Cargo.toml
+        shell: bash
+        run: |
+          ver=$(grep '^version = ' Cargo.toml | head -1 | sed 's/version = "\(.*\)"/\1/')
+          echo "VERSION=$ver" >> $GITHUB_ENV
 
       - name: Install flutter
         uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
