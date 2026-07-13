@@ -18,10 +18,10 @@ namespace RemotePrinter
 {
 #define HRESULT_ERR_ELEMENT_NOT_FOUND 0x80070490
 
-    LPCWCH RD_DRIVER_INF_PATH = L"drivers\\MyDeskPrinterDriver\\MyDeskPrinterDriver.inf";
+    LPCWCH RD_DRIVER_INF_PATH = L"drivers\\MyDeskPrinterDriver\\RustDeskPrinterDriver.inf";
     LPCWCH RD_PRINTER_PORT = L"MyDesk Printer";
     LPCWCH RD_PRINTER_NAME = L"MyDesk Printer";
-    LPCWCH RD_PRINTER_DRIVER_NAME = L"MyDesk v4 Printer Driver";
+    LPCWCH RD_PRINTER_DRIVER_NAME = L"RustDesk v4 Printer Driver";
     LPCWCH XCV_MONITOR_LOCAL_PORT = L",XcvMonitor Local Port";
 
     using FuncEnum = std::function<BOOL(DWORD level, LPBYTE pDriverInfo, DWORD cbBuf, LPDWORD pcbNeeded, LPDWORD pcReturned)>;
