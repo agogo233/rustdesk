@@ -23,8 +23,8 @@
         <key>WorkingDirectory</key>
         <string>/Applications/MyDesk.app/Contents/MacOS/</string>
         <key>StandardErrorPath</key>
-        <string>/tmp/mydesk_service.err</string>
+        <string>/var/log/mydesk_service.err</string>
         <key>StandardOutPath</key>
-        <string>/tmp/mydesk_service.out</string>
+        <string>/var/log/mydesk_service.out</string>
     </dict>
 </plist>
