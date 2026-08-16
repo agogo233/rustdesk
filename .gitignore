@@ -58,3 +58,5 @@ libsciter.dylib
 flutter/web/
 # CHANGELOG.md — 内容已合并到 UPSTREAM_MERGE_PROMPT.md
 # docs/UPSTREAM_MERGE_PROMPT.md — 内容已合并到根目录 UPSTREAM_MERGE_PROMPT.md
+# libdrmtap is cloned at build time by build.py (not a submodule)
+/third_party/libdrmtap/
