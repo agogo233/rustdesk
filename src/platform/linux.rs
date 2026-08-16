@@ -2156,7 +2156,7 @@ mod desktop {
             if self.is_login_wayland() {
                 self.display = "".to_owned();
                 self.xauth = "".to_owned();
-self.is_mydesk_subprocess = false;
+                self.is_mydesk_subprocess = false;
                 // Resolve HOME even on this path. Upstream returned without it because nothing then
                 // consumed a login-Wayland Desktop, but the drm build starts a `--server` as the
                 // greeter uid here, and a child with no HOME has nowhere to put its config. The
