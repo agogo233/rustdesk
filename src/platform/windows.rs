@@ -2004,7 +2004,7 @@ fn create_startup_shortcut() {
     let exe_str = exe.to_string_lossy().to_string();
     let shortcut_path = shortcut_path.to_string_lossy().to_string();
     let shortcut_icon_location = get_shortcut_icon_location("", &exe_str);
-    if let Ok(script) = write_cmds(
+    if let Ok(script) = write_vbs(
         format!(
             "Set oWS = WScript.CreateObject(\"WScript.Shell\")\n\
              sLinkFile = \"{shortcut_path}\"\n\
@@ -2014,7 +2014,6 @@ fn create_startup_shortcut() {
              \t{shortcut_icon_location}\n\
              oLink.Save\n"
         ),
-        "vbs",
         "startup_shortcut",
     ) {
         let _ = std::process::Command::new("cscript")
