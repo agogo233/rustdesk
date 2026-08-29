@@ -749,8 +749,6 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("All monitors", "Alle monitoren"),
         ("#{} monitor", "Monitor {}"),
         ("conn-e2ee-unavailable-tip", "End-to-endversleuteling kon niet worden geverifieerd.\nHet externe apparaat wordt mogelijk nog ingesteld. Probeer het later opnieuw.\nAls dit blijft gebeuren, is de server mogelijk niet vertrouwd.\nToch doorgaan?"),
-    ].iter().cloned().collect();
-}
         ("Browser didn't open? Use the url below to sign in.", "Is de browser niet geopend? Gebruik onderstaande URL om in te loggen."),
         ("ID whitelisting", "Witte lijst met ID's"),
         ("Invalid ID", "Ongeldig ID"),
@@ -762,3 +760,5 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("id_whitelist_tip", "Alleen ID's op de witte lijst krijgen toegang tot mijn apparaat"),
         ("id_whitelist_wildcard_tip", "Wildcards worden ondersteund: '*' komt overeen met een willekeurig aantal tekens, '?' komt overeen met één teken"),
         ("whitelist_cidr_tip", "CIDR-notatie wordt ondersteund, bijv. 192.168.1.0/24"),
+    ];
+}

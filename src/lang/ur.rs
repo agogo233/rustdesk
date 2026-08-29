@@ -727,8 +727,6 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("Display Name", "display-name"),
         ("password-hidden-tip", ""),
         ("preset-password-in-use-tip", ""),
-    ].iter().cloned().collect();
-}
         ("#{} monitor", ""),
         ("API Token", ""),
         ("All monitors", ""),
@@ -762,3 +760,5 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("wayland-keyboard-input-reset-choice-tip", ""),
         ("wayland-soft-keyboard-input-label", ""),
         ("whitelist_cidr_tip", ""),
+    ];
+}
