@@ -482,8 +482,6 @@ class _GeneralState extends State<_General> {
   Widget other() {
     final incomingOnly = bind.isIncomingOnly();
     final outgoingOnly = bind.isOutgoingOnly();
-    final showAutoUpdate = (isWindows && bind.mainIsInstalled()) ||
-    (isMacOS && bind.mainIsInstalled() && bind.mainIsInstalledDaemon(prompt: false) && !bind.isCustomClient());
     final children = <Widget>[
       if (!isWeb && !incomingOnly)
         _OptionCheckBox(context, 'Confirm before closing multiple tabs',
@@ -541,33 +539,6 @@ class _GeneralState extends State<_General> {
               isServer: false,
             ),
           ),
-        if (!isWeb && !bind.isCustomClient())
-          _OptionCheckBox(
-            context,
-            'Check for software update on startup',
-            kOptionEnableCheckUpdate,
-            isServer: false,
-          ),
-        if (showAutoUpdate)
-          _OptionCheckBox(
-            context,
-            'Auto update',
-            kOptionAllowAutoUpdate,
-            isServer: true,
-          ),
-        if (isWindows)
-          _OptionCheckBox(
-            context,
-            'Start on boot',
-            kOptionStartOnBoot,
-            isServer: false,
-          ),
-        if (isWindows && !bind.isOutgoingOnly())
-          _OptionCheckBox(
-            context,
-            'Capture screen using DirectX',
-            kOptionDirectxCapture,
-          ),
         if (!bind.isIncomingOnly()) ...[
           _OptionCheckBox(
             context,
@@ -583,6 +554,19 @@ class _GeneralState extends State<_General> {
           ),
         ],
       ],
+      if (isWindows)
+        _OptionCheckBox(
+          context,
+          'Start on boot',
+          kOptionStartOnBoot,
+          isServer: false,
+        ),
+      if (isWindows && !bind.isOutgoingOnly())
+        _OptionCheckBox(
+          context,
+          'Capture screen using DirectX',
+          kOptionDirectxCapture,
+        ),
     ];
 
     // Add client-side wakelock option for desktop platforms
@@ -2435,7 +2419,7 @@ class _AboutState extends State<_About> {
       final scrollController = ScrollController();
       return SingleChildScrollView(
         controller: scrollController,
-        child: _Card(title: translate('About MyDesk'), children: [
+        child: _Card(title: translate('About RustDesk'), children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
