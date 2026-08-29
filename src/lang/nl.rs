@@ -760,5 +760,5 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("id_whitelist_tip", "Alleen ID's op de witte lijst krijgen toegang tot mijn apparaat"),
         ("id_whitelist_wildcard_tip", "Wildcards worden ondersteund: '*' komt overeen met een willekeurig aantal tekens, '?' komt overeen met één teken"),
         ("whitelist_cidr_tip", "CIDR-notatie wordt ondersteund, bijv. 192.168.1.0/24"),
-    ];
+    ].iter().cloned().collect();
 }
