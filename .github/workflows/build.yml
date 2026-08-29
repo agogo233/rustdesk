@@ -23,6 +23,7 @@ env:
   FLUTTER_VERSION: "3.24.5"
   ANDROID_FLUTTER_VERSION: "3.24.5"
   TAG_NAME: "${{ github.ref_name }}"
+  VCPKG_BINARY_SOURCES: "clear;x-gha,readwrite"
   VCPKG_COMMIT_ID: "120deac3062162151622ca4860575a33844ba10b"
   NDK_VERSION: "r28c"
   ANDROID_SIGNING_KEY: "${{ secrets.ANDROID_SIGNING_KEY }}"
@@ -55,16 +56,6 @@ jobs:
               vcpkg-triplet: x64-windows-static,
             }
     steps:
-      - name: Clean up old workflow runs
-        if: env.UPLOAD_ARTIFACT == 'true'
-        uses: Mattraks/delete-workflow-runs@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          repository: ${{ github.repository }}
-          retain_days: 1
-          keep_minimum_runs: 1
-          delete_workflow_pattern: ${{ github.workflow }}
-
       - name: Export GitHub Actions cache environment variables
         uses: actions/github-script@v8
         with:
@@ -76,6 +67,16 @@ jobs:
         uses: actions/checkout@v6 # node24
         with:
           submodules: recursive
+
+      - name: Clean up old workflow runs
+        if: env.UPLOAD_ARTIFACT == 'true'
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          retain_days: 1
+          keep_minimum_runs: 1
+          delete_workflow_pattern: ${{ github.workflow }}
 
       - name: Get version from Cargo.toml
         shell: bash
@@ -126,26 +127,15 @@ jobs:
           components: "rustfmt"
 
       - uses: Swatinem/rust-cache@e18b497796c12c097a38f9edb9d0641fb99eee32 # v2
-        continue-on-error: true
         with:
           prefix-key: ${{ matrix.job.os }}
 
-      - name: Cache vcpkg installed (Windows)
-        uses: actions/cache@v4
-        continue-on-error: true
-        with:
-          path: C:\vcpkg\installed
-          key: vcpkg-windows-${{ env.VCPKG_COMMIT_ID }}-${{ hashFiles('vcpkg.json', 'res/vcpkg/**/vcpkg.json') }}
-          restore-keys: |
-            vcpkg-windows-
-
-      - name: Setup vcpkg
+      - name: Setup vcpkg with Github Actions binary cache
         uses: lukka/run-vcpkg@b1a0dd252f06b9e25b3c022a9a03bd7a427fb6a2 # v11
-        continue-on-error: true
         with:
           vcpkgDirectory: C:\vcpkg
           vcpkgGitCommitId: ${{ env.VCPKG_COMMIT_ID }}
-          doNotCache: true
+          doNotCache: false
 
       - name: Install vcpkg dependencies
         env:
@@ -224,7 +214,7 @@ jobs:
           fi
 
       - name: Sign mydesk files
-        if: env.UPLOAD_ARTIFACT == 'true' && env.SIGN_BASE_URL != '-2'
+        if: env.UPLOAD_ARTIFACT == 'true' && env.SIGN_BASE_URL != null && env.SIGN_BASE_URL != '-2'
         shell: bash
         run: |
           pip3 install requests argparse
@@ -263,49 +253,31 @@ jobs:
           7z a -tzip ./SignOutput/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.zip ./mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}
 
       - name: Sign mydesk self-extracted file
-        if: env.UPLOAD_ARTIFACT == 'true' && env.SIGN_BASE_URL != '-2'
+        if: env.UPLOAD_ARTIFACT == 'true' && env.SIGN_BASE_URL != null && env.SIGN_BASE_URL != '-2'
         shell: bash
         run: |
           BASE_URL=${{ env.SIGN_BASE_URL }} SECRET_KEY=${{ secrets.SIGN_SECRET_KEY }} python3 res/job.py sign_files ./SignOutput
-
-      - name: Encrypt artifacts
-        if: env.UPLOAD_ARTIFACT == 'true'
-        shell: bash
-        run: |
-          mkdir -p ./EncryptOutput
-          # 加密自解压 exe
-          7z a -tzip -p"${{ secrets.ZIP_PASSWORD }}" -mem=AES256 \
-            ./EncryptOutput/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.exe.zip \
-            ./SignOutput/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.exe
-          # 加密 msi
-          7z a -tzip -p"${{ secrets.ZIP_PASSWORD }}" -mem=AES256 \
-            ./EncryptOutput/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.msi.zip \
-            ./SignOutput/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.msi
-          # 加密 zip（原始文件压缩包）
-          7z a -tzip -p"${{ secrets.ZIP_PASSWORD }}" -mem=AES256 \
-            ./EncryptOutput/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.zip.zip \
-            ./SignOutput/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.zip
 
       - name: Upload exe artifact
         if: env.UPLOAD_ARTIFACT == 'true'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.exe
-          path: EncryptOutput/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.exe.zip
+          path: SignOutput/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.exe
 
       - name: Upload msi artifact
         if: env.UPLOAD_ARTIFACT == 'true'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.msi
-          path: EncryptOutput/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.msi.zip
+          path: SignOutput/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.msi
 
       - name: Upload zip artifact
         if: env.UPLOAD_ARTIFACT == 'true'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.zip
-          path: EncryptOutput/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.zip.zip
+          path: SignOutput/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.zip
 
   build-mydesk-android:
     name: build mydesk android apk ${{ matrix.job.target }}
@@ -410,26 +382,29 @@ jobs:
           cargo install flutter_rust_bridge_codegen --version 1.80.1 --features uuid --locked
           ~/.cargo/bin/flutter_rust_bridge_codegen --rust-input ../src/flutter_ffi.rs --dart-output ./lib/generated_bridge.dart
 
-      - name: Cache vcpkg installed (Android)
-        uses: actions/cache@v4
-        continue-on-error: true
-        with:
-          path: /opt/artifacts/vcpkg/installed
-          key: vcpkg-android-${{ env.VCPKG_COMMIT_ID }}-${{ hashFiles('vcpkg.json', 'res/vcpkg/**/vcpkg.json') }}
-          restore-keys: |
-            vcpkg-android-
-
-      - name: Setup vcpkg
+      - name: Setup vcpkg with Github Actions binary cache
         uses: lukka/run-vcpkg@b1a0dd252f06b9e25b3c022a9a03bd7a427fb6a2 # v11
-        continue-on-error: true
         with:
           vcpkgDirectory: /opt/artifacts/vcpkg
           vcpkgGitCommitId: ${{ env.VCPKG_COMMIT_ID }}
-          doNotCache: true
+          doNotCache: false
 
       - name: Install vcpkg dependencies
         run: |
-          ANDROID_TARGET=arm64-v8a
+          case ${{ matrix.job.target }} in
+            aarch64-linux-android)
+              ANDROID_TARGET=arm64-v8a
+            ;;
+            armv7-linux-androideabi)
+              ANDROID_TARGET=armeabi-v7a
+            ;;
+            x86_64-linux-android)
+              ANDROID_TARGET=x86_64
+            ;;
+            i686-linux-android)
+              ANDROID_TARGET=x86
+            ;;
+          esac
           if ! ./flutter/build_android_deps.sh "${ANDROID_TARGET}"; then
             find "${VCPKG_ROOT}/" -name "*.log" | while read -r _1; do
               echo "$_1:"
@@ -449,7 +424,6 @@ jobs:
           components: "rustfmt"
 
       - uses: Swatinem/rust-cache@e18b497796c12c097a38f9edb9d0641fb99eee32 # v2
-        continue-on-error: true
         with:
           prefix-key: mydesk-lib-cache-android
           key: ${{ matrix.job.target }}
@@ -461,12 +435,31 @@ jobs:
         run: |
           rustup target add ${{ matrix.job.target }}
           cargo install cargo-ndk --version ${{ env.CARGO_NDK_VERSION }} --locked
-          ./flutter/ndk_arm64.sh
-          mkdir -p ./flutter/android/app/src/main/jniLibs/arm64-v8a
-          cp ./target/${{ matrix.job.target }}/release/liblibmydesk.so ./flutter/android/app/src/main/jniLibs/arm64-v8a/libmydesk.so
+          case ${{ matrix.job.target }} in
+            aarch64-linux-android)
+              ./flutter/ndk_arm64.sh
+              mkdir -p ./flutter/android/app/src/main/jniLibs/arm64-v8a
+              cp ./target/${{ matrix.job.target }}/release/liblibmydesk.so ./flutter/android/app/src/main/jniLibs/arm64-v8a/libmydesk.so
+            ;;
+            armv7-linux-androideabi)
+              ./flutter/ndk_arm.sh
+              mkdir -p ./flutter/android/app/src/main/jniLibs/armeabi-v7a
+              cp ./target/${{ matrix.job.target }}/release/liblibmydesk.so ./flutter/android/app/src/main/jniLibs/armeabi-v7a/libmydesk.so
+            ;;
+            x86_64-linux-android)
+              ./flutter/ndk_x64.sh
+              mkdir -p ./flutter/android/app/src/main/jniLibs/x86_64
+              cp ./target/${{ matrix.job.target }}/release/liblibmydesk.so ./flutter/android/app/src/main/jniLibs/x86_64/libmydesk.so
+            ;;
+            i686-linux-android)
+              ./flutter/ndk_x86.sh
+              mkdir -p ./flutter/android/app/src/main/jniLibs/x86
+              cp ./target/${{ matrix.job.target }}/release/liblibmydesk.so ./flutter/android/app/src/main/jniLibs/x86/libmydesk.so
+            ;;
+          esac
 
       - name: Setup Android release signing
-        if: env.ANDROID_SIGNING_KEY != ''
+        if: env.ANDROID_SIGNING_KEY != null
         env:
           SIGNING_KEY: ${{ secrets.ANDROID_SIGNING_KEY }}
           ALIAS: ${{ secrets.ANDROID_ALIAS }}
@@ -487,28 +480,52 @@ jobs:
           export PATH=/usr/lib/jvm/java-17-openjdk-amd64/bin:$PATH
           # Increase Gradle JVM memory for CI builds
           sed -i "s/org.gradle.jvmargs=-Xmx1024M/org.gradle.jvmargs=-Xmx2g/g" ./flutter/android/gradle.properties
-          mkdir -p ./flutter/android/app/src/main/jniLibs/arm64-v8a
-          cp ${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libc++_shared.so ./flutter/android/app/src/main/jniLibs/arm64-v8a/
-          cp ./target/${{ matrix.job.target }}/release/liblibmydesk.so ./flutter/android/app/src/main/jniLibs/arm64-v8a/libmydesk.so
-          pushd flutter
-          flutter build apk "--${{ matrix.job.reltype }}" --target-platform android-arm64 --split-per-abi
-          mv build/app/outputs/flutter-apk/app-arm64-v8a-${{ matrix.job.reltype }}.apk ../mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}${{ matrix.job.suffix }}.apk
+          case ${{ matrix.job.target }} in
+            aarch64-linux-android)
+              mkdir -p ./flutter/android/app/src/main/jniLibs/arm64-v8a
+              cp ${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libc++_shared.so ./flutter/android/app/src/main/jniLibs/arm64-v8a/
+              cp ./target/${{ matrix.job.target }}/release/liblibmydesk.so ./flutter/android/app/src/main/jniLibs/arm64-v8a/libmydesk.so
+              # build flutter
+              pushd flutter
+              flutter build apk "--${{ matrix.job.reltype }}" --target-platform android-arm64 --split-per-abi
+              mv build/app/outputs/flutter-apk/app-arm64-v8a-${{ matrix.job.reltype }}.apk ../mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}${{ matrix.job.suffix }}.apk
+            ;;
+            armv7-linux-androideabi)
+              mkdir -p ./flutter/android/app/src/main/jniLibs/armeabi-v7a
+              cp ${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/arm-linux-androideabi/libc++_shared.so ./flutter/android/app/src/main/jniLibs/armeabi-v7a/
+              cp ./target/${{ matrix.job.target }}/release/liblibmydesk.so ./flutter/android/app/src/main/jniLibs/armeabi-v7a/libmydesk.so
+              # build flutter
+              pushd flutter
+              flutter build apk "--${{ matrix.job.reltype }}" --target-platform android-arm --split-per-abi
+              mv build/app/outputs/flutter-apk/app-armeabi-v7a-${{ matrix.job.reltype }}.apk ../mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}${{ matrix.job.suffix }}.apk
+            ;;
+            x86_64-linux-android)
+              mkdir -p ./flutter/android/app/src/main/jniLibs/x86_64
+              cp ${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/libc++_shared.so ./flutter/android/app/src/main/jniLibs/x86_64/
+              cp ./target/${{ matrix.job.target }}/release/liblibmydesk.so ./flutter/android/app/src/main/jniLibs/x86_64/libmydesk.so
+              # build flutter
+              pushd flutter
+              flutter build apk "--${{ matrix.job.reltype }}" --target-platform android-x64 --split-per-abi
+              mv build/app/outputs/flutter-apk/app-x86_64-${{ matrix.job.reltype }}.apk ../mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}${{ matrix.job.suffix }}.apk
+            ;;
+            i686-linux-android)
+              mkdir -p ./flutter/android/app/src/main/jniLibs/x86
+              cp ${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/i686-linux-android/libc++_shared.so ./flutter/android/app/src/main/jniLibs/x86/
+              cp ./target/${{ matrix.job.target }}/release/liblibmydesk.so ./flutter/android/app/src/main/jniLibs/x86/libmydesk.so
+              # build flutter
+              pushd flutter
+              flutter build apk "--${{ matrix.job.reltype }}" --target-platform android-x86 --split-per-abi
+              mv build/app/outputs/flutter-apk/app-x86-${{ matrix.job.reltype }}.apk ../mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}${{ matrix.job.suffix }}.apk
+            ;;
+          esac
           popd
           mkdir -p signed-apk; pushd signed-apk
           mv ../mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}${{ matrix.job.suffix }}.apk .
-
-      - name: Encrypt artifacts
-        if: env.UPLOAD_ARTIFACT == 'true'
-        run: |
-          7z a -tzip -p"${{ secrets.ZIP_PASSWORD }}" -mem=AES256 \
-            ${{ github.workspace }}/signed-apk/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.apk.zip \
-            ${{ github.workspace }}/signed-apk/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.apk
-        shell: bash
 
       - name: Upload Artifacts
         if: env.UPLOAD_ARTIFACT == 'true'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.apk
-          path: signed-apk/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.apk.zip
+          path: signed-apk/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.apk
 
