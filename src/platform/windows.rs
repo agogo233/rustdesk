@@ -1957,7 +1957,9 @@ pub fn set_start_on_boot(enabled: bool) {
                     .ok()
                 {
                     let exe_str = exe_path.to_string_lossy().to_string();
-                    let _ = run_key.set_value(crate::get_app_name(), &format!("\"{}\"", exe_str));
+                    if let Err(e) = run_key.set_value(crate::get_app_name(), &format!("\"{}\"", exe_str)) {
+                        log::warn!("failed to set HKCU Run value: {}", e);
+                    }
                 }
             }
         }
@@ -1968,7 +1970,9 @@ fn set_msi_startup_shortcut_property(enabled: bool) {
     let subkey = format!(".{}", crate::get_app_name().to_lowercase());
     let hkcr = RegKey::predef(HKEY_CLASSES_ROOT);
     if let Ok(key) = hkcr.open_subkey_with_flags(subkey, KEY_WRITE) {
-        let _ = key.set_value(REG_NAME_INSTALL_STARTUPSHORTCUTS, &if enabled { "1" } else { "0" });
+        if let Err(e) = key.set_value(REG_NAME_INSTALL_STARTUPSHORTCUTS, &if enabled { "1" } else { "0" }) {
+            log::warn!("failed to set MSI startup shortcut property: {}", e);
+        }
     }
 }
 
@@ -2036,11 +2040,16 @@ fn create_startup_shortcut() {
         ),
         "startup_shortcut",
     ) {
-        let _ = std::process::Command::new("cscript")
+        if let Err(e) = std::process::Command::new("cscript")
             .arg(script.to_str().unwrap_or(""))
             .creation_flags(CREATE_NO_WINDOW)
-            .output();
-        let _ = std::fs::remove_file(script);
+            .output()
+        {
+            log::warn!("failed to run cscript for startup shortcut: {}", e);
+        }
+        if let Err(e) = std::fs::remove_file(script) {
+            log::warn!("failed to remove startup shortcut vbs: {}", e);
+        }
     }
 }
 
@@ -2059,7 +2068,9 @@ fn delete_hkcu_run() {
         )
         .ok()
     {
-        let _ = run_key.delete_value(crate::get_app_name());
+        if let Err(e) = run_key.delete_value(crate::get_app_name()) {
+            log::warn!("failed to delete HKCU Run value: {}", e);
+        }
     }
 }
 
