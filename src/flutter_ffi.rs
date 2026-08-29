@@ -962,10 +962,6 @@ pub fn main_get_error() -> String {
     get_error()
 }
 
-pub fn main_show_option(_key: String) -> SyncReturn<bool> {
-    SyncReturn(false)
-}
-
 pub fn main_set_option(key: String, value: String) {
     #[cfg(target_os = "android")]
     {
@@ -2210,6 +2206,15 @@ pub fn cm_close_connection(conn_id: i32) {
     crate::ui_cm_interface::close(conn_id);
 }
 
+/// The CM window closed. On Linux that is ambiguous - a logout closes it the same way a person
+/// does - so it ends the session without the no-retry reason; elsewhere it is a plain close.
+pub fn cm_close_connection_window(conn_id: i32) {
+    #[cfg(target_os = "linux")]
+    crate::ui_cm_interface::close_window(conn_id);
+    #[cfg(all(not(target_os = "linux"), not(target_os = "ios")))]
+    crate::ui_cm_interface::close(conn_id);
+}
+
 pub fn cm_remove_disconnected_connection(conn_id: i32) {
     #[cfg(not(any(target_os = "ios")))]
     crate::ui_cm_interface::remove(conn_id);
@@ -2668,6 +2673,14 @@ pub fn main_get_common(key: String) -> String {
         return crate::platform::linux::has_gnome_shortcuts_inhibitor_permission().to_string();
         #[cfg(not(target_os = "linux"))]
         return false.to_string();
+    } else if key == "gnome-monitor-layout-mode" {
+        #[cfg(target_os = "linux")]
+        return match crate::platform::linux::gnome_monitor_layout_mode() {
+            Some(mode) => mode.as_str().to_owned(),
+            None => String::new(),
+        };
+        #[cfg(not(target_os = "linux"))]
+        return String::new();
     } else if key == "permanent-password-set" {
         return ui_interface::is_permanent_password_set().to_string();
     } else if key == "local-permanent-password-set" {

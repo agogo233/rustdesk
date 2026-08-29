@@ -5,7 +5,7 @@ Summary:    RPM package
 License:    GPL-3.0
 URL:        https://mydesk.com
 Vendor:     mydesk <info@mydesk.com>
-Requires:   gtk3 libxcb libXfixes alsa-lib libva2 pam gstreamer1-plugins-base
+Requires:   gtk3 libxcb libXfixes alsa-lib libva2 gstreamer1-plugins-base
 Recommends: libayatana-appindicator-gtk3 libxdo
 
 # https://docs.fedoraproject.org/en-US/packaging-guidelines/Scriptlets/
