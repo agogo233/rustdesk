@@ -9,13 +9,6 @@ on:
       - 'v[0-9]+.[0-9]+.[0-9]+-[0-9]+'
       - '[0-9]+.[0-9]+.[0-9]+-[0-9]+'
 
-# NOTE: F-Droid builder script 'flutter/build_fdroid.sh' reads environment
-# variables from this workflow!
-#
-# It does NOT read build steps, however, so please fix 'flutter/build_fdroid.sh
-# whenever you add changes to Android CI build action ('build-mydesk-android')
-# in this file!
-
 env:
   RUST_VERSION: "1.75"
   CARGO_NDK_VERSION: "3.1.2"
@@ -239,7 +232,7 @@ jobs:
         if: env.UPLOAD_ARTIFACT == 'true'
         run: |
           pushd ./res/msi
-          python preprocess.py --arp -d ../../mydesk --app-name mydesk
+          python preprocess.py --arp -d ../../mydesk --app-name MyDesk
           nuget restore msi.sln
           msbuild msi.sln -p:Configuration=Release -p:Platform=x64 /p:TargetVersion=Windows10 /p:Culture=zh-cn
           mv ./Package/bin/x64/Release/zh-cn/Package.msi ../../SignOutput/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.msi
