@@ -772,6 +772,8 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("port-forward-mux-tip", "Låt alla anslutningar i en portvidarebefordran gå via en enda anslutning till motparten, i stället för att ansluta och logga in på nytt för varje anslutning."),
         ("Enable WebRTC P2P connection", "Aktivera WebRTC P2P anslutning"),
         ("Enable TCP hole punching", "Aktivera TCP hålslagning"),
+        ("doc_mac_permission", "https://rustdesk.com/docs/en/client/mac/#enable-permissions"),
+        ("doc_fix_wayland", "https://rustdesk.com/docs/en/client/linux/#x11-required"),
     ].iter().cloned().collect();
 }
 

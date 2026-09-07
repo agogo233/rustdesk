@@ -772,5 +772,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("port-forward-mux-tip", "同一條連接埠轉送規則上的所有連線共用一條到對方的連線，而不是每條連線都重新連線並登入一次。"),
         ("Enable WebRTC P2P connection", "啟用 WebRTC P2P 連線"),
         ("Enable TCP hole punching", "啟用 TCP 打洞"),
+        ("doc_mac_permission", "https://rustdesk.com/docs/en/client/mac/#enable-permissions"),
+        ("doc_fix_wayland", "https://rustdesk.com/docs/en/client/linux/#x11-required"),
     ].iter().cloned().collect();
 }

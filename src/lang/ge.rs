@@ -772,6 +772,8 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("port-forward-mux-tip", "ერთი პორტის გადამისამართების ყველა კავშირი გადის მეორე კომპიუტერთან დამყარებული ერთი კავშირით, ნაცვლად იმისა, რომ თითოეულისთვის თავიდან დაუკავშირდეს და შევიდეს სისტემაში."),
         ("Enable WebRTC P2P connection", "WebRTC P2P კავშირის ჩართვა"),
         ("Enable TCP hole punching", "TCP hole punching-ის ჩართვა"),
+        ("doc_mac_permission", "https://rustdesk.com/docs/en/client/mac/#enable-permissions"),
+        ("doc_fix_wayland", "https://rustdesk.com/docs/en/client/linux/#x11-required"),
     ].iter().cloned().collect();
 }
 
