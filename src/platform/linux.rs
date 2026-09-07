@@ -379,13 +379,16 @@ pub fn is_login_screen_wayland() -> bool {
     is_gdm_user(&values[1]) && get_display_server_of_session(&values[0]) == DISPLAY_SERVER_WAYLAND
 }
 
-/// An explicit `RUSTDESK_FORCED_DISPLAY_SERVER` is an operator override, and the root service
+/// An explicit `MYDESK_FORCED_DISPLAY_SERVER` is an operator override, and the root service
 /// forwards it to the per-user server on purpose: the greeter correction may only fix an
 /// AUTO-detected answer, never argue with the operator — a half-applied override would leave
 /// `get_display_server()` and the DRM routing gates disagreeing with each other.
+/// `RUSTDESK_FORCED_DISPLAY_SERVER` is still honored as a fallback for existing setups.
 #[cfg(feature = "drm")]
 pub(crate) fn display_server_forced() -> bool {
-    std::env::var("RUSTDESK_FORCED_DISPLAY_SERVER").is_ok()
+    std::env::var("MYDESK_FORCED_DISPLAY_SERVER")
+        .or_else(|_| std::env::var("RUSTDESK_FORCED_DISPLAY_SERVER"))
+        .is_ok()
 }
 
 /// X11 as far as the DRM path is concerned: a Wayland greeter is not, unless the operator
@@ -896,11 +899,12 @@ fn try_start_server_(desktop: Option<&Desktop>) -> ResultType<Option<Child>> {
                 envs.push(("DBUS_SESSION_BUS_ADDRESS", desktop.dbus.clone()));
             }
             if let Ok(forced_display_server) =
-                std::env::var("RUSTDESK_FORCED_DISPLAY_SERVER")
+                std::env::var("MYDESK_FORCED_DISPLAY_SERVER")
+                    .or_else(|_| std::env::var("RUSTDESK_FORCED_DISPLAY_SERVER"))
             {
                 if !forced_display_server.is_empty() {
                     envs.push((
-                        "RUSTDESK_FORCED_DISPLAY_SERVER",
+                        "MYDESK_FORCED_DISPLAY_SERVER",
                         forced_display_server,
                     ));
                 }

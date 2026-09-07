@@ -1931,22 +1931,25 @@ pub fn is_installed() -> bool {
 }
 
 pub fn set_start_on_boot(enabled: bool) {
-    // Always clean both mechanisms to prevent dual-startup
+    // Always clean legacy per-user mechanisms left by the old scheme.
     delete_hkcu_run();
     delete_startup_shortcut();
 
-    if is_installed() && !enabled {
-        // Sync MSI registry property so repair/modify won't recreate the shortcut
-        set_msi_startup_shortcut_property(false);
-    }
-
-    if enabled {
-        if is_installed() {
-            // MSI version: create startup folder shortcut with --tray
-            create_startup_shortcut();
+    if is_installed() && is_cur_exe_the_installed() {
+        // MSI version: the autostart artifact lives in the common (all users)
+        // startup folder and is tracked by the MSI property of the same name.
+        // Both are touched through the elevated handoff so a standard user
+        // gets a UAC prompt instead of a silent no-op.
+        if enabled {
+            create_common_startup_shortcut();
             set_msi_startup_shortcut_property(true);
         } else {
-            // Portable version: HKCU Run
+            delete_common_startup_shortcut();
+            set_msi_startup_shortcut_property(false);
+        }
+    } else {
+        // Portable version: HKCU Run, no elevation needed.
+        if enabled {
             if let Ok(exe_path) = std::env::current_exe() {
                 let hkcu = RegKey::predef(HKEY_CURRENT_USER);
                 if let Some(run_key) = hkcu
@@ -1957,7 +1960,10 @@ pub fn set_start_on_boot(enabled: bool) {
                     .ok()
                 {
                     let exe_str = exe_path.to_string_lossy().to_string();
-                    if let Err(e) = run_key.set_value(crate::get_app_name(), &format!("\"{}\"", exe_str)) {
+                    if let Err(e) = run_key.set_value(
+                        crate::get_app_name(),
+                        &format!("\"{}\" --tray", exe_str),
+                    ) {
                         log::warn!("failed to set HKCU Run value: {}", e);
                     }
                 }
@@ -1968,17 +1974,19 @@ pub fn set_start_on_boot(enabled: bool) {
 
 fn set_msi_startup_shortcut_property(enabled: bool) {
     let subkey = format!(".{}", crate::get_app_name().to_lowercase());
-    let hkcr = RegKey::predef(HKEY_CLASSES_ROOT);
-    if let Ok(key) = hkcr.open_subkey_with_flags(subkey, KEY_WRITE) {
-        if let Err(e) = key.set_value(REG_NAME_INSTALL_STARTUPSHORTCUTS, &if enabled { "1" } else { "0" }) {
-            log::warn!("failed to set MSI startup shortcut property: {}", e);
-        }
+    let v = if enabled { "1" } else { "0" };
+    let cmds = format!(
+        "chcp 65001 && reg add HKEY_CLASSES_ROOT\\{subkey} /f /v {REG_NAME_INSTALL_STARTUPSHORTCUTS} /t REG_SZ /d \"{v}\" || exit /b 1"
+    );
+    if let Err(e) = run_cmds(cmds, false, "set_msi_startup_shortcut_property") {
+        log::warn!("failed to sync MSI startup shortcut property: {}", e);
     }
 }
 
 pub fn get_start_on_boot() -> String {
-    if is_installed() {
-        // MSI version: check MSI registry property
+    if is_installed() && is_cur_exe_the_installed() {
+        // MSI version: the MSI property is the source of truth, the common
+        // startup shortcut is its artifact.
         let subkey = format!(".{}", crate::get_app_name().to_lowercase());
         if get_reg_of_hkcr(&subkey, REG_NAME_INSTALL_STARTUPSHORTCUTS).as_deref() == Some("1") {
             return "Y".to_owned();
@@ -2018,44 +2026,73 @@ fn startup_shortcut_path() -> Option<PathBuf> {
         .join(startup_shortcut_name()))
 }
 
-fn create_startup_shortcut() {
-    let Some(exe) = std::env::current_exe().ok() else {
+fn common_startup_shortcut_path() -> Option<PathBuf> {
+    let program_data = std::env::var("ProgramData").ok()?;
+    Some(
+        PathBuf::from(program_data)
+            .join(r"Microsoft\Windows\Start Menu\Programs\Startup")
+            .join(startup_shortcut_name()),
+    )
+}
+
+fn create_common_startup_shortcut() {
+    let (_, _, _, exe) = get_install_info();
+    let Some(shortcut_path) = common_startup_shortcut_path() else {
         return;
     };
-    let Some(shortcut_path) = startup_shortcut_path() else {
-        return;
-    };
-    let exe_str = exe.to_string_lossy().to_string();
     let shortcut_path = shortcut_path.to_string_lossy().to_string();
-    let shortcut_icon_location = get_shortcut_icon_location("", &exe_str);
-    if let Ok(script) = write_vbs(
+    let shortcut_icon_location = get_shortcut_icon_location("", &exe);
+    match write_vbs(
         format!(
             "Set oWS = WScript.CreateObject(\"WScript.Shell\")\n\
              sLinkFile = \"{shortcut_path}\"\n\
              Set oLink = oWS.CreateShortcut(sLinkFile)\n\
-             \toLink.TargetPath = \"{exe_str}\"\n\
+             \toLink.TargetPath = \"{exe}\"\n\
              \toLink.Arguments = \"--tray\"\n\
              \t{shortcut_icon_location}\n\
              oLink.Save\n"
         ),
         "startup_shortcut",
     ) {
-        if let Err(e) = std::process::Command::new("cscript")
-            .arg(script.to_str().unwrap_or(""))
-            .creation_flags(CREATE_NO_WINDOW)
-            .output()
-        {
-            log::warn!("failed to run cscript for startup shortcut: {}", e);
+        Ok(script) => {
+            if let Err(e) = run_cmds(
+                format!("cscript \"{}\" || exit /b 1", script.to_string_lossy()),
+                false,
+                "create_common_startup_shortcut",
+            ) {
+                log::warn!(
+                    "failed to run elevated cscript for startup shortcut: {}",
+                    e
+                );
+            }
+            if let Err(e) = std::fs::remove_file(script) {
+                log::warn!("failed to remove startup shortcut vbs: {}", e);
+            }
         }
-        if let Err(e) = std::fs::remove_file(script) {
-            log::warn!("failed to remove startup shortcut vbs: {}", e);
-        }
+        Err(e) => log::warn!("failed to write startup shortcut vbs: {}", e),
     }
 }
 
 fn delete_startup_shortcut() {
     if let Some(path) = startup_shortcut_path() {
         let _ = std::fs::remove_file(path);
+    }
+}
+
+fn delete_common_startup_shortcut() {
+    let Some(path) = common_startup_shortcut_path() else {
+        return;
+    };
+    if std::fs::metadata(&path).is_err() {
+        return;
+    }
+    let path = path.to_string_lossy().to_string();
+    if let Err(e) = run_cmds(
+        format!("del /f \"{path}\" || exit /b 1"),
+        false,
+        "delete_common_startup_shortcut",
+    ) {
+        log::warn!("failed to delete common startup shortcut: {}", e);
     }
 }
 
