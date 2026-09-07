@@ -15,10 +15,10 @@ script:
 AppDir:
   path: ./AppDir
   app_info:
-    id: mydesk
+id: mydesk
     name: mydesk
     icon: mydesk
-    version: 1.4.9
+    version: 1.5.0
     exec: usr/share/mydesk/mydesk
     exec_args: $@
   apt:
