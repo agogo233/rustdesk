@@ -1935,16 +1935,19 @@ pub fn set_start_on_boot(enabled: bool) {
     delete_startup_shortcut();
 
     if is_installed() && is_cur_exe_the_installed() {
-        // MSI version: the autostart artifact lives in the common (all users)
-        // startup folder and is tracked by the MSI property of the same name.
-        // Both are touched through the elevated handoff so a standard user
-        // gets a UAC prompt instead of a silent no-op.
-        if enabled {
-            create_common_startup_shortcut();
-            set_msi_startup_shortcut_property(true);
-        } else {
-            delete_common_startup_shortcut();
-            set_msi_startup_shortcut_property(false);
+        // The autostart artifact lives in the common (all users) startup folder
+        // and is tracked by the MSI property of the same name. Both are touched
+        // in one elevated batch, so the shortcut and the property stay in sync
+        // with a single UAC prompt.
+        let cmds = match start_on_boot_commands(enabled) {
+            Ok(cmds) => cmds,
+            Err(err) => {
+                log::warn!("failed to build start-on-boot commands: {}", err);
+                return;
+            }
+        };
+        if let Err(e) = run_cmds(cmds, false, "set_start_on_boot") {
+            log::warn!("failed to set start-on-boot: {}", e);
         }
     } else {
         // Portable version: HKCU Run, no elevation needed.
@@ -1971,14 +1974,36 @@ pub fn set_start_on_boot(enabled: bool) {
     }
 }
 
-fn set_msi_startup_shortcut_property(enabled: bool) {
-    let subkey = format!(".{}", crate::get_app_name().to_lowercase());
-    let v = if enabled { "1" } else { "0" };
-    let cmds = format!(
-        "chcp 65001 && reg add HKEY_CLASSES_ROOT\\{subkey} /f /v {REG_NAME_INSTALL_STARTUPSHORTCUTS} /t REG_SZ /d \"{v}\" || exit /b 1"
-    );
-    if let Err(e) = run_cmds(cmds, false, "set_msi_startup_shortcut_property") {
-        log::warn!("failed to sync MSI startup shortcut property: {}", e);
+fn start_on_boot_commands(enabled: bool) -> ResultType<String> {
+    let app_name = crate::get_app_name();
+    let (_, _, _, exe) = get_install_info();
+    validate_install_value(&exe)?;
+    let shortcut_icon_location = get_custom_icon("", &exe);
+    if let Some(icon) = shortcut_icon_location.as_deref() {
+        validate_install_value(icon)?;
+    }
+    let subkey = format!(".{}", app_name.to_lowercase());
+    let startup_dir = "%PROGRAMDATA%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup";
+    let legacy_name = format!("{} 托盘.lnk", app_name);
+    if enabled {
+        let tray_shortcut_commands =
+            embedded_tray_shortcut_commands(&app_name, &exe, shortcut_icon_location.as_deref())?;
+        Ok(format!(
+            "
+{tray_shortcut_commands}
+copy /Y \"%RUSTDESK_OUTPUT_DIR%\\{app_name} Tray.lnk\" \"{startup_dir}\\\" || exit /b 1
+if exist \"{startup_dir}\\{legacy_name}\" del /f /q \"{startup_dir}\\{legacy_name}\"
+reg add HKEY_CLASSES_ROOT\\{subkey} /f /v {REG_NAME_INSTALL_STARTUPSHORTCUTS} /t REG_SZ /d \"1\" || exit /b 1
+"
+        ))
+    } else {
+        Ok(format!(
+            "
+if exist \"{startup_dir}\\{app_name} Tray.lnk\" del /f /q \"{startup_dir}\\{app_name} Tray.lnk\"
+if exist \"{startup_dir}\\{legacy_name}\" del /f /q \"{startup_dir}\\{legacy_name}\"
+reg add HKEY_CLASSES_ROOT\\{subkey} /f /v {REG_NAME_INSTALL_STARTUPSHORTCUTS} /t REG_SZ /d \"0\" || exit /b 1
+"
+        ))
     }
 }
 
@@ -2036,66 +2061,11 @@ fn common_startup_shortcut_path() -> Option<PathBuf> {
     )
 }
 
-fn create_common_startup_shortcut() {
-    let (_, _, _, exe) = get_install_info();
-    let Some(shortcut_path) = common_startup_shortcut_path() else {
-        return;
-    };
-    let shortcut_path = shortcut_path.to_string_lossy().to_string();
-    let shortcut_icon_location = get_shortcut_icon_location("", &exe);
-    match write_vbs(
-        format!(
-            "Set oWS = WScript.CreateObject(\"WScript.Shell\")\n\
-             sLinkFile = \"{shortcut_path}\"\n\
-             Set oLink = oWS.CreateShortcut(sLinkFile)\n\
-             \toLink.TargetPath = \"{exe}\"\n\
-             \toLink.Arguments = \"--tray\"\n\
-             \t{shortcut_icon_location}\n\
-             oLink.Save\n"
-        ),
-        "startup_shortcut",
-    ) {
-        Ok(script) => {
-            if let Err(e) = run_cmds(
-                format!("cscript \"{}\" || exit /b 1", script.to_string_lossy()),
-                false,
-                "create_common_startup_shortcut",
-            ) {
-                log::warn!(
-                    "failed to run elevated cscript for startup shortcut: {}",
-                    e
-                );
-            }
-            if let Err(e) = std::fs::remove_file(script) {
-                log::warn!("failed to remove startup shortcut vbs: {}", e);
-            }
-        }
-        Err(e) => log::warn!("failed to write startup shortcut vbs: {}", e),
-    }
-}
-
 fn delete_startup_shortcut() {
     if let Some(path) = startup_shortcut_path() {
         if let Err(e) = std::fs::remove_file(path) {
             log::warn!("failed to delete startup shortcut: {}", e);
         }
-    }
-}
-
-fn delete_common_startup_shortcut() {
-    let Some(path) = common_startup_shortcut_path() else {
-        return;
-    };
-    if std::fs::metadata(&path).is_err() {
-        return;
-    }
-    let path = path.to_string_lossy().to_string();
-    if let Err(e) = run_cmds(
-        format!("del /f \"{path}\" || exit /b 1"),
-        false,
-        "delete_common_startup_shortcut",
-    ) {
-        log::warn!("failed to delete common startup shortcut: {}", e);
     }
 }
 
