@@ -1984,10 +1984,12 @@ fn set_msi_startup_shortcut_property(enabled: bool) {
 
 pub fn get_start_on_boot() -> String {
     if is_installed() && is_cur_exe_the_installed() {
-        // MSI version: the MSI property is the source of truth, the common
-        // startup shortcut is its artifact.
-        let subkey = format!(".{}", crate::get_app_name().to_lowercase());
-        if get_reg_of_hkcr(&subkey, REG_NAME_INSTALL_STARTUPSHORTCUTS).as_deref() == Some("1") {
+        // The common startup shortcut is the source of truth; the MSI
+        // property is only a persistence hint for MSI maintenance.
+        if common_startup_shortcut_path()
+            .map(|p| p.is_file())
+            .unwrap_or(false)
+        {
             return "Y".to_owned();
         }
     } else {
@@ -2003,8 +2005,8 @@ pub fn get_start_on_boot() -> String {
             if let Ok(v) = run_key.get_value::<String, _>(crate::get_app_name()) {
                 if !v.is_empty() {
                     if let Ok(exe_path) = std::env::current_exe() {
-                        let exe_str = exe_path.to_string_lossy().to_string();
-                        if v.contains(&exe_str) {
+                        let exe_str = exe_path.to_string_lossy().to_lowercase();
+                        if v.to_lowercase().contains(&exe_str) {
                             return "Y".to_owned();
                         }
                     }
@@ -2074,7 +2076,9 @@ fn create_common_startup_shortcut() {
 
 fn delete_startup_shortcut() {
     if let Some(path) = startup_shortcut_path() {
-        let _ = std::fs::remove_file(path);
+        if let Err(e) = std::fs::remove_file(path) {
+            log::warn!("failed to delete startup shortcut: {}", e);
+        }
     }
 }
 
