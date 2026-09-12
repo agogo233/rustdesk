@@ -774,6 +774,14 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("Enable TCP hole punching", "TCP hole punching'ті іске қосу"),
         ("doc_mac_permission", "https://rustdesk.com/docs/en/client/mac/#enable-permissions"),
         ("doc_fix_wayland", "https://rustdesk.com/docs/en/client/linux/#x11-required"),
+        ("The screen sharing request was declined on the remote device", "Қашықтағы құрылғыда экранды бөлісу сұрауы қабылданбады"),
+        ("The screen sharing request timed out on the remote device", "Қашықтағы құрылғыда экранды бөлісу сұрауының уақыты бітті"),
+        ("RustDesk cannot reach the desktop session on the remote device, check that a desktop session is running and that RustDesk can use it", "MyDesk қашықтағы құрылғының жұмыс үстелі сеансына қол жеткізе алмайды, сеанстың іске қосылғанын және MyDesk оны пайдалана алатынын тексеріңіз"),
+        ("The desktop portal on the remote device is missing a capability needed for screen sharing or remote control, its backend may not be installed", "Қашықтағы құрылғының жұмыс үстелі порталында экранды бөлісуге немесе қашықтан басқаруға қажет мүмкіндік жоқ, оның бэкенді орнатылмаған болуы мүмкін"),
+        ("Screen sharing was approved on the remote device, but the PipeWire connection could not be opened", "Қашықтағы құрылғыда экранды бөлісуге рұқсат берілді, бірақ PipeWire байланысын ашу мүмкін болмады"),
+        ("The screen sharing request ended without completing on the remote device", "Қашықтағы құрылғыдағы экранды бөлісу сұрауы аяқталмай тоқтады"),
+        ("RustDesk could not obtain a usable screen from the XDG Desktop Portal, the PipeWire library may be too old", "MyDesk XDG Desktop Portal-дан жарамды экран ала алмады, PipeWire кітапханасы тым ескі болуы мүмкін"),
+        ("RustDesk could not load a GStreamer component needed for screen capture ({})", "MyDesk экранды түсіру үшін қажет GStreamer компонентін жүктей алмады ({})"),
     ].iter().cloned().collect();
 }
 

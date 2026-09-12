@@ -774,5 +774,13 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("Enable TCP hole punching", "Abìlita s'istampadura TCP"),
         ("doc_mac_permission", "https://rustdesk.com/docs/en/client/mac/#enable-permissions"),
         ("doc_fix_wayland", "https://rustdesk.com/docs/en/client/linux/#x11-required"),
+        ("The screen sharing request was declined on the remote device", "Sa rechesta de cumpartzidura de sa schermada est istada refudada in su dispositivu remotu"),
+        ("The screen sharing request timed out on the remote device", "Sa rechesta de cumpartzidura de sa schermada at superadu su tempus in su dispositivu remotu"),
+        ("RustDesk cannot reach the desktop session on the remote device, check that a desktop session is running and that RustDesk can use it", "MyDesk no podet acèdere a sa sessione de iscrivania in su dispositivu remotu, controlla chi una sessione siat ativa e chi MyDesk la potzat impreare"),
+        ("The desktop portal on the remote device is missing a capability needed for screen sharing or remote control, its backend may not be installed", "A su portale de iscrivania in su dispositivu remotu li mancat una funtzionalidade netzessària pro sa cumpartzidura de sa schermada o pro su controllu remotu, su backend suo podet non èssere installadu"),
+        ("Screen sharing was approved on the remote device, but the PipeWire connection could not be opened", "Sa cumpartzidura de sa schermada est istada aprovada in su dispositivu remotu, ma no si est pòdidu abèrrere sa connessione PipeWire"),
+        ("The screen sharing request ended without completing on the remote device", "Sa rechesta de cumpartzidura de sa schermada in su dispositivu remotu est acabada chene si cumpletare"),
+        ("RustDesk could not obtain a usable screen from the XDG Desktop Portal, the PipeWire library may be too old", "MyDesk no at pòdidu otènnere una schermada impreabile dae XDG Desktop Portal, sa libreria PipeWire podet èssere tropu betza"),
+        ("RustDesk could not load a GStreamer component needed for screen capture ({})", "MyDesk no at pòdidu carrigare unu cumponente de GStreamer netzessàriu pro registrare sa schermada ({})"),
     ].iter().cloned().collect();
 }

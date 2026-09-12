@@ -774,6 +774,14 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("Enable TCP hole punching", "Позволяване на TCP hole punching"),
         ("doc_mac_permission", "https://rustdesk.com/docs/en/client/mac/#enable-permissions"),
         ("doc_fix_wayland", "https://rustdesk.com/docs/en/client/linux/#x11-required"),
+        ("The screen sharing request was declined on the remote device", "Заявката за споделяне на екрана беше отхвърлена на отдалеченото устройство"),
+        ("The screen sharing request timed out on the remote device", "Заявката за споделяне на екрана на отдалеченото устройство изтече"),
+        ("RustDesk cannot reach the desktop session on the remote device, check that a desktop session is running and that RustDesk can use it", "MyDesk не може да достигне сесията на работния плот на отдалеченото устройство, проверете дали сесията работи и дали MyDesk може да я използва"),
+        ("The desktop portal on the remote device is missing a capability needed for screen sharing or remote control, its backend may not be installed", "Порталът на работния плот на отдалеченото устройство няма възможност, необходима за споделяне на екрана или отдалечено управление, може да липсва неговата реализация"),
+        ("Screen sharing was approved on the remote device, but the PipeWire connection could not be opened", "Споделянето на екрана беше одобрено на отдалеченото устройство, но връзката с PipeWire не можа да бъде отворена"),
+        ("The screen sharing request ended without completing on the remote device", "Заявката за споделяне на екрана на отдалеченото устройство приключи, без да бъде изпълнена"),
+        ("RustDesk could not obtain a usable screen from the XDG Desktop Portal, the PipeWire library may be too old", "MyDesk не можа да получи използваем екран от XDG Desktop Portal, библиотеката PipeWire може да е твърде стара"),
+        ("RustDesk could not load a GStreamer component needed for screen capture ({})", "MyDesk не можа да зареди компонент на GStreamer, необходим за заснемане на екрана ({})"),
     ].iter().cloned().collect();
 }
 

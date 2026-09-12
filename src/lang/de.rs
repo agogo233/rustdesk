@@ -774,6 +774,14 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("Enable TCP hole punching", "TCP-Hole-Punching aktivieren"),
         ("doc_mac_permission", "https://rustdesk.com/docs/en/client/mac/#enable-permissions"),
         ("doc_fix_wayland", "https://rustdesk.com/docs/en/client/linux/#x11-required"),
+        ("The screen sharing request was declined on the remote device", "Die Anfrage zur Bildschirmfreigabe wurde auf dem entfernten Gerät abgelehnt"),
+        ("The screen sharing request timed out on the remote device", "Bei der Anfrage zur Bildschirmfreigabe auf dem entfernten Gerät ist eine Zeitüberschreitung aufgetreten"),
+        ("RustDesk cannot reach the desktop session on the remote device, check that a desktop session is running and that RustDesk can use it", "MyDesk kann die Desktop-Sitzung auf dem entfernten Gerät nicht erreichen. Prüfen Sie, ob eine Sitzung läuft und ob MyDesk sie nutzen kann"),
+        ("The desktop portal on the remote device is missing a capability needed for screen sharing or remote control, its backend may not be installed", "Dem Desktop-Portal auf dem entfernten Gerät fehlt eine für Bildschirmfreigabe oder Fernsteuerung benötigte Fähigkeit, sein Backend ist möglicherweise nicht installiert"),
+        ("Screen sharing was approved on the remote device, but the PipeWire connection could not be opened", "Die Bildschirmfreigabe wurde auf dem entfernten Gerät genehmigt, aber die PipeWire-Verbindung konnte nicht geöffnet werden"),
+        ("The screen sharing request ended without completing on the remote device", "Die Anfrage zur Bildschirmfreigabe auf dem entfernten Gerät endete, ohne abgeschlossen zu werden"),
+        ("RustDesk could not obtain a usable screen from the XDG Desktop Portal, the PipeWire library may be too old", "MyDesk konnte vom XDG Desktop Portal keinen nutzbaren Bildschirm erhalten, die PipeWire-Bibliothek ist möglicherweise zu alt"),
+        ("RustDesk could not load a GStreamer component needed for screen capture ({})", "MyDesk konnte eine für die Bildschirmaufnahme benötigte GStreamer-Komponente nicht laden ({})"),
     ].iter().cloned().collect();
 }
 

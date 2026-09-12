@@ -774,6 +774,14 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("Enable TCP hole punching", "Įgalinti TCP gręžimą (hole punching)"),
         ("doc_mac_permission", "https://rustdesk.com/docs/en/client/mac/#enable-permissions"),
         ("doc_fix_wayland", "https://rustdesk.com/docs/en/client/linux/#x11-required"),
+        ("The screen sharing request was declined on the remote device", "Ekrano bendrinimo užklausa buvo atmesta nuotoliniame įrenginyje"),
+        ("The screen sharing request timed out on the remote device", "Baigėsi ekrano bendrinimo užklausos laikas nuotoliniame įrenginyje"),
+        ("RustDesk cannot reach the desktop session on the remote device, check that a desktop session is running and that RustDesk can use it", "MyDesk negali pasiekti nuotolinio įrenginio darbalaukio seanso, patikrinkite, ar seansas veikia ir ar MyDesk gali jį naudoti"),
+        ("The desktop portal on the remote device is missing a capability needed for screen sharing or remote control, its backend may not be installed", "Nuotolinio įrenginio darbalaukio portalui trūksta ekrano bendrinimui ar nuotoliniam valdymui reikalingos galimybės, gali būti neįdiegta jo posistemė"),
+        ("Screen sharing was approved on the remote device, but the PipeWire connection could not be opened", "Ekrano bendrinimas nuotoliniame įrenginyje buvo patvirtintas, bet nepavyko atverti PipeWire ryšio"),
+        ("The screen sharing request ended without completing on the remote device", "Ekrano bendrinimo užklausa nuotoliniame įrenginyje baigėsi jos neužbaigus"),
+        ("RustDesk could not obtain a usable screen from the XDG Desktop Portal, the PipeWire library may be too old", "MyDesk negavo tinkamo ekrano iš XDG Desktop Portal, PipeWire biblioteka gali būti per sena"),
+        ("RustDesk could not load a GStreamer component needed for screen capture ({})", "MyDesk nepavyko įkelti ekrano įrašymui reikalingo GStreamer komponento ({})"),
     ].iter().cloned().collect();
 }
 

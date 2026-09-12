@@ -774,6 +774,14 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("Enable TCP hole punching", "Włącz tworzenie tunelu TCP"),
         ("doc_mac_permission", "https://rustdesk.com/docs/en/client/mac/#enable-permissions"),
         ("doc_fix_wayland", "https://rustdesk.com/docs/en/client/linux/#x11-required"),
+        ("The screen sharing request was declined on the remote device", "Żądanie udostępnienia ekranu zostało odrzucone na urządzeniu zdalnym"),
+        ("The screen sharing request timed out on the remote device", "Upłynął limit czasu żądania udostępnienia ekranu na urządzeniu zdalnym"),
+        ("RustDesk cannot reach the desktop session on the remote device, check that a desktop session is running and that RustDesk can use it", "MyDesk nie może uzyskać dostępu do sesji pulpitu na urządzeniu zdalnym, sprawdź, czy sesja działa i czy MyDesk może z niej korzystać"),
+        ("The desktop portal on the remote device is missing a capability needed for screen sharing or remote control, its backend may not be installed", "Portalowi pulpitu na urządzeniu zdalnym brakuje funkcji wymaganej do udostępniania ekranu lub zdalnego sterowania, jego zaplecze może nie być zainstalowane"),
+        ("Screen sharing was approved on the remote device, but the PipeWire connection could not be opened", "Udostępnianie ekranu zostało zatwierdzone na urządzeniu zdalnym, ale nie udało się otworzyć połączenia PipeWire"),
+        ("The screen sharing request ended without completing on the remote device", "Żądanie udostępnienia ekranu na urządzeniu zdalnym zakończyło się bez ukończenia"),
+        ("RustDesk could not obtain a usable screen from the XDG Desktop Portal, the PipeWire library may be too old", "MyDesk nie uzyskał użytecznego ekranu z XDG Desktop Portal, biblioteka PipeWire może być zbyt stara"),
+        ("RustDesk could not load a GStreamer component needed for screen capture ({})", "MyDesk nie mógł załadować składnika GStreamer wymaganego do przechwytywania ekranu ({})"),
     ].iter().cloned().collect();
 }
 

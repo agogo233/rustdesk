@@ -774,6 +774,14 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("Enable TCP hole punching", "Ενεργοποίηση διάτρησης οπών TCP"),
         ("doc_mac_permission", "https://rustdesk.com/docs/en/client/mac/#enable-permissions"),
         ("doc_fix_wayland", "https://rustdesk.com/docs/en/client/linux/#x11-required"),
+        ("The screen sharing request was declined on the remote device", "Το αίτημα κοινής χρήσης οθόνης απορρίφθηκε στην απομακρυσμένη συσκευή"),
+        ("The screen sharing request timed out on the remote device", "Το αίτημα κοινής χρήσης οθόνης έληξε στην απομακρυσμένη συσκευή"),
+        ("RustDesk cannot reach the desktop session on the remote device, check that a desktop session is running and that RustDesk can use it", "Το MyDesk δεν μπορεί να προσεγγίσει τη συνεδρία επιφάνειας εργασίας στην απομακρυσμένη συσκευή, ελέγξτε ότι μια συνεδρία εκτελείται και ότι το MyDesk μπορεί να τη χρησιμοποιήσει"),
+        ("The desktop portal on the remote device is missing a capability needed for screen sharing or remote control, its backend may not be installed", "Στην πύλη επιφάνειας εργασίας της απομακρυσμένης συσκευής λείπει μια δυνατότητα που απαιτείται για κοινή χρήση οθόνης ή απομακρυσμένο έλεγχο, ίσως δεν είναι εγκατεστημένο το υποσύστημά της"),
+        ("Screen sharing was approved on the remote device, but the PipeWire connection could not be opened", "Η κοινή χρήση οθόνης εγκρίθηκε στην απομακρυσμένη συσκευή, αλλά δεν ήταν δυνατό το άνοιγμα της σύνδεσης PipeWire"),
+        ("The screen sharing request ended without completing on the remote device", "Το αίτημα κοινής χρήσης οθόνης στην απομακρυσμένη συσκευή έληξε χωρίς να ολοκληρωθεί"),
+        ("RustDesk could not obtain a usable screen from the XDG Desktop Portal, the PipeWire library may be too old", "Το MyDesk δεν μπόρεσε να λάβει αξιοποιήσιμη οθόνη από το XDG Desktop Portal, η βιβλιοθήκη PipeWire ίσως είναι πολύ παλιά"),
+        ("RustDesk could not load a GStreamer component needed for screen capture ({})", "Το MyDesk δεν μπόρεσε να φορτώσει ένα στοιχείο του GStreamer που απαιτείται για την καταγραφή οθόνης ({})"),
     ].iter().cloned().collect();
 }
 
