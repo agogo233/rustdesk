@@ -3,6 +3,8 @@ name: Build MyDesk (Win x86_64 + Android arm64)
 on:
   workflow_dispatch:
   push:
+    branches:
+      - Mod
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+'
       - '[0-9]+.[0-9]+.[0-9]+'
