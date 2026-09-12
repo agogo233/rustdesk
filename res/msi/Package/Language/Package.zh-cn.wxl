@@ -29,7 +29,6 @@ This file contains the declaration of all the localizable strings.
 	<String Id="SC_Client" Value="MyDesk" />
 	<String Id="SC_Client_Desc" Value="启动 MyDesk。" />
 
-	<String Id="SC_Client_Tray" Value="MyDesk 托盘" />
 	<String Id="SC_Client_Tray_Desc" Value="启动 MyDesk 托盘。" />
 
 	<!-- Server related strings -->

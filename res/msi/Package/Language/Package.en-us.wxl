@@ -29,7 +29,6 @@ This file contains the declaration of all the localizable strings.
 	<String Id="SC_Client" Value="MyDesk" />
 	<String Id="SC_Client_Desc" Value="Start MyDesk." />
 
-	<String Id="SC_Client_Tray" Value="MyDesk Tray" />
 	<String Id="SC_Client_Tray_Desc" Value="Start MyDesk tray." />
 
 	<!-- Server related strings -->
