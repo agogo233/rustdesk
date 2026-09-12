@@ -3480,14 +3480,23 @@ fn get_install_service_commands(path: &str, exe: &str) -> ResultType<String> {
         validate_install_value(icon)?;
     }
     let tray_shortcut_commands =
-        embedded_tray_shortcut_commands(&app_name, exe, shortcut_icon_location.as_deref())?;
+        if is_installed() && is_cur_exe_the_installed() && get_start_on_boot() == "Y" {
+            let commands =
+                embedded_tray_shortcut_commands(&app_name, exe, shortcut_icon_location.as_deref())?;
+            format!(
+                "{commands}
+copy /Y \"%RUSTDESK_OUTPUT_DIR%\\{app_name} Tray.lnk\" \"%PROGRAMDATA%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\\"
+"
+            )
+        } else {
+            String::new()
+        };
     let filter = format!(" /FI \"PID ne {}\"", get_current_pid());
     Ok(format!(
         "
 chcp 65001
 taskkill /F /IM {app_name}.exe{filter}
 {tray_shortcut_commands}
-copy /Y \"%RUSTDESK_OUTPUT_DIR%\\{app_name} Tray.lnk\" \"%PROGRAMDATA%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\\"
 {import_config}
 {create_service}
     ",
