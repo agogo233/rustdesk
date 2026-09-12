@@ -1703,9 +1703,11 @@ if exist \"{tmp_path}\\{app_name} Tray.lnk\" del /f /q \"{tmp_path}\\{app_name} 
     let tray_shortcuts = if config::is_outgoing_only() {
         "".to_owned()
     } else {
+        let subkey = format!(".{}", app_name.to_lowercase());
         format!("
 {tray_shortcut_commands}
 copy /Y \"{tmp_path}\\{app_name} Tray.lnk\" \"%PROGRAMDATA%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\\"
+reg add HKEY_CLASSES_ROOT\\{subkey} /f /v {REG_NAME_INSTALL_STARTUPSHORTCUTS} /t REG_SZ /d \"1\"
 ")
     };
 
