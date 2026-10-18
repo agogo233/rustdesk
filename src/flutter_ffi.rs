@@ -2836,13 +2836,47 @@ pub fn main_set_common(_key: String, _value: String) {
             let event_key = "download-new-version".to_owned();
             let data = if let Some(download_file) = get_download_file_from_url(&download_url) {
                 std::fs::remove_file(&download_file).ok();
-                match crate::hbbs_http::downloader::download_file(
-                    download_url,
-                    Some(PathBuf::from(download_file)),
-                    Some(Duration::from_secs(3)),
+                let client = match crate::hbbs_http::create_http_client_with_url_strict(
+                    &download_url,
                 ) {
-                    Ok(id) => HashMap::from([("name", event_key), ("id", id)]),
-                    Err(e) => HashMap::from([("name", event_key), ("error", e.to_string())]),
+                    Ok(client) => client,
+                    Err(e) => {
+                        HashMap::from([("name", event_key), ("error", e.to_string())])
+                    }
+                };
+                let size_res = client
+                    .head(&download_url)
+                    .send()
+                    .ok()
+                    .and_then(|response| {
+                        if !response.status().is_success() {
+                            return None;
+                        }
+                        response
+                            .headers()
+                            .get(reqwest::header::CONTENT_LENGTH)
+                            .and_then(|ct_len| ct_len.to_str().ok())
+                            .and_then(|ct_len| ct_len.parse::<u64>().ok())
+                    });
+                match size_res {
+                    Some(size) => {
+                        let options = crate::hbbs_http::downloader::DownloadOptions {
+                            expected_size: size,
+                            artifact_sha256: String::new(),
+                        };
+                        match crate::hbbs_http::downloader::download_file(
+                            download_url,
+                            Some(PathBuf::from(download_file)),
+                            options,
+                        ) {
+                            Ok(id) => HashMap::from([("name", event_key), ("id", id)]),
+                            Err(e) => HashMap::from([("name", event_key), ("error", e.to_string())]),
+                        }
+                    }
+                    None => HashMap::from([
+                        ("name", event_key),
+                        ("error", "Failed to get content length".to_string()),
+                    ]),
                 }
             } else {
                 HashMap::from([
