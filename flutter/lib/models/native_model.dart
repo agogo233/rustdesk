@@ -58,7 +58,10 @@ class PlatformFFI {
   static final PlatformFFI instance = PlatformFFI._();
   final _toAndroidChannel = const MethodChannel('mChannel');
 
-  MydeskImpl get ffiBind => _ffiBind;
+MydeskImpl get ffiBind => _ffiBind;
+  @visibleForTesting
+  void setBindingForTesting(MydeskImpl binding) => _ffiBind = binding;
+
   F3? _session_get_rgba;
 
   static get localeName => Platform.localeName;

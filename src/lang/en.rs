@@ -281,6 +281,15 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("doc_mac_permission", "https://rustdesk.com/docs/en/client/mac/#enable-permissions"),
         ("doc_fix_wayland", "https://rustdesk.com/docs/en/client/linux/#x11-required"),
         ("relay-fallback-delay-tip", "How long a relay connection that is already up waits for the direct WebRTC connection before it is used instead. Raise it to give a slow direct connection more time to win; lower it to settle on the relay sooner on networks where a direct connection cannot be made. Leave empty for the default of 2.5 seconds."),
+        ("shortcut-page-description", "Bind a key combination to each session action below. Each binding must include at least one modifier."),
+        ("shortcut-passthrough-tip", "When on, every bound combination is forwarded to the remote. Useful when a binding collides with something you need on the remote."),
+        ("shortcut-reset-confirm-tip", "This will replace all current bindings with the default set. Continue?"),
+        ("shortcut-recording-instruction", "Press the key combination you want to use."),
+        ("shortcut-recording-press-keys-tip", "Press a key combination..."),
+        ("shortcut-must-include-modifiers", "Must include at least one modifier: {}"),
+        ("shortcut-already-bound-to", "Already bound to"),
+        ("shortcut-mobile-physical-keyboard-tip", "Recording requires a physical keyboard. Soft keyboards are not supported."),
+        ("shortcut-key-not-supported", "\"{}\" can't be used as a shortcut."),
     ].iter().cloned().collect();
 }
 
