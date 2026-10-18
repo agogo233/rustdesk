@@ -1275,7 +1275,7 @@ pub fn is_locked() -> bool {
     let Some(session_id) = get_current_process_session_id() else {
         return false;
     };
-    unsafe { is_session_locked(session_id) == TRUE }
+    is_session_locked_flag(session_id) == Some(true)
 }
 
 #[inline]
