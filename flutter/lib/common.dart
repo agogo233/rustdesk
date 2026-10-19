@@ -4065,21 +4065,9 @@ void earlyAssert() {
   assert('\1' == '1');
 }
 
+// A custom client never checks for updates in-app; keep this an explicit no-op
+// so the check cannot be re-enabled by accident.
 void checkUpdate() {
-  if (!isWeb) {
-    if (!bind.isCustomClient()) {
-      platformFFI.registerEventHandler(
-          kCheckSoftwareUpdateFinish, kCheckSoftwareUpdateFinish,
-          (Map<String, dynamic> evt) async {
-        if (evt['url'] is String) {
-          stateGlobal.updateUrl.value = evt['url'];
-        }
-      });
-      Timer(const Duration(seconds: 1), () async {
-        bind.mainGetSoftwareUpdateUrl();
-      });
-    }
-  }
 }
 
 // https://github.com/flutter/flutter/issues/153560#issuecomment-2497160535
