@@ -301,6 +301,7 @@ pub fn will_session_close_close_session(session_id: SessionID) -> SyncReturn<boo
 
 pub fn session_close(session_id: SessionID) {
     if let Some(session) = sessions::remove_session_by_session_id(&session_id) {
+        crate::keyboard::shortcuts::clear_session_state(&session_id);
         // `release_remote_keys` is not required for mobile platforms in common cases.
         // But we still call it to make the code more stable.
         #[cfg(any(target_os = "android", target_os = "ios"))]
@@ -362,6 +363,9 @@ pub fn session_toggle_option(session_id: SessionID, value: String) {
     if let Some(session) = sessions::get_session_by_session_id(&session_id) {
         log::warn!("toggle option {}", &value);
         session.toggle_option(value.clone());
+        if value == "view-only" && session.get_toggle_option(value.clone()) {
+            crate::keyboard::shortcuts::enter_view_only(&session_id);
+        }
         try_sync_peer_option(&session, &session_id, &value, None);
     }
     #[cfg(not(target_os = "ios"))]
@@ -1839,6 +1843,7 @@ pub fn cm_get_clients_length() -> usize {
 
 pub fn main_init(app_dir: String, custom_client_config: String) {
     initialize(&app_dir, &custom_client_config);
+    crate::keyboard::shortcuts::reload_from_config();
 }
 
 pub fn main_device_id(id: String) {
