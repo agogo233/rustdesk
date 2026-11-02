@@ -1630,6 +1630,17 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Off", ""),
 
+        ("api_server_connection_tip", "Serveri juaj i personalizuar përdor HTTP të pakriptuar. Kontaktoni administratorin tuaj për të aktivizuar HTTPS."),
+        ("api_server_empty_tip", "Kur Serveri API është bosh, serveri juaj i personalizuar përdor HTTP si parazgjedhje. Kontaktoni administratorin tuaj për të aktivizuar HTTPS."),
+        ("RustDesk storage", "Hapësira ruajtëse e MyDesk"),
+        ("Other folders", "Dosje të tjera"),
+        ("Choose which folder remote devices can access.", "Zgjidhni cilën dosje mund të aksesojnë pajisjet në distancë."),
+        ("android-logs-folder-tip", "Zgjidhni Android → media për të ruajtur skedarët e regjistrave."),
+        ("Choose folder", "Zgjidh dosjen"),
+        ("Please select Android → media.", "Ju lutemi zgjidhni Android → media."),
+        ("Trust duration (days)", "Kohëzgjatja e besimit (ditë)"),
+        ("Renew trust", "Rinovo besimin"),
+        ("install-directory-not-empty-tip", "Dosja e zgjedhur nuk është bosh. Instalimi mund të fshijë të dhënat ekzistuese. Konsideroni të zgjidhni një dosje tjetër."),
     ].iter().cloned().collect();
 }
 

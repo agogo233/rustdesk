@@ -1630,6 +1630,17 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Off", ""),
 
+        ("api_server_connection_tip", "Su servidor personalizado usa HTTP sin cifrar. Contacte con su administrador para habilitar HTTPS."),
+        ("api_server_empty_tip", "Con el Servidor API vacío, su servidor personalizado usa HTTP de forma predeterminada. Contacte con su administrador para habilitar HTTPS."),
+        ("RustDesk storage", "Almacenamiento de MyDesk"),
+        ("Other folders", "Otras carpetas"),
+        ("Choose which folder remote devices can access.", "Elija a qué carpeta pueden acceder los dispositivos remotos."),
+        ("android-logs-folder-tip", "Elija Android → media para guardar los archivos de registro."),
+        ("Choose folder", "Elegir carpeta"),
+        ("Please select Android → media.", "Seleccione Android → media."),
+        ("Trust duration (days)", "Duración de la confianza (días)"),
+        ("Renew trust", "Renovar confianza"),
+        ("install-directory-not-empty-tip", "La carpeta seleccionada no está vacía. La instalación puede eliminar los datos existentes. Considera elegir otra carpeta."),
     ].iter().cloned().collect();
 }
 

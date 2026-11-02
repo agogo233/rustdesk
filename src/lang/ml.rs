@@ -1630,5 +1630,16 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Off", ""),
 
+        ("api_server_connection_tip", "നിങ്ങളുടെ കസ്റ്റം സെർവർ എൻക്രിപ്റ്റ് ചെയ്യാത്ത HTTP ആണ് ഉപയോഗിക്കുന്നത്. HTTPS പ്രവർത്തനക്ഷമമാക്കാൻ നിങ്ങളുടെ അഡ്മിനിസ്ട്രേറ്ററെ ബന്ധപ്പെടുക."),
+        ("api_server_empty_tip", "API സെർവർ ശൂന്യമാണെങ്കിൽ, നിങ്ങളുടെ കസ്റ്റം സെർവർ ഡിഫോൾട്ടായി HTTP ഉപയോഗിക്കും. HTTPS പ്രവർത്തനക്ഷമമാക്കാൻ നിങ്ങളുടെ അഡ്മിനിസ്ട്രേറ്ററെ ബന്ധപ്പെടുക."),
+        ("RustDesk storage", "MyDesk സ്റ്റോറേജ്"),
+        ("Other folders", "മറ്റ് ഫോൾഡറുകൾ"),
+        ("Choose which folder remote devices can access.", "റിമോട്ട് ഉപകരണങ്ങൾക്ക് ആക്‌സസ് ചെയ്യാൻ കഴിയുന്ന ഫോൾഡർ തിരഞ്ഞെടുക്കുക."),
+        ("android-logs-folder-tip", "ലോഗ് ഫയലുകൾ സൂക്ഷിക്കാൻ Android → media തിരഞ്ഞെടുക്കുക."),
+        ("Choose folder", "ഫോൾഡർ തിരഞ്ഞെടുക്കുക"),
+        ("Please select Android → media.", "ദയവായി Android → media തിരഞ്ഞെടുക്കുക."),
+        ("Trust duration (days)", "വിശ്വാസ കാലാവധി (ദിവസം)"),
+        ("Renew trust", "വിശ്വാസം പുതുക്കുക"),
+        ("install-directory-not-empty-tip", "തിരഞ്ഞെടുത്ത ഫോൾഡർ ശൂന്യമല്ല. ഇൻസ്റ്റാളേഷൻ നിലവിലുള്ള ഡാറ്റ ഇല്ലാതാക്കിയേക്കാം. മറ്റൊരു ഫോൾഡർ തിരഞ്ഞെടുക്കുന്നത് പരിഗണിക്കുക."),
     ].iter().cloned().collect();
 }

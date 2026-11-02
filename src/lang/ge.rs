@@ -1630,6 +1630,17 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Off", ""),
 
+        ("api_server_connection_tip", "თქვენი მორგებული სერვერი იყენებს დაუშიფრავ HTTP-ს. HTTPS-ის ჩასართავად დაუკავშირდით თქვენს ადმინისტრატორს."),
+        ("api_server_empty_tip", "როცა „API სერვერი“ ცარიელია, თქვენი მორგებული სერვერი ნაგულისხმევად იყენებს HTTP-ს. HTTPS-ის ჩასართავად დაუკავშირდით თქვენს ადმინისტრატორს."),
+        ("RustDesk storage", "MyDesk-ის საცავი"),
+        ("Other folders", "სხვა საქაღალდეები"),
+        ("Choose which folder remote devices can access.", "აირჩიეთ, რომელ საქაღალდეზე ექნებათ წვდომა დისტანციურ მოწყობილობებს."),
+        ("android-logs-folder-tip", "ჟურნალის ფაილების შესანახად აირჩიეთ Android → media."),
+        ("Choose folder", "საქაღალდის არჩევა"),
+        ("Please select Android → media.", "გთხოვთ, აირჩიოთ Android → media."),
+        ("Trust duration (days)", "ნდობის ხანგრძლივობა (დღე)"),
+        ("Renew trust", "ნდობის განახლება"),
+        ("install-directory-not-empty-tip", "არჩეული საქაღალდე ცარიელი არ არის. ინსტალაციამ შეიძლება წაშალოს არსებული მონაცემები. რეკომენდებულია სხვა საქაღალდის არჩევა."),
     ].iter().cloned().collect();
 }
 

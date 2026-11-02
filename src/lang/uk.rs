@@ -1630,6 +1630,17 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Off", ""),
 
+        ("api_server_connection_tip", "Ваш власний сервер використовує незашифрований HTTP. Зверніться до адміністратора, щоб увімкнути HTTPS."),
+        ("api_server_empty_tip", "Якщо поле «API-сервер» порожнє, ваш власний сервер типово використовує HTTP. Зверніться до адміністратора, щоб увімкнути HTTPS."),
+        ("RustDesk storage", "Сховище MyDesk"),
+        ("Other folders", "Інші теки"),
+        ("Choose which folder remote devices can access.", "Виберіть теку, до якої матимуть доступ віддалені пристрої."),
+        ("android-logs-folder-tip", "Виберіть Android → media для зберігання файлів журналів."),
+        ("Choose folder", "Вибрати теку"),
+        ("Please select Android → media.", "Будь ласка, виберіть Android → media."),
+        ("Trust duration (days)", "Термін довіри (у днях)"),
+        ("Renew trust", "Подовжити довіру"),
+        ("install-directory-not-empty-tip", "Вибрана тека не порожня. Встановлення може видалити наявні дані. Радимо вибрати іншу теку."),
     ].iter().cloned().collect();
 }
 

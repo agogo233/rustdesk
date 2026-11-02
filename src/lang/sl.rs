@@ -1630,5 +1630,16 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Off", ""),
 
+        ("api_server_connection_tip", "Vaš strežnik po meri uporablja nešifriran HTTP. Za omogočanje HTTPS se obrnite na skrbnika."),
+        ("api_server_empty_tip", "Ko je API strežnik prazen, vaš strežnik po meri privzeto uporablja HTTP. Za omogočanje HTTPS se obrnite na skrbnika."),
+        ("RustDesk storage", "Shramba MyDesk"),
+        ("Other folders", "Druge mape"),
+        ("Choose which folder remote devices can access.", "Izberite mapo, do katere lahko dostopajo oddaljene naprave."),
+        ("android-logs-folder-tip", "Za shranjevanje dnevniških datotek izberite Android → media."),
+        ("Choose folder", "Izberi mapo"),
+        ("Please select Android → media.", "Izberite Android → media."),
+        ("Trust duration (days)", "Trajanje zaupanja (dni)"),
+        ("Renew trust", "Obnovi zaupanje"),
+        ("install-directory-not-empty-tip", "Izbrana mapa ni prazna. Namestitev lahko izbriše obstoječe podatke. Razmislite o izbiri druge mape."),
     ].iter().cloned().collect();
 }

@@ -1630,5 +1630,16 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Off", ""),
 
+        ("api_server_connection_tip", "તમારું કસ્ટમ સર્વર અનએન્ક્રિપ્ટેડ HTTP વાપરે છે. HTTPS સક્ષમ કરવા માટે તમારા એડમિનિસ્ટ્રેટરનો સંપર્ક કરો."),
+        ("api_server_empty_tip", "API સર્વર ખાલી હોય ત્યારે, તમારું કસ્ટમ સર્વર ડિફોલ્ટ રૂપે HTTP વાપરે છે. HTTPS સક્ષમ કરવા માટે તમારા એડમિનિસ્ટ્રેટરનો સંપર્ક કરો."),
+        ("RustDesk storage", "MyDesk સ્ટોરેજ"),
+        ("Other folders", "અન્ય ફોલ્ડર્સ"),
+        ("Choose which folder remote devices can access.", "રિમોટ ઉપકરણો કયા ફોલ્ડરને ઍક્સેસ કરી શકે તે પસંદ કરો."),
+        ("android-logs-folder-tip", "લોગ ફાઇલો સંગ્રહવા માટે Android → media પસંદ કરો."),
+        ("Choose folder", "ફોલ્ડર પસંદ કરો"),
+        ("Please select Android → media.", "કૃપા કરીને Android → media પસંદ કરો."),
+        ("Trust duration (days)", "વિશ્વાસ અવધિ (દિવસો)"),
+        ("Renew trust", "વિશ્વાસ નવીકરણ કરો"),
+        ("install-directory-not-empty-tip", "પસંદ કરેલ ફોલ્ડર ખાલી નથી. ઇન્સ્ટોલેશન હાલનો ડેટા કાઢી નાખી શકે છે. બીજું ફોલ્ડર પસંદ કરવાનું વિચારો."),
     ].iter().cloned().collect();
 }

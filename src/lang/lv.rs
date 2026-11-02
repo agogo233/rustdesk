@@ -1630,6 +1630,17 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Off", ""),
 
+        ("api_server_connection_tip", "Jūsu pielāgotais serveris izmanto nešifrētu HTTP. Sazinieties ar administratoru, lai iespējotu HTTPS."),
+        ("api_server_empty_tip", "Ja API serveris nav norādīts, jūsu pielāgotais serveris pēc noklusējuma izmanto HTTP. Sazinieties ar administratoru, lai iespējotu HTTPS."),
+        ("RustDesk storage", "MyDesk krātuve"),
+        ("Other folders", "Citas mapes"),
+        ("Choose which folder remote devices can access.", "Izvēlieties, kurai mapei attālās ierīces var piekļūt."),
+        ("android-logs-folder-tip", "Izvēlieties Android → media, lai saglabātu žurnālu failus."),
+        ("Choose folder", "Izvēlēties mapi"),
+        ("Please select Android → media.", "Lūdzu, atlasiet Android → media."),
+        ("Trust duration (days)", "Uzticēšanās ilgums (dienas)"),
+        ("Renew trust", "Atjaunot uzticēšanos"),
+        ("install-directory-not-empty-tip", "Izvēlētā mape nav tukša. Instalēšana var izdzēst esošos datus. Apsveriet iespēju izvēlēties citu mapi."),
     ].iter().cloned().collect();
 }
 

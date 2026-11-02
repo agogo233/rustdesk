@@ -1630,6 +1630,17 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Off", ""),
 
+        ("api_server_connection_tip", "Máy chủ tùy chỉnh của bạn đang dùng HTTP không mã hóa. Hãy liên hệ quản trị viên để bật HTTPS."),
+        ("api_server_empty_tip", "Khi để trống Máy chủ API, máy chủ tùy chỉnh của bạn sẽ mặc định dùng HTTP. Hãy liên hệ quản trị viên để bật HTTPS."),
+        ("RustDesk storage", "Bộ nhớ MyDesk"),
+        ("Other folders", "Thư mục khác"),
+        ("Choose which folder remote devices can access.", "Chọn thư mục mà các thiết bị từ xa có thể truy cập."),
+        ("android-logs-folder-tip", "Chọn Android → media để lưu tệp nhật ký."),
+        ("Choose folder", "Chọn thư mục"),
+        ("Please select Android → media.", "Vui lòng chọn Android → media."),
+        ("Trust duration (days)", "Thời hạn tin cậy (ngày)"),
+        ("Renew trust", "Gia hạn tin cậy"),
+        ("install-directory-not-empty-tip", "Thư mục đã chọn không trống. Quá trình cài đặt có thể xóa dữ liệu hiện có. Hãy cân nhắc chọn một thư mục khác."),
     ].iter().cloned().collect();
 }
 

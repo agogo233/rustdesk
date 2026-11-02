@@ -1624,5 +1624,16 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Off", ""),
 
+        ("api_server_connection_tip", "Fərdi serveriniz şifrələnməmiş HTTP istifadə edir. HTTPS-i aktivləşdirmək üçün administratorunuzla əlaqə saxlayın."),
+        ("api_server_empty_tip", "«API serveri» boş olduqda fərdi serveriniz standart olaraq HTTP istifadə edir. HTTPS-i aktivləşdirmək üçün administratorunuzla əlaqə saxlayın."),
+        ("RustDesk storage", "MyDesk yaddaşı"),
+        ("Other folders", "Digər qovluqlar"),
+        ("Choose which folder remote devices can access.", "Uzaq cihazların hansı qovluğa giriş edə biləcəyini seçin."),
+        ("android-logs-folder-tip", "Jurnal fayllarını saxlamaq üçün Android → media seçin."),
+        ("Choose folder", "Qovluq seç"),
+        ("Please select Android → media.", "Zəhmət olmasa, Android → media seçin."),
+        ("Trust duration (days)", "Etibar müddəti (gün)"),
+        ("Renew trust", "Etibarı yenilə"),
+        ("install-directory-not-empty-tip", "Seçilmiş qovluq boş deyil. Quraşdırma mövcud məlumatları silə bilər. Başqa qovluq seçməyiniz tövsiyə olunur."),
     ].iter().cloned().collect();
 }

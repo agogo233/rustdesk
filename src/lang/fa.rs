@@ -1630,6 +1630,17 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Off", ""),
 
+        ("api_server_connection_tip", "سرور سفارشی شما از HTTP رمزنگاری‌نشده استفاده می‌کند. برای فعال‌سازی HTTPS با مدیر سیستم خود تماس بگیرید."),
+        ("api_server_empty_tip", "وقتی «API سرور» خالی باشد، سرور سفارشی شما به‌طور پیش‌فرض از HTTP استفاده می‌کند. برای فعال‌سازی HTTPS با مدیر سیستم خود تماس بگیرید."),
+        ("RustDesk storage", "حافظه MyDesk"),
+        ("Other folders", "پوشه‌های دیگر"),
+        ("Choose which folder remote devices can access.", "انتخاب کنید دستگاه‌های راه دور به کدام پوشه دسترسی داشته باشند."),
+        ("android-logs-folder-tip", "برای ذخیره فایل‌های گزارش، Android → media را انتخاب کنید."),
+        ("Choose folder", "انتخاب پوشه"),
+        ("Please select Android → media.", "لطفاً Android → media را انتخاب کنید."),
+        ("Trust duration (days)", "مدت اعتماد (روز)"),
+        ("Renew trust", "تمدید اعتماد"),
+        ("install-directory-not-empty-tip", "پوشه انتخاب‌شده خالی نیست. نصب ممکن است داده‌های موجود را حذف کند. بهتر است پوشه دیگری انتخاب کنید."),
     ].iter().cloned().collect();
 }
 

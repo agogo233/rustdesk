@@ -1630,6 +1630,17 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Off", ""),
 
+        ("api_server_connection_tip", "Ο προσαρμοσμένος διακομιστής σας χρησιμοποιεί μη κρυπτογραφημένο HTTP. Επικοινωνήστε με τον διαχειριστή σας για να ενεργοποιήσει το HTTPS."),
+        ("api_server_empty_tip", "Όταν το πεδίο «Διακομιστής API» είναι κενό, ο προσαρμοσμένος διακομιστής σας χρησιμοποιεί από προεπιλογή HTTP. Επικοινωνήστε με τον διαχειριστή σας για να ενεργοποιήσει το HTTPS."),
+        ("RustDesk storage", "Χώρος αποθήκευσης MyDesk"),
+        ("Other folders", "Άλλοι φάκελοι"),
+        ("Choose which folder remote devices can access.", "Επιλέξτε σε ποιον φάκελο μπορούν να έχουν πρόσβαση οι απομακρυσμένες συσκευές."),
+        ("android-logs-folder-tip", "Επιλέξτε Android → media για την αποθήκευση των αρχείων καταγραφής."),
+        ("Choose folder", "Επιλογή φακέλου"),
+        ("Please select Android → media.", "Παρακαλώ επιλέξτε Android → media."),
+        ("Trust duration (days)", "Διάρκεια εμπιστοσύνης (ημέρες)"),
+        ("Renew trust", "Ανανέωση εμπιστοσύνης"),
+        ("install-directory-not-empty-tip", "Ο επιλεγμένος φάκελος δεν είναι κενός. Η εγκατάσταση ενδέχεται να διαγράψει υπάρχοντα δεδομένα. Εξετάστε το ενδεχόμενο να επιλέξετε διαφορετικό φάκελο."),
     ].iter().cloned().collect();
 }
 

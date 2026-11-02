@@ -1630,6 +1630,17 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Off", ""),
 
+        ("api_server_connection_tip", "Server kustom Anda menggunakan HTTP tanpa enkripsi. Hubungi administrator Anda untuk mengaktifkan HTTPS."),
+        ("api_server_empty_tip", "Jika Server API dikosongkan, server kustom Anda secara default menggunakan HTTP. Hubungi administrator Anda untuk mengaktifkan HTTPS."),
+        ("RustDesk storage", "Penyimpanan MyDesk"),
+        ("Other folders", "Folder lain"),
+        ("Choose which folder remote devices can access.", "Pilih folder yang dapat diakses oleh perangkat remote."),
+        ("android-logs-folder-tip", "Pilih Android → media untuk menyimpan file log."),
+        ("Choose folder", "Pilih folder"),
+        ("Please select Android → media.", "Silakan pilih Android → media."),
+        ("Trust duration (days)", "Durasi kepercayaan (hari)"),
+        ("Renew trust", "Perbarui kepercayaan"),
+        ("install-directory-not-empty-tip", "Folder yang dipilih tidak kosong. Instalasi dapat menghapus data yang ada. Pertimbangkan untuk memilih folder lain."),
     ].iter().cloned().collect();
 }
 

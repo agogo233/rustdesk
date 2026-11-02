@@ -1630,6 +1630,17 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Off", ""),
 
+        ("api_server_connection_tip", "Váš vlastní server používá nešifrovaný HTTP. Pro povolení HTTPS kontaktujte svého správce."),
+        ("api_server_empty_tip", "Pokud je API Server prázdný, váš vlastní server ve výchozím nastavení používá HTTP. Pro povolení HTTPS kontaktujte svého správce."),
+        ("RustDesk storage", "Úložiště MyDesk"),
+        ("Other folders", "Jiné složky"),
+        ("Choose which folder remote devices can access.", "Vyberte složku, ke které mohou mít vzdálená zařízení přístup."),
+        ("android-logs-folder-tip", "Pro ukládání souborů protokolu vyberte Android → media."),
+        ("Choose folder", "Vybrat složku"),
+        ("Please select Android → media.", "Vyberte prosím Android → media."),
+        ("Trust duration (days)", "Doba důvěry (dny)"),
+        ("Renew trust", "Obnovit důvěru"),
+        ("install-directory-not-empty-tip", "Vybraná složka není prázdná. Instalace může odstranit existující data. Zvažte výběr jiné složky."),
     ].iter().cloned().collect();
 }
 

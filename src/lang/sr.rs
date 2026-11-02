@@ -1630,6 +1630,17 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Off", ""),
 
+        ("api_server_connection_tip", "Vaš prilagođeni server koristi nekriptovani HTTP. Obratite se administratoru da omogući HTTPS."),
+        ("api_server_empty_tip", "Kada je polje „API server“ prazno, vaš prilagođeni server podrazumevano koristi HTTP. Obratite se administratoru da omogući HTTPS."),
+        ("RustDesk storage", "MyDesk skladište"),
+        ("Other folders", "Ostali direktorijumi"),
+        ("Choose which folder remote devices can access.", "Izaberite direktorijum kojem udaljeni uređaji mogu da pristupe."),
+        ("android-logs-folder-tip", "Izaberite Android → media za čuvanje datoteka dnevnika."),
+        ("Choose folder", "Izaberi direktorijum"),
+        ("Please select Android → media.", "Izaberite Android → media."),
+        ("Trust duration (days)", "Trajanje poverenja (dani)"),
+        ("Renew trust", "Obnovi poverenje"),
+        ("install-directory-not-empty-tip", "Izabrani direktorijum nije prazan. Instalacija može da obriše postojeće podatke. Razmislite o izboru drugog direktorijuma."),
     ].iter().cloned().collect();
 }
 

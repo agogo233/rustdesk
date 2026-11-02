@@ -1630,6 +1630,17 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Off", ""),
 
+        ("api_server_connection_tip", "Sinu kohandatud server kasutab krüpteerimata HTTP-d. HTTPS-i lubamiseks võta ühendust administraatoriga."),
+        ("api_server_empty_tip", "Kui väli „Rakendusliidese server“ on tühi, kasutab sinu kohandatud server vaikimisi HTTP-d. HTTPS-i lubamiseks võta ühendust administraatoriga."),
+        ("RustDesk storage", "MyDeski salvestusruum"),
+        ("Other folders", "Muud kaustad"),
+        ("Choose which folder remote devices can access.", "Vali, millisele kaustale kaugseadmetel on juurdepääs."),
+        ("android-logs-folder-tip", "Logifailide salvestamiseks vali Android → media."),
+        ("Choose folder", "Vali kaust"),
+        ("Please select Android → media.", "Palun vali Android → media."),
+        ("Trust duration (days)", "Usalduse kestus (päevades)"),
+        ("Renew trust", "Uuenda usaldust"),
+        ("install-directory-not-empty-tip", "Valitud kaust ei ole tühi. Paigaldamine võib olemasolevad andmed kustutada. Kaalu teise kausta valimist."),
     ].iter().cloned().collect();
 }
 

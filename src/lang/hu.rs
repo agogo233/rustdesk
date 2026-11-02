@@ -1630,5 +1630,16 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Off", ""),
 
+        ("api_server_connection_tip", "Az egyéni kiszolgálója titkosítatlan HTTP-t használ. A HTTPS engedélyezéséhez forduljon a rendszergazdához."),
+        ("api_server_empty_tip", "Ha az API-kiszolgáló mező üres, az egyéni kiszolgáló alapértelmezés szerint HTTP-t használ. A HTTPS engedélyezéséhez forduljon a rendszergazdához."),
+        ("RustDesk storage", "MyDesk-tárhely"),
+        ("Other folders", "Egyéb mappák"),
+        ("Choose which folder remote devices can access.", "Válassza ki, mely mappához férhetnek hozzá a távoli eszközök."),
+        ("android-logs-folder-tip", "A naplófájlok tárolásához válassza az Android → media mappát."),
+        ("Choose folder", "Mappa kiválasztása"),
+        ("Please select Android → media.", "Válassza az Android → media mappát."),
+        ("Trust duration (days)", "Megbízhatóság időtartama (nap)"),
+        ("Renew trust", "Megbízhatóság megújítása"),
+        ("install-directory-not-empty-tip", "A kiválasztott mappa nem üres. A telepítés törölheti a meglévő adatokat. Fontolja meg egy másik mappa kiválasztását."),
     ].iter().cloned().collect();
 }

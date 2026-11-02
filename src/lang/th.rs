@@ -1630,6 +1630,17 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Off", ""),
 
+        ("api_server_connection_tip", "เซิร์ฟเวอร์ที่กำหนดเองของคุณใช้ HTTP ที่ไม่มีการเข้ารหัส โปรดติดต่อผู้ดูแลระบบของคุณเพื่อเปิดใช้งาน HTTPS"),
+        ("api_server_empty_tip", "เมื่อเว้นว่างเซิร์ฟเวอร์ API ไว้ เซิร์ฟเวอร์ที่กำหนดเองของคุณจะใช้ HTTP เป็นค่าเริ่มต้น โปรดติดต่อผู้ดูแลระบบของคุณเพื่อเปิดใช้งาน HTTPS"),
+        ("RustDesk storage", "พื้นที่จัดเก็บของ MyDesk"),
+        ("Other folders", "โฟลเดอร์อื่น"),
+        ("Choose which folder remote devices can access.", "เลือกโฟลเดอร์ที่อุปกรณ์ปลายทางสามารถเข้าถึงได้"),
+        ("android-logs-folder-tip", "เลือก Android → media เพื่อจัดเก็บไฟล์ล็อก"),
+        ("Choose folder", "เลือกโฟลเดอร์"),
+        ("Please select Android → media.", "กรุณาเลือก Android → media"),
+        ("Trust duration (days)", "ระยะเวลาการเชื่อถือ (วัน)"),
+        ("Renew trust", "ต่ออายุการเชื่อถือ"),
+        ("install-directory-not-empty-tip", "โฟลเดอร์ที่เลือกไม่ว่างเปล่า การติดตั้งอาจลบข้อมูลที่มีอยู่ ควรพิจารณาเลือกโฟลเดอร์อื่น"),
     ].iter().cloned().collect();
 }
 

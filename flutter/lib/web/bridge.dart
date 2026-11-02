@@ -1835,6 +1835,10 @@ class MydeskImpl {
     throw UnimplementedError("mainRemoveTrustedDevices");
   }
 
+  Future<void> mainRenewTrustedDevices({required String json, dynamic hint}) {
+    throw UnimplementedError("mainRenewTrustedDevices");
+  }
+
   Future<void> mainClearTrustedDevices({dynamic hint}) {
     throw UnimplementedError("mainClearTrustedDevices");
   }
@@ -1929,6 +1933,11 @@ class MydeskImpl {
   }
 
   String mainGetCommonSync({required String key, dynamic hint}) {
+    const prefix = 'resolve-api-server:';
+    if (key.startsWith(prefix)) {
+      return js.context
+          .callMethod('getByName', ['api_server', key.substring(prefix.length)]);
+    }
     throw UnimplementedError("mainGetCommonSync");
   }
 

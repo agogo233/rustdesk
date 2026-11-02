@@ -1630,6 +1630,17 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Off", ""),
 
+        ("api_server_connection_tip", "Din brugerdefinerede server bruger ukrypteret HTTP. Kontakt din administrator for at aktivere HTTPS."),
+        ("api_server_empty_tip", "Når API Server er tom, bruger din brugerdefinerede server HTTP som standard. Kontakt din administrator for at aktivere HTTPS."),
+        ("RustDesk storage", "MyDesk-lager"),
+        ("Other folders", "Andre mapper"),
+        ("Choose which folder remote devices can access.", "Vælg, hvilken mappe fjernenheder kan få adgang til."),
+        ("android-logs-folder-tip", "Vælg Android → media for at gemme logfiler."),
+        ("Choose folder", "Vælg mappe"),
+        ("Please select Android → media.", "Vælg Android → media."),
+        ("Trust duration (days)", "Tillidsperiode (dage)"),
+        ("Renew trust", "Forny tillid"),
+        ("install-directory-not-empty-tip", "Den valgte mappe er ikke tom. Installationen kan slette eksisterende data. Overvej at vælge en anden mappe."),
     ].iter().cloned().collect();
 }
 

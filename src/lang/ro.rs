@@ -1630,6 +1630,17 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Off", ""),
 
+        ("api_server_connection_tip", "Serverul tău personalizat folosește HTTP necriptat. Contactează administratorul pentru a activa HTTPS."),
+        ("api_server_empty_tip", "Dacă Server API este gol, serverul tău personalizat folosește implicit HTTP. Contactează administratorul pentru a activa HTTPS."),
+        ("RustDesk storage", "Stocare MyDesk"),
+        ("Other folders", "Alte foldere"),
+        ("Choose which folder remote devices can access.", "Alege folderul pe care îl pot accesa dispozitivele la distanță."),
+        ("android-logs-folder-tip", "Alege Android → media pentru a stoca fișierele jurnal."),
+        ("Choose folder", "Alege folderul"),
+        ("Please select Android → media.", "Selectează Android → media."),
+        ("Trust duration (days)", "Durata încrederii (zile)"),
+        ("Renew trust", "Reînnoiește încrederea"),
+        ("install-directory-not-empty-tip", "Folderul selectat nu este gol. Instalarea poate șterge datele existente. Ia în considerare alegerea altui folder."),
     ].iter().cloned().collect();
 }
 

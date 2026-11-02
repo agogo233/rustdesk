@@ -1630,6 +1630,17 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Off", ""),
 
+        ("api_server_connection_tip", "Сіздің жеке серберіңіз шифрланбаған HTTP қолданады. HTTPS қосу үшін әкімшіңізге хабарласыңыз."),
+        ("api_server_empty_tip", "«API Сербері» бос болса, сіздің жеке серберіңіз әдепкі бойынша HTTP қолданады. HTTPS қосу үшін әкімшіңізге хабарласыңыз."),
+        ("RustDesk storage", "MyDesk қоймасы"),
+        ("Other folders", "Басқа бумалар"),
+        ("Choose which folder remote devices can access.", "Қашықтағы құрылғылар қол жеткізе алатын буманы таңдаңыз."),
+        ("android-logs-folder-tip", "Журнал файылдарын сақтау үшін Android → media таңдаңыз."),
+        ("Choose folder", "Буманы таңдау"),
+        ("Please select Android → media.", "Android → media таңдаңыз."),
+        ("Trust duration (days)", "Сенім мерзімі (күн)"),
+        ("Renew trust", "Сенімді жаңарту"),
+        ("install-directory-not-empty-tip", "Таңдалған бума бос емес. Орнату бар деректерді жоюы мүмкін. Басқа буманы таңдаған жөн."),
     ].iter().cloned().collect();
 }
 

@@ -1630,6 +1630,17 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Off", ""),
 
+        ("api_server_connection_tip", "Zure zerbitzari pertsonalizatuak zifratu gabeko HTTP erabiltzen du. Jarri harremanetan administratzailearekin HTTPS gaitzeko."),
+        ("api_server_empty_tip", "API zerbitzaria hutsik badago, zure zerbitzari pertsonalizatuak HTTP erabiltzen du lehenespenez. Jarri harremanetan administratzailearekin HTTPS gaitzeko."),
+        ("RustDesk storage", "MyDesk biltegiratzea"),
+        ("Other folders", "Beste karpeta batzuk"),
+        ("Choose which folder remote devices can access.", "Aukeratu urruneko gailuek zein karpeta atzi dezaketen."),
+        ("android-logs-folder-tip", "Aukeratu Android → media erregistro-fitxategiak gordetzeko."),
+        ("Choose folder", "Aukeratu karpeta"),
+        ("Please select Android → media.", "Hautatu Android → media."),
+        ("Trust duration (days)", "Konfiantzaren iraupena (egunak)"),
+        ("Renew trust", "Berritu konfiantza"),
+        ("install-directory-not-empty-tip", "Hautatutako karpeta ez dago hutsik. Instalazioak lehendik dauden datuak ezaba ditzake. Beste karpeta bat aukeratzea gomendatzen da."),
     ].iter().cloned().collect();
 }
 

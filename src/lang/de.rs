@@ -1630,6 +1630,17 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Off", ""),
 
+        ("api_server_connection_tip", "Ihr benutzerdefinierter Server verwendet unverschlüsseltes HTTP. Wenden Sie sich an Ihren Administrator, um HTTPS zu aktivieren."),
+        ("api_server_empty_tip", "Wenn der API-Server leer ist, verwendet Ihr benutzerdefinierter Server standardmäßig HTTP. Wenden Sie sich an Ihren Administrator, um HTTPS zu aktivieren."),
+        ("RustDesk storage", "MyDesk-Speicher"),
+        ("Other folders", "Andere Ordner"),
+        ("Choose which folder remote devices can access.", "Wählen Sie, auf welchen Ordner entfernte Geräte zugreifen können."),
+        ("android-logs-folder-tip", "Wählen Sie Android → media, um Protokolldateien zu speichern."),
+        ("Choose folder", "Ordner auswählen"),
+        ("Please select Android → media.", "Bitte wählen Sie Android → media."),
+        ("Trust duration (days)", "Vertrauensdauer (Tage)"),
+        ("Renew trust", "Vertrauen erneuern"),
+        ("install-directory-not-empty-tip", "Der ausgewählte Ordner ist nicht leer. Bei der Installation können vorhandene Daten gelöscht werden. Erwägen Sie, einen anderen Ordner auszuwählen."),
     ].iter().cloned().collect();
 }
 

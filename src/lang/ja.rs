@@ -1630,5 +1630,16 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Off", ""),
 
+        ("api_server_connection_tip", "カスタムサーバーは暗号化されていない HTTP を使用しています。HTTPS を有効にするには管理者に連絡してください。"),
+        ("api_server_empty_tip", "API サーバーが空の場合、カスタムサーバーは既定で HTTP を使用します。HTTPS を有効にするには管理者に連絡してください。"),
+        ("RustDesk storage", "MyDesk ストレージ"),
+        ("Other folders", "その他のフォルダー"),
+        ("Choose which folder remote devices can access.", "リモートデバイスがアクセスできるフォルダーを選択してください。"),
+        ("android-logs-folder-tip", "ログファイルを保存するには Android → media を選択してください。"),
+        ("Choose folder", "フォルダーを選択"),
+        ("Please select Android → media.", "Android → media を選択してください。"),
+        ("Trust duration (days)", "信頼期間 (日)"),
+        ("Renew trust", "信頼を更新"),
+        ("install-directory-not-empty-tip", "選択したフォルダーは空ではありません。インストールにより既存のデータが削除される可能性があります。別のフォルダーを選択することをおすすめします。"),
     ].iter().cloned().collect();
 }

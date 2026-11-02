@@ -1630,6 +1630,17 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Off", ""),
 
+        ("api_server_connection_tip", "உங்கள் தனிப்பயன் சர்வர் மறைகுறியாக்கப்படாத HTTP-ஐப் பயன்படுத்துகிறது. HTTPS-ஐ இயக்க உங்கள் நிர்வாகியைத் தொடர்பு கொள்ளவும்."),
+        ("api_server_empty_tip", "API சர்வர் காலியாக இருக்கும்போது, உங்கள் தனிப்பயன் சர்வர் இயல்பாக HTTP-ஐப் பயன்படுத்தும். HTTPS-ஐ இயக்க உங்கள் நிர்வாகியைத் தொடர்பு கொள்ளவும்."),
+        ("RustDesk storage", "MyDesk சேமிப்பகம்"),
+        ("Other folders", "பிற கோப்புறைகள்"),
+        ("Choose which folder remote devices can access.", "தொலைநிலைச் சாதனங்கள் எந்தக் கோப்புறையை அணுகலாம் என்பதைத் தேர்ந்தெடுக்கவும்."),
+        ("android-logs-folder-tip", "பதிவுக் கோப்புகளைச் சேமிக்க Android → media என்பதைத் தேர்ந்தெடுக்கவும்."),
+        ("Choose folder", "கோப்புறையைத் தேர்ந்தெடு"),
+        ("Please select Android → media.", "Android → media என்பதைத் தேர்ந்தெடுக்கவும்."),
+        ("Trust duration (days)", "நம்பிக்கைக் காலம் (நாட்கள்)"),
+        ("Renew trust", "நம்பிக்கையைப் புதுப்பி"),
+        ("install-directory-not-empty-tip", "தேர்ந்தெடுக்கப்பட்ட கோப்புறை காலியாக இல்லை. நிறுவல் ஏற்கனவே உள்ள தரவை நீக்கக்கூடும். வேறு கோப்புறையைத் தேர்ந்தெடுப்பது நல்லது."),
     ].iter().cloned().collect();
 }
 

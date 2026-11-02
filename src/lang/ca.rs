@@ -1630,5 +1630,16 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Off", ""),
 
+        ("api_server_connection_tip", "El vostre servidor personalitzat utilitza HTTP sense xifrar. Contacteu amb l'administrador per habilitar HTTPS."),
+        ("api_server_empty_tip", "Si el camp «Clau API del servidor» és buit, el vostre servidor personalitzat utilitza HTTP per defecte. Contacteu amb l'administrador per habilitar HTTPS."),
+        ("RustDesk storage", "Emmagatzematge del MyDesk"),
+        ("Other folders", "Altres carpetes"),
+        ("Choose which folder remote devices can access.", "Trieu a quina carpeta poden accedir els dispositius remots."),
+        ("android-logs-folder-tip", "Trieu Android → media per desar els fitxers de registre."),
+        ("Choose folder", "Tria una carpeta"),
+        ("Please select Android → media.", "Seleccioneu Android → media."),
+        ("Trust duration (days)", "Durada de la confiança (dies)"),
+        ("Renew trust", "Renova la confiança"),
+        ("install-directory-not-empty-tip", "La carpeta seleccionada no és buida. La instal·lació pot suprimir les dades existents. Considereu triar una altra carpeta."),
     ].iter().cloned().collect();
 }

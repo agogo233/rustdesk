@@ -1630,5 +1630,16 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Off", ""),
 
+        ("api_server_connection_tip", "Mukautettu palvelimesi käyttää salaamatonta HTTP-yhteyttä. Pyydä järjestelmänvalvojaa ottamaan HTTPS käyttöön."),
+        ("api_server_empty_tip", "Kun ”API palvelin” on tyhjä, mukautettu palvelimesi käyttää oletuksena HTTP:tä. Pyydä järjestelmänvalvojaa ottamaan HTTPS käyttöön."),
+        ("RustDesk storage", "MyDesk-tallennustila"),
+        ("Other folders", "Muut kansiot"),
+        ("Choose which folder remote devices can access.", "Valitse, mihin kansioon etälaitteet pääsevät."),
+        ("android-logs-folder-tip", "Valitse Android → media lokitiedostojen tallennusta varten."),
+        ("Choose folder", "Valitse kansio"),
+        ("Please select Android → media.", "Valitse Android → media."),
+        ("Trust duration (days)", "Luottamuksen kesto (päivää)"),
+        ("Renew trust", "Jatka luottamusta"),
+        ("install-directory-not-empty-tip", "Valittu kansio ei ole tyhjä. Asennus voi poistaa olemassa olevia tietoja. Harkitse toisen kansion valitsemista."),
     ].iter().cloned().collect();
 }

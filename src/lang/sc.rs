@@ -1630,5 +1630,16 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Off", ""),
 
+        ("api_server_connection_tip", "Su serbidore personalizadu tuo impreat HTTP non tzifradu. Pedi a s'amministradore tuo de abilitare HTTPS."),
+        ("api_server_empty_tip", "Cun su Serbidore API bòidu, su serbidore personalizadu tuo impreat HTTP de manera predefinida. Pedi a s'amministradore tuo de abilitare HTTPS."),
+        ("RustDesk storage", "Archiviatzione de MyDesk"),
+        ("Other folders", "Àteras cartellas"),
+        ("Choose which folder remote devices can access.", "Issèbera a cale cartella podent atzèdere sos dispositivos remotos."),
+        ("android-logs-folder-tip", "Issèbera Android → media pro sarvare sos archìvios de registru."),
+        ("Choose folder", "Issèbera sa cartella"),
+        ("Please select Android → media.", "Seletziona Android → media."),
+        ("Trust duration (days)", "Durada de sa fidùtzia (dies)"),
+        ("Renew trust", "Annoa sa fidùtzia"),
+        ("install-directory-not-empty-tip", "Sa cartella seletzionada non est bòida. S'installatzione diat pòdere iscantzellare sos datos chi bi sunt. Ti cussigiamus de isseberare un'àtera cartella."),
     ].iter().cloned().collect();
 }

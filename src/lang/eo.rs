@@ -1630,6 +1630,17 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Off", ""),
 
+        ("api_server_connection_tip", "Via propra servilo uzas neĉifritan HTTP. Kontaktu vian administranton por ebligi HTTPS."),
+        ("api_server_empty_tip", "Kiam \"Servilo de API\" estas malplena, via propra servilo implicite uzas HTTP. Kontaktu vian administranton por ebligi HTTPS."),
+        ("RustDesk storage", "Konservejo de MyDesk"),
+        ("Other folders", "Aliaj dosierujoj"),
+        ("Choose which folder remote devices can access.", "Elektu, al kiu dosierujo foraj aparatoj povas aliri."),
+        ("android-logs-folder-tip", "Elektu Android → media por konservi protokolajn dosierojn."),
+        ("Choose folder", "Elekti dosierujon"),
+        ("Please select Android → media.", "Bonvolu elekti Android → media."),
+        ("Trust duration (days)", "Daŭro de fido (tagoj)"),
+        ("Renew trust", "Renovigi fidon"),
+        ("install-directory-not-empty-tip", "La elektita dosierujo ne estas malplena. La instalado povas forigi ekzistantajn datumojn. Konsideru elekti alian dosierujon."),
     ].iter().cloned().collect();
 }
 

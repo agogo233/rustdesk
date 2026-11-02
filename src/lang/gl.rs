@@ -1624,5 +1624,16 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Off", ""),
 
+        ("api_server_connection_tip", "O teu servidor personalizado usa HTTP sen cifrar. Contacta co teu administrador para activar HTTPS."),
+        ("api_server_empty_tip", "Co Servidor de API baleiro, o teu servidor personalizado usa HTTP de forma predeterminada. Contacta co teu administrador para activar HTTPS."),
+        ("RustDesk storage", "Almacenamento de MyDesk"),
+        ("Other folders", "Outros cartafoles"),
+        ("Choose which folder remote devices can access.", "Elixe a que cartafol poden acceder os dispositivos remotos."),
+        ("android-logs-folder-tip", "Elixe Android → media para gardar os ficheiros de rexistro."),
+        ("Choose folder", "Elixir cartafol"),
+        ("Please select Android → media.", "Selecciona Android → media."),
+        ("Trust duration (days)", "Duración da confianza (días)"),
+        ("Renew trust", "Renovar a confianza"),
+        ("install-directory-not-empty-tip", "O cartafol seleccionado non está baleiro. A instalación pode eliminar os datos existentes. Considera escoller outro cartafol."),
     ].iter().cloned().collect();
 }

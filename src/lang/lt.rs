@@ -1630,6 +1630,17 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Off", ""),
 
+        ("api_server_connection_tip", "Jūsų pasirinktinis serveris naudoja nešifruotą HTTP. Susisiekite su administratoriumi, kad įjungtų HTTPS."),
+        ("api_server_empty_tip", "Kai API serveris tuščias, jūsų pasirinktinis serveris pagal numatytuosius nustatymus naudoja HTTP. Susisiekite su administratoriumi, kad įjungtų HTTPS."),
+        ("RustDesk storage", "MyDesk saugykla"),
+        ("Other folders", "Kiti aplankai"),
+        ("Choose which folder remote devices can access.", "Pasirinkite, kurį aplanką gali pasiekti nuotoliniai įrenginiai."),
+        ("android-logs-folder-tip", "Pasirinkite Android → media, kad žurnalo failai būtų saugomi ten."),
+        ("Choose folder", "Pasirinkti aplanką"),
+        ("Please select Android → media.", "Pasirinkite Android → media."),
+        ("Trust duration (days)", "Pasitikėjimo trukmė (dienomis)"),
+        ("Renew trust", "Atnaujinti pasitikėjimą"),
+        ("install-directory-not-empty-tip", "Pasirinktas aplankas nėra tuščias. Diegimas gali ištrinti esamus duomenis. Apsvarstykite galimybę pasirinkti kitą aplanką."),
     ].iter().cloned().collect();
 }
 
