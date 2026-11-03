@@ -3117,9 +3117,10 @@ mod tests {
         assert_eq!(times.len(), times2.len() + 3);
     }
 
-    // ThrottledInterval tick less times than tokio interval, if there're sleeps
+    // ThrottledInterval tick less times than tokio interval, if there're sleeps.
+    // The clock is paused, so a stalled runner cannot make two ticks look close together.
     #[allow(non_snake_case)]
-    #[tokio::test]
+    #[tokio::test(start_paused = true)]
     async fn test_MyDesk_interval_sleep() {
         let base_intervals = [interval_maker, interval_at_maker];
         for (i, maker) in base_intervals.into_iter().enumerate() {
@@ -3129,18 +3130,24 @@ mod tests {
             loop {
                 tokio::select! {
                     _ = timer.tick() => {
-                        times.push(get_timestamp_secs());
+                        times.push(Instant::now());
                         if times.len() == 5 {
                             break;
                         }
                     }
                 }
             }
-            // No multiple ticks in the `interval` time.
-            // Values in "times" are unique and are less than normal tokio interval.
-            // See previous test (test_tokio_time_interval_sleep) for comparison.
-            let times2: HashSet<u128> = HashSet::from_iter(times.clone());
-            assert_eq!(times.len(), times2.len(), "test: {}", i);
+            // No multiple ticks in the `interval` time: tokio's interval bursts the missed ticks
+            // with no gap, ThrottledInterval keeps them at least 0.9 * period apart.
+            for pair in times.windows(2) {
+                let gap = pair[1] - pair[0];
+                assert!(
+                    gap >= Duration::from_millis(900),
+                    "test: {}, gap: {:?}",
+                    i,
+                    gap
+                );
+            }
         }
     }
 

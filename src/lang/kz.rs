@@ -459,7 +459,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Edit Tag", "Тақты Өндеу"),
 
-        ("Forget Password", "Құпия сөзді Ұмыту"),
+        ("Forget Password", "Сақталған құпия сөзді жою"),
 
         ("Favorites", "Таңдаулылар"),
 
@@ -1641,6 +1641,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("Trust duration (days)", "Сенім мерзімі (күн)"),
         ("Renew trust", "Сенімді жаңарту"),
         ("install-directory-not-empty-tip", "Таңдалған бума бос емес. Орнату бар деректерді жоюы мүмкін. Басқа буманы таңдаған жөн."),
+        ("Request approval", "Мақұлдауды сұрау"),
     ].iter().cloned().collect();
 }
 

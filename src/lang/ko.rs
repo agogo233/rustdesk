@@ -459,7 +459,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Edit Tag", "태그 편집"),
 
-        ("Forget Password", "비밀번호 분실"),
+        ("Forget Password", "저장된 비밀번호 삭제"),
 
         ("Favorites", "즐겨찾기"),
 
@@ -1641,6 +1641,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("Trust duration (days)", "신뢰 유지 기간 (일)"),
         ("Renew trust", "신뢰 갱신"),
         ("install-directory-not-empty-tip", "선택한 폴더가 비어 있지 않습니다. 설치 시 기존 데이터가 삭제될 수 있습니다. 다른 폴더를 선택하는 것이 좋습니다."),
+        ("Request approval", "승인 요청"),
     ].iter().cloned().collect();
 }
 

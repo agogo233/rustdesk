@@ -459,7 +459,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Edit Tag", "Επεξεργασία ετικέτας"),
 
-        ("Forget Password", "Διαγραφή απομνημονευμένου κωδικού"),
+        ("Forget Password", "Διαγραφή αποθηκευμένου κωδικού πρόσβασης"),
 
         ("Favorites", "Αγαπημένα"),
 
@@ -1641,6 +1641,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("Trust duration (days)", "Διάρκεια εμπιστοσύνης (ημέρες)"),
         ("Renew trust", "Ανανέωση εμπιστοσύνης"),
         ("install-directory-not-empty-tip", "Ο επιλεγμένος φάκελος δεν είναι κενός. Η εγκατάσταση ενδέχεται να διαγράψει υπάρχοντα δεδομένα. Εξετάστε το ενδεχόμενο να επιλέξετε διαφορετικό φάκελο."),
+        ("Request approval", "Αίτημα έγκρισης"),
     ].iter().cloned().collect();
 }
 

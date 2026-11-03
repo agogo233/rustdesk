@@ -459,7 +459,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Edit Tag", "Rediģēt tagu"),
 
-        ("Forget Password", "Neatcerēties paroli"),
+        ("Forget Password", "Dzēst saglabāto paroli"),
 
         ("Favorites", "Izlase"),
 
@@ -1641,6 +1641,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("Trust duration (days)", "Uzticēšanās ilgums (dienas)"),
         ("Renew trust", "Atjaunot uzticēšanos"),
         ("install-directory-not-empty-tip", "Izvēlētā mape nav tukša. Instalēšana var izdzēst esošos datus. Apsveriet iespēju izvēlēties citu mapi."),
+        ("Request approval", "Pieprasīt apstiprinājumu"),
     ].iter().cloned().collect();
 }
 

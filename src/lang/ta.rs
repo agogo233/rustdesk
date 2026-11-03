@@ -459,7 +459,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Edit Tag", "குறிச்சொற்கள் மாற்று"),
 
-        ("Forget Password", "கடவுச்சொல்லை மறந்துவிடு"),
+        ("Forget Password", "சேமிக்கப்பட்ட கடவுச்சொல்லை நீக்கு"),
 
         ("Favorites", "விருப்பங்கள்"),
 
@@ -1641,6 +1641,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("Trust duration (days)", "நம்பிக்கைக் காலம் (நாட்கள்)"),
         ("Renew trust", "நம்பிக்கையைப் புதுப்பி"),
         ("install-directory-not-empty-tip", "தேர்ந்தெடுக்கப்பட்ட கோப்புறை காலியாக இல்லை. நிறுவல் ஏற்கனவே உள்ள தரவை நீக்கக்கூடும். வேறு கோப்புறையைத் தேர்ந்தெடுப்பது நல்லது."),
+        ("Request approval", "ஒப்புதல் கோரவும்"),
     ].iter().cloned().collect();
 }
 

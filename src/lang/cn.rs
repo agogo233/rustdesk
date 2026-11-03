@@ -459,7 +459,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Edit Tag", "修改标签"),
 
-        ("Forget Password", "忘记密码"),
+        ("Forget Password", "清除已保存的密码"),
 
         ("Favorites", "收藏"),
 
@@ -1641,6 +1641,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("Trust duration (days)", "信任有效期（天）"),
         ("Renew trust", "延长信任有效期"),
         ("install-directory-not-empty-tip", "所选文件夹不为空。安装可能删除现有数据。建议选择其他文件夹。"),
+        ("Request approval", "请求批准"),
     ].iter().cloned().collect();
 }
 

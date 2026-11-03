@@ -459,7 +459,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Edit Tag", "Rediger tagg"),
 
-        ("Forget Password", "Glem passord"),
+        ("Forget Password", "Slett lagret passord"),
 
         ("Favorites", "Favoritter"),
 
@@ -1641,6 +1641,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("Trust duration (days)", "Klareringsperiode (dager)"),
         ("Renew trust", "Forny klarering"),
         ("install-directory-not-empty-tip", "Den valgte mappen er ikke tom. Installasjonen kan slette eksisterende data. Vurder å velge en annen mappe."),
+        ("Request approval", "Be om godkjenning"),
     ].iter().cloned().collect();
 }
 

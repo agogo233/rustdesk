@@ -459,7 +459,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Edit Tag", "Modifică etichetă"),
 
-        ("Forget Password", "Parolă uitată"),
+        ("Forget Password", "Șterge parola salvată"),
 
         ("Favorites", "Favorite"),
 
@@ -1641,6 +1641,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("Trust duration (days)", "Durata încrederii (zile)"),
         ("Renew trust", "Reînnoiește încrederea"),
         ("install-directory-not-empty-tip", "Folderul selectat nu este gol. Instalarea poate șterge datele existente. Ia în considerare alegerea altui folder."),
+        ("Request approval", "Solicită aprobarea"),
     ].iter().cloned().collect();
 }
 

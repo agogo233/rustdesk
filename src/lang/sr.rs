@@ -459,7 +459,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Edit Tag", "Izmeni oznaku"),
 
-        ("Forget Password", "Zaboravi lozinku"),
+        ("Forget Password", "Izbriši sačuvanu lozinku"),
 
         ("Favorites", "Favoriti"),
 
@@ -1641,6 +1641,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("Trust duration (days)", "Trajanje poverenja (dani)"),
         ("Renew trust", "Obnovi poverenje"),
         ("install-directory-not-empty-tip", "Izabrani direktorijum nije prazan. Instalacija može da obriše postojeće podatke. Razmislite o izboru drugog direktorijuma."),
+        ("Request approval", "Zatraži odobrenje"),
     ].iter().cloned().collect();
 }
 

@@ -459,7 +459,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Edit Tag", "Muuda silti"),
 
-        ("Forget Password", "Unusta parool"),
+        ("Forget Password", "Kustuta salvestatud parool"),
 
         ("Favorites", "Lemmikud"),
 
@@ -1641,6 +1641,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("Trust duration (days)", "Usalduse kestus (päevades)"),
         ("Renew trust", "Uuenda usaldust"),
         ("install-directory-not-empty-tip", "Valitud kaust ei ole tühi. Paigaldamine võib olemasolevad andmed kustutada. Kaalu teise kausta valimist."),
+        ("Request approval", "Küsi heakskiitu"),
     ].iter().cloned().collect();
 }
 

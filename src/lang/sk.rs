@@ -459,7 +459,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Edit Tag", "Upraviť štítok"),
 
-        ("Forget Password", "Zabudnúť heslo"),
+        ("Forget Password", "Vymazať uložené heslo"),
 
         ("Favorites", "Obľúbené"),
 
@@ -1641,6 +1641,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("Trust duration (days)", "Doba dôvery (dni)"),
         ("Renew trust", "Obnoviť dôveru"),
         ("install-directory-not-empty-tip", "Vybraný priečinok nie je prázdny. Inštalácia môže odstrániť existujúce údaje. Zvážte výber iného priečinka."),
+        ("Request approval", "Požiadať o schválenie"),
     ].iter().cloned().collect();
 }
 
