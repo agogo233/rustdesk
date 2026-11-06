@@ -295,7 +295,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Configure", "Konfigurasi"),
 
-        ("config_acc", "Agar bisa mengontrol Desktopmu dari jarak jauh, Kamu harus memberikan izin \"Aksesibilitas\" untuk MyDesk."),
+        ("config_acc", "Agar bisa mengontrol Desktopmu dari jarak jauh, kamu harus memberikan izin \"Aksesibilitas\" untuk MyDesk."),
 
         ("config_screen", "Agar bisa mengakses Desktopmu dari jarak jauh, kamu harus memberikan izin \"Perekaman Layar\" untuk MyDesk."),
 
@@ -311,7 +311,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Create desktop icon", "Buat icon desktop"),
 
-        ("agreement_tip", "Dengan memulai proses instalasi, Kamu menerima perjanjian lisensi."),
+        ("agreement_tip", "Dengan memulai proses instalasi, kamu menerima perjanjian lisensi."),
 
         ("Accept and Install", "Terima dan Install"),
 
@@ -455,7 +455,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Wrong credentials", "Nama pengguna atau kata sandi salah"),
 
-        ("The verification code is incorrect or has expired", "Kode verifikasi salah atau sudah kadaluarsa"),
+        ("The verification code is incorrect or has expired", "Kode verifikasi salah atau sudah kedaluwarsa"),
 
         ("Edit Tag", "Ubah Tag"),
 
@@ -483,7 +483,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Paste", "Tempel"),
 
-        ("Paste here?", "Tempel disini?"),
+        ("Paste here?", "Tempel di sini?"),
 
         ("Are you sure to close the connection?", "Apakah kamu yakin akan menutup koneksi?"),
 
@@ -551,7 +551,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("How to get Android input permission?", "Bagaimana cara mendapatkan izin input dari Android?"),
 
-        ("android_input_permission_tip1", "Agar perangkat jarak jauh dapat mengontrol perangkat Android melalui mouse atau sentuhan, Kamu harus memberikan izin/permission kd MyDesk untuk menggunakan layanan \"Aksesibilitas\"."),
+        ("android_input_permission_tip1", "Agar perangkat jarak jauh dapat mengontrol perangkat Android melalui mouse atau sentuhan, kamu harus memberikan izin/permission ke MyDesk untuk menggunakan layanan \"Aksesibilitas\"."),
 
         ("android_input_permission_tip2", "Silakan buka halaman pengaturan sistem berikutnya, temukan dan masuk ke [Layanan Terinstal], aktifkan layanan [Input MyDesk]."),
 
@@ -599,7 +599,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Ignore Battery Optimizations", "Abaikan Pengoptimalan Baterai"),
 
-        ("android_open_battery_optimizations_tip", "Jika anda ingin menonaktifkan fitur ini, buka halam pengaturan, cari dan pilih [Baterai], Uncheck [Tidak dibatasi]"),
+        ("android_open_battery_optimizations_tip", "Jika Anda ingin menonaktifkan fitur ini, buka halaman pengaturan, cari dan pilih [Baterai], Uncheck [Tidak dibatasi]"),
 
         ("Start on boot", "Mulai saat dihidupkan"),
 
@@ -759,7 +759,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("JumpLink", "Tautan Cepat"),
 
-        ("Please Select the screen to be shared(Operate on the peer side).", "Silakan Pilih layar yang akan dibagikan kepada rekan anda."),
+        ("Please Select the screen to be shared(Operate on the peer side).", "Silakan pilih layar yang akan dibagikan kepada rekan Anda."),
 
         ("Show RustDesk", "Tampilkan MyDesk"),
 
@@ -809,13 +809,13 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Select local keyboard type", "Pilih tipe papan ketik"),
 
-        ("software_render_tip", "Jika anda menggunakan kartu grafis Nvidia pada sistem linux dan jendela windows ditutup secara instan setelah terhung, silahkan ubah ke driver open-source Nouveau, dibutukan untuk merestart aplikasi"),
+        ("software_render_tip", "Jika Anda menggunakan kartu grafis Nvidia pada sistem linux dan jendela windows ditutup secara instan setelah terhubung, silakan ubah ke driver open-source Nouveau, dibutuhkan untuk merestart aplikasi"),
 
         ("Always use software rendering", "Selalu gunakan software rendering"),
 
-        ("config_input", "Untuk menggunakan input keyboard remote, anda perlu memberikan izin \"Pemantauan Input\" pada MyDesk"),
+        ("config_input", "Untuk menggunakan input keyboard remote, Anda perlu memberikan izin \"Pemantauan Input\" pada MyDesk"),
 
-        ("config_microphone", "Untuk berbicara secara remote, anda perlu memberikan izin \"Rekam Audio\" pada MyDesk"),
+        ("config_microphone", "Untuk berbicara secara remote, Anda perlu memberikan izin \"Rekam Audio\" pada MyDesk"),
 
         ("request_elevation_tip", "Anda juga bisa meminta izin elevasi jika ada pihak pengguna remote"),
 
@@ -823,7 +823,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Elevation Error", "Kesalahan Elevasi"),
 
-        ("Ask the remote user for authentication", "Minta pihak pengguna remote untuk otentikasi"),
+        ("Ask the remote user for authentication", "Minta pihak pengguna remote untuk autentikasi"),
 
         ("Choose this if the remote account is administrator", "Pilih ini jika akun adalah \"administrator\""),
 
@@ -881,7 +881,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Stop voice call", "Hentikan panggilan suara"),
 
-        ("relay_hint_tip", "Tidak memungkinkan untuk terhubung secara langsung; anda bisa mencoba terhubung via relay. Selain itu, jika ingin menggunakan relay pada percobaan pertama, silahkan tambah akhiran \"/r\" pada ID atau pilih \"Selalu terhubung via relay\" di pilihan sesi terbaru."),
+        ("relay_hint_tip", "Tidak memungkinkan untuk terhubung secara langsung; Anda bisa mencoba terhubung via relay. Selain itu, jika ingin menggunakan relay pada percobaan pertama, silakan tambah akhiran \"/r\" pada ID atau pilih \"Selalu terhubung via relay\" di pilihan sesi terbaru."),
 
         ("Reconnect", "Sambungkan ulang"),
 
@@ -905,7 +905,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Maximize", "Memaksimalkan"),
 
-        ("Your Device", "Perangkat anda"),
+        ("Your Device", "Perangkat Anda"),
 
         ("empty_recent_tip", "Tidak ada sesi terbaru!"),
 
@@ -1011,7 +1011,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("push_ab_failed_tip", "Gagal menyinkronkan buku alamat ke server"),
 
-        ("synced_peer_readded_tip", "Perangkat yang terdaftar dalam sesi terbaru akan di-sinkronkan kembali ke buku alamat."),
+        ("synced_peer_readded_tip", "Perangkat yang terdaftar dalam sesi terbaru akan disinkronkan kembali ke buku alamat."),
 
         ("Change Color", "Ganti warna"),
 
@@ -1027,11 +1027,11 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("{} sessions", "sesi {}"),
 
-        ("scam_title", "Kemungkinan anda Sedang DITIPU!"),
+        ("scam_title", "Kemungkinan Anda Sedang DITIPU!"),
 
-        ("scam_text1", "Jika anda sedang berbicara di telepon dengan seseorang yang TIDAK dikenal dan mereka meminta anda untuk menggunakan MyDesk, jangan lanjutkan dan segera tutup panggilan."),
+        ("scam_text1", "Jika Anda sedang berbicara di telepon dengan seseorang yang TIDAK dikenal dan mereka meminta Anda untuk menggunakan MyDesk, jangan lanjutkan dan segera tutup panggilan."),
 
-        ("scam_text2", "Kemungkinan besar mereka adalah komplotan penipu yang berusaha mencuri uang atau informasi pribadi anda."),
+        ("scam_text2", "Kemungkinan besar mereka adalah komplotan penipu yang berusaha mencuri uang atau informasi pribadi Anda."),
 
         ("Don't show again", "Jangan tampilkan lagi"),
 
@@ -1043,7 +1043,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("auto_disconnect_option_tip", "Secara otomatis akan menutup sesi ketika tidak ada aktivitas"),
 
-        ("Connection failed due to inactivity", "Secara otomatis akan terputus ketik tidak ada aktivitas."),
+        ("Connection failed due to inactivity", "Secara otomatis akan terputus ketika tidak ada aktivitas."),
 
         ("Check for software update on startup", "Periksa pembaruan aplikasi saat sistem dinyalakan."),
 
@@ -1067,7 +1067,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Use all my displays for the remote session", "Gunakan semua layar untuk sesi remote"),
 
-        ("selinux_tip", "pada perangkat anda, SELinux sedang aktif, yang mana itu dapat mencegah MyDesk berfungsi dengan baik sebagai sisi yang dikontrol."),
+        ("selinux_tip", "Pada perangkat Anda, SELinux sedang aktif, yang mana itu dapat mencegah MyDesk berfungsi dengan baik sebagai sisi yang dikontrol."),
 
         ("Change view", "Sesuaikan tampilan"),
 
@@ -1085,7 +1085,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Enable blocking user input", "Aktifkan pemblokiran input pengguna"),
 
-        ("id_input_tip", "Anda bisa memasukkan ID, IP langsung, atau domain dengan port kostum yang sudah ditentukan (<domain>:<port>).\nJika anda ingin mengakses perangkat lain yang berbeda server, tambahkan alamat server setelah penulisan ID(<id>@<server_address>?key=<key_value>), sebagai contoh,\n9123456234@192.168.16.1:31117?key=5Qbwsde3unUcJBtrx9ZkvUmwFNoExHzpryHuPUdqlWM=.\nJika anda ingin mengakses perangkat yang menggunakan server publik, masukkan \"<id>@public\", server public tidak memerlukan key khusus"),
+        ("id_input_tip", "Anda bisa memasukkan ID, IP langsung, atau domain dengan port kustom yang sudah ditentukan (<domain>:<port>).\nJika Anda ingin mengakses perangkat lain yang berbeda server, tambahkan alamat server setelah penulisan ID(<id>@<server_address>?key=<key_value>), sebagai contoh,\n9123456234@192.168.16.1:21117?key=5Qbwsde3unUcJBtrx9ZkvUmwFNoExHzpryHuPUdqlWM=.\nJika Anda ingin mengakses perangkat yang menggunakan server publik, masukkan \"<id>@public\", server publik tidak memerlukan key khusus"),
 
         ("privacy_mode_impl_mag_tip", "Mode 1"),
 
@@ -1127,7 +1127,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("powered_by_me", "Didukung oleh MyDesk"),
 
-        ("outgoing_only_desk_tip", "Ini adalah edisi yang sudah kustomisasi.\nAnda dapat terhubung ke perangkat lain, tetapi perangkat lain tidak dapat terhubung ke perangkat Anda."),
+        ("outgoing_only_desk_tip", "Ini adalah edisi yang sudah dikustomisasi.\nAnda dapat terhubung ke perangkat lain, tetapi perangkat lain tidak dapat terhubung ke perangkat Anda."),
 
         ("preset_password_warning", "Edisi yang dikustomisasi ini dilengkapi dengan kata sandi bawaan. Siapa pun yang mengetahui kata sandi ini dapat memperoleh kontrol penuh atas perangkat Anda. Jika Anda tidak mengharapkan ini, segera hapus pemasangan aplikasi tersebut."),
 
@@ -1173,7 +1173,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Clear Wayland screen selection", "Kosongkan pilihan layar Wayland"),
 
-        ("clear_Wayland_screen_selection_tip", "Setelah mengosongkan pilihan layar, Kamu bisa memilih kembali layar untuk dibagi"),
+        ("clear_Wayland_screen_selection_tip", "Setelah mengosongkan pilihan layar, kamu bisa memilih kembali layar untuk dibagi"),
 
         ("confirm_clear_Wayland_screen_selection_tip", "Kamu yakin ingin membersihkan pemilihan layar Wayland?"),
 
@@ -1209,13 +1209,13 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Telegram bot", "Bot Telegram"),
 
-        ("enable-bot-tip", "Jika fitur ini diaktifkan, Kamu dapat menerima kode 2FA dari bot, serta mendapatkan notifikasi tentang koneksi."),
+        ("enable-bot-tip", "Jika fitur ini diaktifkan, kamu dapat menerima kode 2FA dari bot, serta mendapatkan notifikasi tentang koneksi."),
 
-        ("enable-bot-desc", "1. Buka chat dengan @BotFather.\n2. Kirim perintah \"/newbot\". Setelah menyelesaikan langkah ini, Kamu akan mendapatkan token\n3. Mulai percakapan dengan bot yang baru dibuat. Kirim pesan yang dimulai dengan garis miring (\"/\") seperti \"/hello\" untuk mengaktifkannya."),
+        ("enable-bot-desc", "1. Buka chat dengan @BotFather.\n2. Kirim perintah \"/newbot\". Setelah menyelesaikan langkah ini, kamu akan mendapatkan token\n3. Mulai percakapan dengan bot yang baru dibuat. Kirim pesan yang dimulai dengan garis miring (\"/\") seperti \"/hello\" untuk mengaktifkannya."),
 
-        ("cancel-2fa-confirm-tip", "Apakah Kamu yakin ingin membatalkan 2FA?"),
+        ("cancel-2fa-confirm-tip", "Apakah kamu yakin ingin membatalkan 2FA?"),
 
-        ("cancel-bot-confirm-tip", "Apakah Kamu yakin ingin membatalkan bot Telegram?"),
+        ("cancel-bot-confirm-tip", "Apakah kamu yakin ingin membatalkan bot Telegram?"),
 
         ("About RustDesk", "Tentang MyDesk"),
 
@@ -1387,7 +1387,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Supported only in the installed version.", "Hanya didukung pada versi yang terinstal."),
 
-        ("elevation_username_tip", "panduan_elevasi_nama_pengguna"),
+        ("elevation_username_tip", "Masukkan nama pengguna atau domain\\nama pengguna"),
 
         ("Preparing for installation ...", "Mempersiapkan instalasi ..."),
 
