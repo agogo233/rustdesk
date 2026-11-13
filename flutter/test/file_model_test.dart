@@ -110,7 +110,7 @@ class _DeletingController extends FileController {
 void main() {
   for (final scenario in ['completion', 'reconnect', 'dispatch reconnect']) {
     testWidgets('SAF retry after $scenario', (tester) async {
-      const path = '/@rustdesk/tree/grant/root';
+      const path = '/@mydesk/tree/grant/root';
       final response = jsonEncode({
         'path': path,
         'empty_dirs': [jsonDecode(_directoryJson('$path/empty'))],

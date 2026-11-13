@@ -1,5 +1,5 @@
-#ifndef RUSTDESK_RUNNER_SERVICE_CONTROL_H_
-#define RUSTDESK_RUNNER_SERVICE_CONTROL_H_
+#ifndef MYDESK_RUNNER_SERVICE_CONTROL_H_
+#define MYDESK_RUNNER_SERVICE_CONTROL_H_
 
 #include <windows.h>
 #include <shellapi.h>
@@ -151,7 +151,7 @@ inline DWORD RunCommand(int count, wchar_t** args) {
 }
 
 // Keep these commands in the existing runner so installation/removal can control
-// services before loading librustdesk.dll or initializing the UI. A Rust-side
+// services before loading libmydesk.dll or initializing the UI. A Rust-side
 // handler would first require that DLL to load. The header-only implementation
 // keeps main.cpp as a dispatch hook without adding a CMake source entry; it is
 // compiled into the existing EXE, not a separately packaged helper.
@@ -172,7 +172,7 @@ inline std::optional<DWORD> HandleCommand(const wchar_t* command_line) {
   LocalFree(args);
   if (result != ERROR_SUCCESS) {
     std::fwprintf(stderr,
-                  L"RustDesk service control failed with Windows error %lu\n",
+                  L"MyDesk service control failed with Windows error %lu\n",
                   result);
   }
   return result;
@@ -180,4 +180,4 @@ inline std::optional<DWORD> HandleCommand(const wchar_t* command_line) {
 
 }  // namespace service_control
 
-#endif  // RUSTDESK_RUNNER_SERVICE_CONTROL_H_
+#endif  // MYDESK_RUNNER_SERVICE_CONTROL_H_

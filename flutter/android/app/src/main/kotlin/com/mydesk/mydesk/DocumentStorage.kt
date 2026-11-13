@@ -1,4 +1,4 @@
-package com.carriez.flutter_hbb
+package com.mydesk.mydesk
 
 import android.content.Context
 import android.content.Intent
@@ -9,7 +9,7 @@ import android.util.Base64
 import org.json.JSONObject
 import java.io.IOException
 
-private const val TREE_ROOT = "/@rustdesk/tree/"
+private const val TREE_ROOT = "/@mydesk/tree/"
 internal const val DOCUMENT_PREFS = "document-storage"
 internal const val DEFAULT_LOCATION = "default-location"
 private const val URI_FLAGS = Base64.URL_SAFE or Base64.NO_WRAP or Base64.NO_PADDING
