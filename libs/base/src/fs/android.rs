@@ -4,7 +4,7 @@ use serde_derive::Deserialize;
 use serde_json::{json, Value};
 use std::{path::Path, sync::OnceLock};
 
-pub const ROOT: &str = "/@rustdesk/";
+pub const ROOT: &str = "/@mydesk/";
 type Request = Box<dyn Fn(&str) -> ResultType<String> + Send + Sync>;
 static BACKEND: OnceLock<Request> = OnceLock::new();
 
