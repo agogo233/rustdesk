@@ -1407,7 +1407,7 @@ async fn check_connect_status_(reconnect: bool, rx: mpsc::UnboundedReceiver<ipc:
 
     loop {
         if let Ok(mut c) = ipc::connect(1000, "").await {
-            let mut timer = crate::rustdesk_interval(time::interval(time::Duration::from_secs(1)));
+            let mut timer = crate::mydesk_interval(time::interval(time::Duration::from_secs(1)));
             loop {
                 tokio::select! {
                     res = c.next() => {
@@ -1621,11 +1621,13 @@ async fn check_id(
     )
     .await
     {
+        let pk = Config::get_key_pair().1;
         let mut msg_out = Message::new();
         msg_out.set_register_pk(RegisterPk {
             old_id,
             id,
             uuid,
+            pk: pk.into(),
             ..Default::default()
         });
         let mut ok = false;

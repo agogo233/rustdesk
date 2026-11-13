@@ -33,10 +33,7 @@ RustDesk mengajak semua orang untuk ikut berkontribusi. Lihat [`docs/CONTRIBUTIN
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
     alt="Get it on F-Droid"
-    height="80">](https://f-droid.org/en/packages/com.carriez.flutter_hbb)
-[<img src="https://flathub.org/api/badge?svg&locale=en"
-    alt="Get it on Flathub"
-    height="80">](https://flathub.org/apps/com.rustdesk.RustDesk)
+    height="80">](https://f-droid.org/en/packages/com.mydesk.mydesk)
 
 ## Dependensi
 

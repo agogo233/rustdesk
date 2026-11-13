@@ -524,8 +524,6 @@ class _GeneralState extends State<_General> {
   Widget other() {
     final incomingOnly = bind.isIncomingOnly();
     final outgoingOnly = bind.isOutgoingOnly();
-    final showAutoUpdate = (isWindows && bind.mainIsInstalled()) ||
-    (isMacOS && bind.mainIsInstalled() && bind.mainIsInstalledDaemon(prompt: false) && !bind.isCustomClient());
     final children = <Widget>[
       if (!isWeb && !incomingOnly)
         _OptionCheckBox(context, 'Confirm before closing multiple tabs',
@@ -592,47 +590,41 @@ class _GeneralState extends State<_General> {
               isServer: false,
             ),
           ),
+        if (!bind.isIncomingOnly()) ...[
+          _OptionCheckBox(
+            context,
+            'Enable UDP hole punching',
+            kOptionEnableUdpPunch,
+            isServer: false,
+          ),
+          _OptionCheckBox(
+            context,
+            'Enable IPv6 P2P connection',
+            kOptionEnableIpv6Punch,
+            isServer: false,
+          ),
+        ],
       ],
-      if (!isWeb && !bind.isCustomClient())
+      if (isWindows)
         _OptionCheckBox(
           context,
-          'Check for software update on startup',
-          kOptionEnableCheckUpdate,
+          'Start on boot',
+          kOptionStartOnBoot,
           isServer: false,
         ),
-      if (showAutoUpdate)
-        _OptionCheckBox(
-          context,
-          'Auto update',
-          kOptionAllowAutoUpdate,
-          isServer: true,
-        ),
-      if (isWindows && !outgoingOnly)
+      if (isWindows && !bind.isOutgoingOnly())
         _OptionCheckBox(
           context,
           'Capture screen using DirectX',
           kOptionDirectxCapture,
         ),
-      if (!isWeb && !incomingOnly) ...[
+      if (!bind.isIncomingOnly())
         _OptionCheckBox(
           context,
           'Enable TCP hole punching',
           kOptionEnableTcpPunch,
           isServer: false,
         ),
-        _OptionCheckBox(
-          context,
-          'Enable UDP hole punching',
-          kOptionEnableUdpPunch,
-          isServer: false,
-        ),
-        _OptionCheckBox(
-          context,
-          'Enable IPv6 P2P connection',
-          kOptionEnableIpv6Punch,
-          isServer: false,
-        ),
-      ],
       if (!incomingOnly) ...webrtcOptions(context),
       if (!isWeb && !incomingOnly)
         Tooltip(
@@ -1532,7 +1524,7 @@ class _SafetyState extends State<_Safety> with AutomaticKeepAliveClientMixin {
                           r'^([0-9]|[1-9]\d|[1-9]\d{2}|[1-9]\d{3}|[1-5]\d{4}|6[0-4]\d{3}|65[0-4]\d{2}|655[0-2]\d|6553[0-5])$')),
                     ],
                     decoration: const InputDecoration(
-                      hintText: '21118',
+                      hintText: '31118',
                       contentPadding:
                           EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                     ),
@@ -2617,7 +2609,7 @@ class _AboutState extends State<_About> {
                       .marginSymmetric(vertical: 4.0)),
               InkWell(
                   onTap: () {
-                    launchUrlString('https://rustdesk.com/privacy.html');
+                    launchUrlString('https://mydesk.com/privacy.html');
                   },
                   child: Text(
                     translate('Privacy Statement'),
@@ -2625,7 +2617,7 @@ class _AboutState extends State<_About> {
                   ).marginSymmetric(vertical: 4.0)),
               InkWell(
                   onTap: () {
-                    launchUrlString('https://rustdesk.com');
+                    launchUrlString('https://mydesk.com');
                   },
                   child: Text(
                     translate('Website'),

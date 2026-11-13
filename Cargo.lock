@@ -6881,6 +6881,7 @@ version = "0.12.28"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "eddd3ca559203180a307f12d114c268abf583f59b03cb906fd0b3ff8646c1147"
 dependencies = [
+ "async-compression",
  "base64 0.22.1",
  "bytes",
  "futures-channel",
@@ -6909,6 +6910,7 @@ dependencies = [
  "tokio",
  "tokio-native-tls",
  "tokio-rustls",
+ "tokio-util",
  "tower",
  "tower-http",
  "tower-service",
@@ -7060,7 +7062,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "rustdesk"
+name = "mydesk"
 version = "1.5.3"
 dependencies = [
  "android-wakelock",
@@ -7177,7 +7179,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "rustdesk-portable-packer"
+name = "mydesk-portable-packer"
 version = "1.5.3"
 dependencies = [
  "brotli",

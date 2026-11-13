@@ -22,8 +22,8 @@ const kKeyTranslateMode = 'translate';
 const String kPlatformAdditionsIsWayland = "is_wayland";
 const String kPlatformAdditionsIsInstalled = "is_installed";
 const String kPlatformAdditionsIddImpl = "idd_impl";
-const String kPlatformAdditionsRustDeskVirtualDisplays =
-    "rustdesk_virtual_displays";
+const String kPlatformAdditionsMyDeskVirtualDisplays =
+    "mydesk_virtual_displays";
 const String kPlatformAdditionsAmyuniVirtualDisplays =
     "amyuni_virtual_displays";
 const String kPlatformAdditionsHasFileClipboard = "has_file_clipboard";
@@ -231,6 +231,7 @@ const String kOptionKeepScreenOn = "keep-screen-on";
 
 const String kOptionKeepAwakeDuringIncomingSessions = "keep-awake-during-incoming-sessions";
 const String kOptionKeepAwakeDuringOutgoingSessions = "keep-awake-during-outgoing-sessions";
+const String kOptionStartOnBoot = "start-on-boot";
 
 const String kOptionShowMobileAction = "showMobileActions";
 
@@ -264,7 +265,7 @@ const String kKeyReverseMouseWheel = "reverse_mouse_wheel";
 const String kMsgboxTextWaitingForImage = 'Connected, waiting for image...';
 
 // the executable name of the portable version
-const String kEnvPortableExecutable = "RUSTDESK_APPNAME";
+const String kEnvPortableExecutable = "MYDESK_APPNAME";
 
 const Color kColorWarn = Color.fromARGB(255, 245, 133, 59);
 const Color kColorCanvas = Colors.black;

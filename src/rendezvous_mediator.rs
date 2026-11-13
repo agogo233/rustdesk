@@ -250,7 +250,7 @@ lazy_static::lazy_static! {
 
 // Single source of truth for the "awaiting deployment" backoff. The server has
 // already told us this device is not in its db; until the operator runs
-// `rustdesk --deploy --token <api_token>` there is no point re-running the
+// `mydesk --deploy --token <api_token>` there is no point re-running the
 // register path more often than DEPLOY_RETRY_INTERVAL. Gating in the timer
 // loops (rather than only inside register_pk) also avoids the
 // last_register_sent / fails / latency / UDP-rebind churn the loop would
@@ -317,10 +317,7 @@ impl RendezvousMediator {
             }
         }
         crate::hbbs_http::sync::start();
-        #[cfg(target_os = "windows")]
-        if crate::platform::is_installed() && crate::is_server() {
-            crate::updater::start_auto_update();
-        }
+        // Version update disabled per security policy.
         check_zombie();
         let server = new_server();
         if config::option2bool("stop-service", &Config::get_option("stop-service")) {
@@ -415,7 +412,7 @@ impl RendezvousMediator {
             keep_alive: crate::DEFAULT_KEEP_ALIVE,
         };
 
-        let mut timer = crate::rustdesk_interval(interval(crate::TIMER_OUT));
+        let mut timer = crate::mydesk_interval(interval(crate::TIMER_OUT));
         const MIN_REG_TIMEOUT: i64 = 3_000;
         const MAX_REG_TIMEOUT: i64 = 30_000;
         let mut reg_timeout = MIN_REG_TIMEOUT;
@@ -480,7 +477,7 @@ impl RendezvousMediator {
                     // the whole register / fails / latency / UDP-rebind path until
                     // DEPLOY_RETRY_INTERVAL elapses, otherwise the loop spins every
                     // few seconds (log spam + misapplied network-recovery rebind)
-                    // until the operator runs `rustdesk --deploy`.
+                    // until the operator runs `mydesk --deploy`.
                     if deploy_register_throttled().await {
                         continue;
                     }
@@ -556,7 +553,7 @@ impl RendezvousMediator {
                     }
                     Ok(register_pk_response::Result::NOT_DEPLOYED) => {
                         if !NEEDS_DEPLOY.load(Ordering::SeqCst) {
-                            log::warn!("Server requires deployment. Run `rustdesk --deploy --token <api_token>` on this device.");
+                            log::warn!("Server requires deployment. Run `mydesk --deploy --token <api_token>` on this device.");
                         }
                         NEEDS_DEPLOY.store(true, Ordering::SeqCst);
                         // Clear key_confirmed so the UI reflects the truth: this device is
@@ -638,7 +635,7 @@ impl RendezvousMediator {
             host_prefix: Self::get_host_prefix(&host),
             keep_alive: crate::DEFAULT_KEEP_ALIVE,
         };
-        let mut timer = crate::rustdesk_interval(interval(crate::TIMER_OUT));
+        let mut timer = crate::mydesk_interval(interval(crate::TIMER_OUT));
         let mut last_register_sent: Option<Instant> = None;
         let mut last_recv_msg = Instant::now();
         // we won't support connecting to multiple rendzvous servers any more, so we can use a global variable here.
@@ -1291,7 +1288,7 @@ impl RendezvousMediator {
         // Throttle register_pk when the device is awaiting deployment: server
         // already told us we're not in its db; sending more often than every
         // DEPLOY_RETRY_INTERVAL ms is wasted traffic until the operator runs
-        // `rustdesk --deploy --token <api_token>`.
+        // `mydesk --deploy --token <api_token>`.
         if NEEDS_DEPLOY.load(Ordering::SeqCst) {
             let mut last = LAST_NOT_DEPLOYED_REGISTER.lock().await;
             if let Some(t) = *last {

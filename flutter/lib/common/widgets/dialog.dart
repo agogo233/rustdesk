@@ -408,7 +408,7 @@ Future<String> changeDirectAccessPort(
                         maxLines: null,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
-                            hintText: '21118',
+                            hintText: '31118',
                             isCollapsed: true,
                             prefix: Text('$currentIP : '),
                             suffix: IconButton(
@@ -1098,7 +1098,7 @@ _connectDialog(
       }
       return Column(
         children: [
-          descWidget(translate('verify_rustdesk_password_tip')),
+          descWidget(translate('verify_mydesk_password_tip')),
           PasswordWidget(
             controller: passwordController,
             autoFocus: osUsernameController == null,
