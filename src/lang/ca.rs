@@ -1085,7 +1085,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Enable blocking user input", "Bloca el control de l'usuari amb els dispositius d'entrada"),
 
-        ("id_input_tip", "Evita que l'usuari pugui interactuar p. ex. amb el teclat o ratolí"),
+        ("id_input_tip", ""),
 
         ("privacy_mode_impl_mag_tip", "Mode 1"),
 
@@ -1253,7 +1253,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Authenticate", "Autentica"),
 
-        ("web_id_input_tip", "Podeu inserir el número ID al propi servidor; l'accés directe per IP no és compatible amb el client web.\nSi voleu accedir a un dispositiu d'un altre servidor, afegiu l'adreça del servidor, com ara <id>@<adreça_del_servidor>?key=<valor_de_la_clau> (p. ex.\n9123456234@192.168.16.1:31117?key=5Qbwsde3unUcJBtrx9ZkvUmwFNoExHzpryHuPUdqlWM=.\nSi voleu accedir a un dispositiu en un servidor públic, no cal que inseriu la clau pública «<id>@» per al servidor públic."),
+        ("web_id_input_tip", ""),
 
         ("Download", "Descarrega"),
 

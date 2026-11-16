@@ -1085,7 +1085,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Enable blocking user input", "Aktivér blokering af brugerstyring"),
 
-        ("id_input_tip", "Du kan indtaste ét ID, en direkte IP adresse, eller et domæne med en port (<domæne>:<port>).\nHvis du ønsker at forbinde til en enhed på en anden server, tilføj da server adressen (<id>@<server_adresse>?key=<nøgle>), fx,\n9123456234@192.168.16.1:31117?key=5Qbwsde3unUcJBtrx9ZkvUmwFNoExHzpryHuPUdqlWM=.\nHvis du ønsker adgang til en enhed på en offentlig server, indtast venligst \"<id>@offentlig server\", nøglen er ikke nødvendig for offentlige servere.\n\nHvis du gerne vil tvinge brugen af en relay-forbindelse på den første forbindelse, tilføj \"/r\" efter ID'et, fx, \"9123456234/r\"."),
+        ("id_input_tip", "Du kan indtaste ét ID, en direkte IP-adresse, eller et domæne med en port (<domæne>:<port>).\nHvis du ønsker at forbinde til en enhed på en anden server, tilføj da serveradressen (<id>@<server_adresse>?key=<nøgle>), fx,\n9123456234@192.168.16.1:31117?key=5Qbwsde3unUcJBtrx9ZkvUmwFNoExHzpryHuPUdqlWM=.\nHvis du ønsker adgang til en enhed på en offentlig server, indtast venligst \"<id>@public\"; nøglen er ikke nødvendig for offentlige servere.\n\nHvis du vil gennemtvinge brug af en relay-forbindelse på den første forbindelse, så tilføj \"/r\" efter ID'et, fx, \"9123456234/r\"."),
 
         ("privacy_mode_impl_mag_tip", "Tilstand 1"),
 

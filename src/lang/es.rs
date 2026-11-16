@@ -1253,7 +1253,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Authenticate", "Autenticar"),
 
-        ("web_id_input_tip", "Puedes introducir una ID en el mismo servidor, el cliente web no soporta acceso vía IP.\nSi quieres acceder a un dispositivo en otro servidor, por favor, agrega la dirección del servidor (<id>@<direccion_servidor>?clave=<clave_valor>), por ejemplo,\n9123456234@192.168.16.1:31117?key=5Qbwsde3unUcJBtrx9ZkvUmwFNoExHzpryHuPUdqlWM=.\nSi quieres accedder a un dispositivo en un servidor público, por favor, introduce \"<id>@public\", la clave no es necesaria para el servidor público."),
+        ("web_id_input_tip", "Puedes introducir una ID en el mismo servidor, el cliente web no soporta acceso vía IP.\nSi quieres acceder a un dispositivo en otro servidor, por favor, agrega la dirección del servidor (<id>@<direccion_servidor>?key=<clave_valor>), por ejemplo,\n9123456234@192.168.16.1:31117?key=5Qbwsde3unUcJBtrx9ZkvUmwFNoExHzpryHuPUdqlWM=.\nSi quieres accedder a un dispositivo en un servidor público, por favor, introduce \"<id>@public\", la clave no es necesaria para el servidor público."),
 
         ("Download", "Descarga"),
 
