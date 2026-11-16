@@ -265,8 +265,8 @@ jobs:
             ./EncryptOutput/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.msi.zip \
             ./SignOutput/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.msi
           7z a -tzip -p"${{ secrets.ZIP_PASSWORD }}" -mem=AES256 \
-            ./EncryptOutput/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.zip.zip \
-            ./SignOutput/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.zip
+            ./EncryptOutput/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.zip \
+            ./mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}
 
       - name: Upload exe artifact
         if: env.UPLOAD_ARTIFACT == 'true'
@@ -290,7 +290,7 @@ jobs:
         with:
           retention-days: 7
           name: mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.zip
-          path: EncryptOutput/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.zip.zip
+          path: EncryptOutput/mydesk-${{ env.VERSION }}-${{ matrix.job.arch }}.zip
 
   build-mydesk-android:
     name: build mydesk android apk ${{ matrix.job.target }}
