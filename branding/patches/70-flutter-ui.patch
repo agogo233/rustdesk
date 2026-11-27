@@ -1,0 +1,194 @@
+diff --git a/flutter/lib/common.dart b/flutter/lib/common.dart
+index a4a471147..08f7fff3b 100644
+--- a/flutter/lib/common.dart
++++ b/flutter/lib/common.dart
+@@ -4105,21 +4105,9 @@ void earlyAssert() {
+   assert('\1' == '1');
+ }
+ 
++// A custom client never checks for updates in-app; keep this an explicit no-op
++// so the check cannot be re-enabled by accident.
+ void checkUpdate() {
+-  if (!isWeb) {
+-    if (!bind.isCustomClient()) {
+-      platformFFI.registerEventHandler(
+-          kCheckSoftwareUpdateFinish, kCheckSoftwareUpdateFinish,
+-          (Map<String, dynamic> evt) async {
+-        if (evt['url'] is String) {
+-          stateGlobal.updateUrl.value = evt['url'];
+-        }
+-      });
+-      Timer(const Duration(seconds: 1), () async {
+-        bind.mainGetSoftwareUpdateUrl();
+-      });
+-    }
+-  }
+ }
+ 
+ // https://github.com/flutter/flutter/issues/153560#issuecomment-2497160535
+diff --git a/flutter/lib/common/widgets/dialog.dart b/flutter/lib/common/widgets/dialog.dart
+index 4cc71f763..8126dae68 100644
+--- a/flutter/lib/common/widgets/dialog.dart
++++ b/flutter/lib/common/widgets/dialog.dart
+@@ -408,7 +408,7 @@ Future<String> changeDirectAccessPort(
+                         maxLines: null,
+                         keyboardType: TextInputType.number,
+                         decoration: InputDecoration(
+-                            hintText: '21118',
++                            hintText: '31118',
+                             isCollapsed: true,
+                             prefix: Text('$currentIP : '),
+                             suffix: IconButton(
+diff --git a/flutter/lib/consts.dart b/flutter/lib/consts.dart
+index 015fe255c..c533970aa 100644
+--- a/flutter/lib/consts.dart
++++ b/flutter/lib/consts.dart
+@@ -231,6 +231,7 @@ const String kOptionKeepScreenOn = "keep-screen-on";
+ 
+ const String kOptionKeepAwakeDuringIncomingSessions = "keep-awake-during-incoming-sessions";
+ const String kOptionKeepAwakeDuringOutgoingSessions = "keep-awake-during-outgoing-sessions";
++const String kOptionStartOnBoot = "start-on-boot";
+ 
+ const String kOptionShowMobileAction = "showMobileActions";
+ 
+diff --git a/flutter/lib/desktop/pages/desktop_setting_page.dart b/flutter/lib/desktop/pages/desktop_setting_page.dart
+index 45ce66177..c11a01641 100644
+--- a/flutter/lib/desktop/pages/desktop_setting_page.dart
++++ b/flutter/lib/desktop/pages/desktop_setting_page.dart
+@@ -524,8 +524,6 @@ class _GeneralState extends State<_General> {
+   Widget other() {
+     final incomingOnly = bind.isIncomingOnly();
+     final outgoingOnly = bind.isOutgoingOnly();
+-    final showAutoUpdate = (isWindows && bind.mainIsInstalled()) ||
+-    (isMacOS && bind.mainIsInstalled() && bind.mainIsInstalledDaemon(prompt: false) && !bind.isCustomClient());
+     final children = <Widget>[
+       if (!isWeb && !incomingOnly)
+         _OptionCheckBox(context, 'Confirm before closing multiple tabs',
+@@ -592,47 +590,41 @@ class _GeneralState extends State<_General> {
+               isServer: false,
+             ),
+           ),
++        if (!bind.isIncomingOnly()) ...[
++          _OptionCheckBox(
++            context,
++            'Enable UDP hole punching',
++            kOptionEnableUdpPunch,
++            isServer: false,
++          ),
++          _OptionCheckBox(
++            context,
++            'Enable IPv6 P2P connection',
++            kOptionEnableIpv6Punch,
++            isServer: false,
++          ),
++        ],
+       ],
+-      if (!isWeb && !bind.isCustomClient())
++      if (isWindows)
+         _OptionCheckBox(
+           context,
+-          'Check for software update on startup',
+-          kOptionEnableCheckUpdate,
++          'Start on boot',
++          kOptionStartOnBoot,
+           isServer: false,
+         ),
+-      if (showAutoUpdate)
+-        _OptionCheckBox(
+-          context,
+-          'Auto update',
+-          kOptionAllowAutoUpdate,
+-          isServer: true,
+-        ),
+-      if (isWindows && !outgoingOnly)
++      if (isWindows && !bind.isOutgoingOnly())
+         _OptionCheckBox(
+           context,
+           'Capture screen using DirectX',
+           kOptionDirectxCapture,
+         ),
+-      if (!isWeb && !incomingOnly) ...[
++      if (!bind.isIncomingOnly())
+         _OptionCheckBox(
+           context,
+           'Enable TCP hole punching',
+           kOptionEnableTcpPunch,
+           isServer: false,
+         ),
+-        _OptionCheckBox(
+-          context,
+-          'Enable UDP hole punching',
+-          kOptionEnableUdpPunch,
+-          isServer: false,
+-        ),
+-        _OptionCheckBox(
+-          context,
+-          'Enable IPv6 P2P connection',
+-          kOptionEnableIpv6Punch,
+-          isServer: false,
+-        ),
+-      ],
+       if (!incomingOnly) ...webrtcOptions(context),
+       if (!isWeb && !incomingOnly)
+         Tooltip(
+@@ -1532,7 +1524,7 @@ class _SafetyState extends State<_Safety> with AutomaticKeepAliveClientMixin {
+                           r'^([0-9]|[1-9]\d|[1-9]\d{2}|[1-9]\d{3}|[1-5]\d{4}|6[0-4]\d{3}|65[0-4]\d{2}|655[0-2]\d|6553[0-5])$')),
+                     ],
+                     decoration: const InputDecoration(
+-                      hintText: '21118',
++                      hintText: '31118',
+                       contentPadding:
+                           EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                     ),
+diff --git a/flutter/lib/models/native_model.dart b/flutter/lib/models/native_model.dart
+index 592ef802d..95c4cb758 100644
+--- a/flutter/lib/models/native_model.dart
++++ b/flutter/lib/models/native_model.dart
+@@ -58,7 +58,7 @@ class PlatformFFI {
+   static final PlatformFFI instance = PlatformFFI._();
+   final _toAndroidChannel = const MethodChannel('mChannel');
+ 
+-  MydeskImpl get ffiBind => _ffiBind;
++MydeskImpl get ffiBind => _ffiBind;
+   @visibleForTesting
+   void setBindingForTesting(MydeskImpl binding) => _ffiBind = binding;
+ 
+diff --git a/flutter/lib/models/terminal_model.dart b/flutter/lib/models/terminal_model.dart
+index cfdcc1478..888c57bc8 100644
+--- a/flutter/lib/models/terminal_model.dart
++++ b/flutter/lib/models/terminal_model.dart
+@@ -159,7 +159,7 @@ class TerminalModel with ChangeNotifier {
+   }
+ 
+   TerminalModel(this.parent, [this.terminalId = 0]) : id = parent.id {
+-    terminal = MyDeskTerminal(
++terminal = MyDeskTerminal(
+       maxLines: 10000,
+       onClipboardWrite: writeTerminalClipboard,
+       clipboardWritePermission: () => terminalClipboardWritePermission(
+diff --git a/flutter/lib/models/terminal_mouse_handler.dart b/flutter/lib/models/terminal_mouse_handler.dart
+index b23c8ea10..d8c125033 100644
+--- a/flutter/lib/models/terminal_mouse_handler.dart
++++ b/flutter/lib/models/terminal_mouse_handler.dart
+@@ -5,8 +5,8 @@ import 'package:flutter/gestures.dart';
+ import 'package:flutter/widgets.dart';
+ import 'package:xterm/xterm.dart';
+ 
+-import 'platform_model.dart';
+ import 'mydesk_terminal.dart';
++import 'platform_model.dart';
+ import 'terminal_copy_shortcut.dart';
+ import 'terminal_mouse_drag_reporter.dart';
+ import 'terminal_scroll_controller.dart';
+diff --git a/flutter/lib/web/bridge.dart b/flutter/lib/web/bridge.dart
+index 9ee5bbf4f..b811ea95d 100644
+--- a/flutter/lib/web/bridge.dart
++++ b/flutter/lib/web/bridge.dart
+@@ -113,6 +113,7 @@ class MydeskImpl {
+     return completer.future;
+   }
+ 
++
+   Future<void> stopGlobalEventStream({required String appType, dynamic hint}) {
+     throw UnimplementedError("stopGlobalEventStream");
+   }

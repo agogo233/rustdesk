@@ -1,0 +1,40 @@
+R	flatpak/com.rustdesk.RustDesk.metainfo.xml	flatpak/com.mydesk.MyDesk.metainfo.xml
+R	flatpak/rustdesk.json	flatpak/mydesk.json
+R	flutter/android/app/src/main/kotlin/com/carriez/flutter_hbb/AudioRecordHandle.kt	flutter/android/app/src/main/kotlin/com/mydesk/mydesk/AudioRecordHandle.kt
+R	flutter/android/app/src/main/kotlin/com/carriez/flutter_hbb/BootReceiver.kt	flutter/android/app/src/main/kotlin/com/mydesk/mydesk/BootReceiver.kt
+R	flutter/android/app/src/main/kotlin/com/carriez/flutter_hbb/DocumentDescriptors.kt	flutter/android/app/src/main/kotlin/com/mydesk/mydesk/DocumentDescriptors.kt
+R	flutter/android/app/src/main/kotlin/com/carriez/flutter_hbb/DocumentLogs.kt	flutter/android/app/src/main/kotlin/com/mydesk/mydesk/DocumentLogs.kt
+R	flutter/android/app/src/main/kotlin/com/carriez/flutter_hbb/DocumentPicker.kt	flutter/android/app/src/main/kotlin/com/mydesk/mydesk/DocumentPicker.kt
+R	flutter/android/app/src/main/kotlin/com/carriez/flutter_hbb/DocumentStorage.kt	flutter/android/app/src/main/kotlin/com/mydesk/mydesk/DocumentStorage.kt
+R	flutter/android/app/src/main/kotlin/com/carriez/flutter_hbb/DocumentTree.kt	flutter/android/app/src/main/kotlin/com/mydesk/mydesk/DocumentTree.kt
+R	flutter/android/app/src/main/kotlin/com/carriez/flutter_hbb/FloatingWindowService.kt	flutter/android/app/src/main/kotlin/com/mydesk/mydesk/FloatingWindowService.kt
+R	flutter/android/app/src/main/kotlin/com/carriez/flutter_hbb/InputService.kt	flutter/android/app/src/main/kotlin/com/mydesk/mydesk/InputService.kt
+R	flutter/android/app/src/main/kotlin/com/carriez/flutter_hbb/KeyboardKeyEventMapper.kt	flutter/android/app/src/main/kotlin/com/mydesk/mydesk/KeyboardKeyEventMapper.kt
+R	flutter/android/app/src/main/kotlin/com/carriez/flutter_hbb/MainActivity.kt	flutter/android/app/src/main/kotlin/com/mydesk/mydesk/MainActivity.kt
+R	flutter/android/app/src/main/kotlin/com/carriez/flutter_hbb/MainApplication.kt	flutter/android/app/src/main/kotlin/com/mydesk/mydesk/MainApplication.kt
+R	flutter/android/app/src/main/kotlin/com/carriez/flutter_hbb/MainService.kt	flutter/android/app/src/main/kotlin/com/mydesk/mydesk/MainService.kt
+R	flutter/android/app/src/main/kotlin/com/carriez/flutter_hbb/PermissionRequestTransparentActivity.kt	flutter/android/app/src/main/kotlin/com/mydesk/mydesk/PermissionRequestTransparentActivity.kt
+R	flutter/android/app/src/main/kotlin/com/carriez/flutter_hbb/RdClipboardManager.kt	flutter/android/app/src/main/kotlin/com/mydesk/mydesk/RdClipboardManager.kt
+R	flutter/android/app/src/main/kotlin/com/carriez/flutter_hbb/VolumeController.kt	flutter/android/app/src/main/kotlin/com/mydesk/mydesk/VolumeController.kt
+R	flutter/android/app/src/main/kotlin/com/carriez/flutter_hbb/common.kt	flutter/android/app/src/main/kotlin/com/mydesk/mydesk/common.kt
+R	flutter/lib/models/rustdesk_terminal.dart	flutter/lib/models/mydesk_terminal.dart
+R	res/msi/Package/Components/RustDesk.wxs	res/msi/Package/Components/MyDesk.wxs
+R	res/rustdesk.desktop	res/mydesk.desktop
+D	.github/workflows/bridge.yml
+D	.github/workflows/ci.yml
+D	.github/workflows/clear-cache.yml
+D	.github/workflows/fdroid.yml
+D	.github/workflows/flutter-build.yml
+D	.github/workflows/flutter-ci.yml
+D	.github/workflows/flutter-nightly.yml
+D	.github/workflows/flutter-tag.yml
+D	.github/workflows/playground.yml
+D	.github/workflows/third-party-RustDeskTempTopMostWindow.yml
+D	.github/workflows/update-webpki-roots.yml
+D	appimage/AppImageBuilder-aarch64.yml
+D	appimage/AppImageBuilder-x86_64.yml
+D	appimage/apprun-split-arguments.patch
+D	appimage/build-apprun.sh
+D	flutter/build_fdroid.sh
+D	res/rustdesk-link.desktop
+D	res/rustdesk.service

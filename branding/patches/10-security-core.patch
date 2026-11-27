@@ -1,0 +1,1618 @@
+diff --git a/libs/base/src/config/keys.rs b/libs/base/src/config/keys.rs
+index 6f7991114..85e043109 100644
+--- a/libs/base/src/config/keys.rs
++++ b/libs/base/src/config/keys.rs
+@@ -144,7 +144,8 @@ pub const OPTION_ALLOW_LOGON_SCREEN_PASSWORD: &str = "allow-logon-screen-passwor
+ pub const OPTION_ALLOW_DEEP_LINK_PASSWORD: &str = "allow-deep-link-password";
+ pub const OPTION_ALLOW_DEEP_LINK_SERVER_SETTINGS: &str = "allow-deep-link-server-settings";
+ pub const OPTION_ONE_WAY_FILE_TRANSFER: &str = "one-way-file-transfer";
+-pub const OPTION_ALLOW_HTTPS_21114: &str = "allow-https-21114";
++pub const OPTION_ALLOW_HTTPS_31114: &str = "allow-https-31114";
++pub const OPTION_START_ON_BOOT: &str = "start-on-boot";
+ pub const OPTION_USE_RAW_TCP_FOR_API: &str = "use-raw-tcp-for-api";
+ pub const OPTION_HIDE_POWERED_BY_ME: &str = "hide-powered-by-me";
+ pub const OPTION_MAIN_WINDOW_ALWAYS_ON_TOP: &str = "main-window-always-on-top";
+@@ -361,7 +362,7 @@ pub const KEYS_BUILDIN_SETTINGS: &[&str] = &[
+     OPTION_ALLOW_DEEP_LINK_PASSWORD,
+     OPTION_ALLOW_DEEP_LINK_SERVER_SETTINGS,
+     OPTION_ONE_WAY_FILE_TRANSFER,
+-    OPTION_ALLOW_HTTPS_21114,
++    OPTION_ALLOW_HTTPS_31114,
+     OPTION_ALLOW_HOSTNAME_AS_ID,
+     OPTION_REGISTER_DEVICE,
+     OPTION_HIDE_POWERED_BY_ME,
+diff --git a/src/common.rs b/src/common.rs
+index 21180da71..866b5eb99 100644
+--- a/src/common.rs
++++ b/src/common.rs
+@@ -37,7 +37,7 @@ use hbb_common::{
+ 
+ use crate::{
+     hbbs_http::{create_http_client_async, get_url_for_tls},
+-    ui_interface::{get_api_server as ui_get_api_server, get_option, set_option},
++    ui_interface::{get_api_server as ui_get_api_server, get_option, is_installed, set_option},
+ };
+ 
+ #[derive(Debug, Eq, PartialEq)]
+@@ -770,6 +770,13 @@ async fn test_nat_type_() -> ResultType<bool> {
+                 } else {
+                     port2 = tnr.port;
+                 }
++                if let Some(cu) = tnr.cu.as_ref() {
++                    Config::set_option(
++                        "rendezvous-servers".to_owned(),
++                        cu.rendezvous_servers.join(","),
++                    );
++                    Config::set_serial(cu.serial);
++                }
+             }
+         } else {
+             break;
+@@ -1058,168 +1065,14 @@ pub fn is_modifier(evt: &KeyEvent) -> bool {
+ }
+ 
+ pub fn check_software_update() {
+-    if is_custom_client() {
+-        return;
+-    }
+-    let opt = LocalConfig::get_option(keys::OPTION_ENABLE_CHECK_UPDATE);
+-    if config::option2bool(keys::OPTION_ENABLE_CHECK_UPDATE, &opt) {
+-        std::thread::spawn(move || allow_err!(do_check_software_update()));
+-    }
+-}
+-
+-pub(crate) fn release_id_from_update_url(update_url: &str) -> ResultType<String> {
+-    let url = url::Url::parse(update_url)?;
+-    if url.scheme() != "https" || url.host_str() != Some("github.com") {
+-        bail!(
+-            "Update URL is not a GitHub HTTPS release URL: {}",
+-            update_url
+-        );
+-    }
+-    if url_has_explicit_port(update_url)
+-        || url.port().is_some()
+-        || !url.username().is_empty()
+-        || url.password().is_some()
+-    {
+-        bail!(
+-            "Update URL must not contain credentials or an explicit port: {}",
+-            update_url
+-        );
+-    }
+-    if url.query().is_some() || url.fragment().is_some() {
+-        bail!(
+-            "Update URL must not contain query or fragment: {}",
+-            update_url
+-        );
+-    }
+-
+-    let Some(segments) = url.path_segments() else {
+-        bail!("Update URL has no path: {}", update_url);
+-    };
+-    let segments = segments.collect::<Vec<_>>();
+-    let release_id = match segments.as_slice() {
+-        ["mydesk", "mydesk", "releases", "tag", release_id] => *release_id,
+-        ["mydesk", "mydesk", "releases", "tag", release_id, ""] => *release_id,
+-        _ => bail!(
+-            "Update URL is not a MyDesk release tag URL: {}",
+-            update_url
+-        ),
+-    };
+-    if release_id.is_empty()
+-        || release_id == "."
+-        || release_id == ".."
+-        || release_id.contains([' ', '/', '\\', '?', '#'])
+-        || release_id.contains('%')
+-    {
+-        bail!("Update URL has no release id: {}", update_url);
+-    }
+-    Ok(release_id.to_owned())
+-}
+-
+-pub(crate) fn url_has_explicit_port(raw_url: &str) -> bool {
+-    let Some((_, rest)) = raw_url.split_once("://") else {
+-        return false;
+-    };
+-    let authority = rest
+-        .split(|c| matches!(c, '/' | '?' | '#'))
+-        .next()
+-        .unwrap_or_default();
+-    let host_port = authority.rsplit('@').next().unwrap_or(authority);
+-    host_port.rsplit_once(':').is_some()
+-}
+-
+-pub(crate) fn display_version_from_release_id(release_id: &str) -> ResultType<String> {
+-    let display_version = release_id.strip_prefix('v').unwrap_or(release_id);
+-    let segments = display_version.split('.').collect::<Vec<_>>();
+-    if segments.len() != 3
+-        || segments.iter().any(|segment| {
+-            segment.is_empty()
+-                || !segment.chars().all(|c| c.is_ascii_digit())
+-                || segment.parse::<u16>().is_err()
+-        })
+-    {
+-        bail!("Release id is not a stable display version: {}", release_id);
+-    }
+-    if get_version_number(display_version) <= 0 {
+-        bail!("Release id has invalid display version: {}", release_id);
+-    }
+-    Ok(display_version.to_owned())
+-}
+-
+-fn clear_software_update_url() {
+-    let mut update_url = SOFTWARE_UPDATE_URL.lock().unwrap();
+-    *update_url = String::new();
+-}
+-
+-fn process_software_update_check_response(bytes: Bytes) -> ResultType<()> {
+-    let resp: hbb_common::VersionCheckResponse = serde_json::from_slice(&bytes)?;
+-    let response_url = resp.url;
+-    let release_id = release_id_from_update_url(&response_url)?;
+-    let latest_release_version = display_version_from_release_id(&release_id)?;
+-
+-    if get_version_number(&latest_release_version) > get_version_number(crate::VERSION) {
+-        #[cfg(feature = "flutter")]
+-        {
+-            let mut m = HashMap::new();
+-            m.insert("name", "check_software_update_finish");
+-            m.insert("url", &response_url);
+-            if let Ok(data) = serde_json::to_string(&m) {
+-                let _ = crate::flutter::push_global_event(crate::flutter::APP_TYPE_MAIN, data);
+-            }
+-        }
+-        *SOFTWARE_UPDATE_URL.lock().unwrap() = response_url;
+-    } else {
+-        clear_software_update_url();
+-    }
+-    Ok(())
++    // Disabled: automatic update check to api.rustdesk.com removed per security audit.
++    // Manual update check via do_check_software_update() remains available.
+ }
+ 
+ // No need to check `danger_accept_invalid_cert` for now.
+ // Because the url is always `https://api.rustdesk.com/version/latest`.
+-#[tokio::main(flavor = "current_thread")]
+-pub async fn do_check_software_update() -> hbb_common::ResultType<()> {
+-    let (request, url) =
+-        hbb_common::version_check_request(hbb_common::VER_TYPE_RUSTDESK_CLIENT.to_string());
+-    let proxy_conf = Config::get_socks();
+-    let tls_url = get_url_for_tls(&url, &proxy_conf);
+-    let tls_type = get_cached_tls_type(tls_url);
+-    let is_tls_not_cached = tls_type.is_none();
+-    let tls_type = tls_type.unwrap_or(TlsType::Rustls);
+-    let client = create_http_client_async(tls_type, false);
+-    let latest_release_response: ResultType<_> = match client.post(&url).json(&request).send().await
+-    {
+-        Ok(resp) => Ok((tls_type, resp)),
+-        Err(err) => {
+-            if is_tls_not_cached && err.is_request() {
+-                let tls_type = TlsType::NativeTls;
+-                let client = create_http_client_async(tls_type, false);
+-                match client.post(&url).json(&request).send().await {
+-                    Ok(resp) => Ok((tls_type, resp)),
+-                    Err(err) => Err(err.into()),
+-                }
+-            } else {
+-                Err(err.into())
+-            }
+-        }
+-    };
+-    let response_bytes = match latest_release_response {
+-        Ok((used_tls_type, response)) => {
+-            upsert_tls_cache(tls_url, used_tls_type, false);
+-            let status = response.status();
+-            if !status.is_success() {
+-                Err(anyhow!(
+-                    "Software update check failed with HTTP status: {status}"
+-                ))
+-            } else {
+-                response.bytes().await.map_err(|err| err.into())
+-            }
+-        }
+-        Err(err) => Err(err),
+-    };
+-    let result = response_bytes.and_then(process_software_update_check_response);
+-    if result.is_err() {
+-        clear_software_update_url();
+-    }
+-    result
++pub fn do_check_software_update() -> hbb_common::ResultType<()> {
++    Ok(())
+ }
+ 
+ #[inline]
+@@ -1276,10 +1129,10 @@ pub fn get_api_server(api: String, custom: String) -> String {
+         res.pop();
+     }
+     if res.starts_with("https")
+-        && res.ends_with(":21114")
+-        && get_builtin_option(keys::OPTION_ALLOW_HTTPS_21114) != "Y"
++        && res.ends_with(":31114")
++        && get_builtin_option(keys::OPTION_ALLOW_HTTPS_31114) != "Y"
+     {
+-        return res.replace(":21114", "");
++        return res.replace(":31114", "");
+     }
+     res
+ }
+@@ -2506,6 +2359,39 @@ pub fn mydesk_interval(i: Interval) -> ThrottledInterval {
+     ThrottledInterval::new(i)
+ }
+ 
++pub fn inject_env_vars() {
++    macro_rules! inject_default {
++        ($var:expr, $key:expr) => {
++            if let Some(val) = option_env!($var) {
++                if !val.is_empty() {
++                    config::DEFAULT_SETTINGS
++                        .write()
++                        .unwrap()
++                        .insert($key.to_string(), val.to_string());
++                }
++            }
++        };
++    }
++    macro_rules! inject_builtin {
++        ($var:expr, $key:expr) => {
++            if let Some(val) = option_env!($var) {
++                if !val.is_empty() {
++                    config::BUILTIN_SETTINGS
++                        .write()
++                        .unwrap()
++                        .insert($key.to_string(), val.to_string());
++                }
++            }
++        };
++    }
++    inject_default!("RUSTDESK_SERVER", "custom-rendezvous-server");
++    inject_default!("RUSTDESK_KEY", "key");
++    inject_default!("RUSTDESK_RELAY", "relay-server");
++    inject_default!("RUSTDESK_API", "api-server");
++    inject_builtin!("RUSTDESK_HIDE_SERVER", "hide-server-settings");
++    inject_builtin!("RUSTDESK_HIDE_NETWORK", "hide-network-settings");
++}
++
+ pub fn load_custom_client() {
+     #[cfg(debug_assertions)]
+     if let Ok(data) = std::fs::read_to_string("./custom.txt") {
+@@ -2514,6 +2400,7 @@ pub fn load_custom_client() {
+     }
+     let Some(path) = std::env::current_exe().map_or(None, |x| x.parent().map(|x| x.to_path_buf()))
+     else {
++        inject_env_vars();
+         return;
+     };
+     #[cfg(target_os = "macos")]
+@@ -2522,9 +2409,12 @@ pub fn load_custom_client() {
+     if path.is_file() {
+         let Ok(data) = std::fs::read_to_string(&path) else {
+             log::error!("Failed to read custom client config");
++            inject_env_vars();
+             return;
+         };
+         read_custom_client(&data.trim());
++    } else {
++        inject_env_vars();
+     }
+ }
+ 
+@@ -2675,6 +2565,9 @@ pub fn read_custom_client(config: &str) {
+                 .insert(k, v.to_owned());
+         };
+     }
++
++    // Inject build-time env vars from CI Secrets into DEFAULT_SETTINGS / BUILTIN_SETTINGS
++    inject_env_vars();
+ }
+ 
+ #[inline]
+@@ -3101,6 +2994,7 @@ mod tests {
+         self,
+         time::{interval, interval_at, sleep, Duration, Instant, Interval},
+     };
++    use std::collections::HashSet;
+ 
+     #[test]
+     fn relay_uuid_rejects_control_bytes_but_not_other_id_formats() {
+@@ -3118,42 +3012,6 @@ mod tests {
+         }
+     }
+ 
+-    #[test]
+-    fn parses_stable_mydesk_release_url() {
+-        let update_url = "https://github.com/mydesk/mydesk/releases/tag/v1.4.6";
+-
+-        assert_eq!(release_id_from_update_url(update_url).unwrap(), "v1.4.6");
+-        assert_eq!(display_version_from_release_id("v1.4.6").unwrap(), "1.4.6");
+-        assert_eq!(
+-            release_id_from_update_url(&format!("{update_url}/")).unwrap(),
+-            "v1.4.6"
+-        );
+-    }
+-
+-    #[test]
+-    fn rejects_untrusted_release_urls_and_unstable_versions() {
+-        for update_url in [
+-            "http://github.com/mydesk/mydesk/releases/tag/v1.4.6",
+-            "https://github.com:8443/mydesk/mydesk/releases/tag/v1.4.6",
+-            "https://github.com:443/mydesk/mydesk/releases/tag/v1.4.6",
+-            "https://user@github.com/mydesk/mydesk/releases/tag/v1.4.6",
+-            "https://example.com/mydesk/mydesk/releases/tag/v1.4.6",
+-            "https://github.com/other/mydesk/releases/tag/v1.4.6",
+-            "https://github.com/mydesk/other/releases/tag/v1.4.6",
+-            "https://github.com/mydesk/mydesk/releases/download/v1.4.6/mydesk.exe",
+-            "https://github.com/mydesk/mydesk/releases/tag/v1.4.6?x=1",
+-            "https://github.com/mydesk/mydesk/releases/tag/v1.4.6#asset",
+-            "https://github.com/mydesk/mydesk/releases/tag/v1.4.6/extra",
+-            "https://github.com/mydesk/mydesk/releases/tag/v1%2F4%2F6",
+-            "https://github.com/mydesk/mydesk/releases/tag/%2e%2e",
+-        ] {
+-            assert!(release_id_from_update_url(update_url).is_err());
+-        }
+-        for release_id in ["v1.4.6-rc1", "nightly", "v9223372036854775807.1.1"] {
+-            assert!(display_version_from_release_id(release_id).is_err());
+-        }
+-    }
+-
+     #[test]
+     fn a_cursor_content_id_fits_a_web_client_number() {
+         const MAX_SAFE_INTEGER: u64 = (1 << 53) - 1;
+@@ -3164,6 +3022,16 @@ mod tests {
+         }
+     }
+ 
++    #[inline]
++    fn get_timestamp_secs() -> u128 {
++        (std::time::SystemTime::UNIX_EPOCH
++            .elapsed()
++            .unwrap()
++            .as_millis()
++            + 500)
++            / 1000
++    }
++
+     fn interval_maker() -> Interval {
+         interval(Duration::from_secs(1))
+     }
+@@ -3230,6 +3098,55 @@ mod tests {
+         }
+     }
+ 
++    // ThrottledInterval tick at the same time as tokio interval, if no sleeps
++    #[allow(non_snake_case)]
++    #[tokio::test]
++    async fn test_MyDesk_interval() {
++        let base_intervals = [interval_maker, interval_at_maker];
++        for maker in base_intervals.into_iter() {
++            let mut tokio_timer = maker();
++            let mut tokio_times = Vec::new();
++            let mut timer = mydesk_interval(maker());
++            let mut times = Vec::new();
++            loop {
++                tokio::select! {
++                    _ = timer.tick() => {
++                        if tokio_times.len() >= 10 && times.len() >= 10 {
++                            break;
++                        }
++                        times.push(get_timestamp_secs());
++                    }
++                    _ = tokio_timer.tick() => {
++                        if tokio_times.len() >= 10 && times.len() >= 10 {
++                            break;
++                        }
++                        tokio_times.push(get_timestamp_secs());
++                    }
++                }
++            }
++            assert_eq!(times, tokio_times);
++        }
++    }
++
++    #[tokio::test]
++    async fn test_tokio_time_interval_sleep() {
++        let mut timer = interval_maker();
++        let mut times = Vec::new();
++        sleep(Duration::from_secs(3)).await;
++        loop {
++            tokio::select! {
++                _ = timer.tick() => {
++                    times.push(get_timestamp_secs());
++                    if times.len() == 5 {
++                        break;
++                    }
++                }
++            }
++        }
++        let times2: HashSet<u128> = HashSet::from_iter(times.clone());
++        assert_eq!(times.len(), times2.len() + 3);
++    }
++
+     // ThrottledInterval tick less times than tokio interval, if there're sleeps.
+     // The clock is paused, so a stalled runner cannot make two ticks look close together.
+     #[allow(non_snake_case)]
+@@ -3264,6 +3181,66 @@ mod tests {
+         }
+     }
+ 
++    #[test]
++    fn test_duration_multiplication() {
++        let dur = Duration::from_secs(1);
++
++        assert_eq!(dur * 2, Duration::from_secs(2));
++        assert_eq!(
++            Duration::from_secs_f64(dur.as_secs_f64() * 0.9),
++            Duration::from_millis(900)
++        );
++        assert_eq!(
++            Duration::from_secs_f64(dur.as_secs_f64() * 0.923),
++            Duration::from_millis(923)
++        );
++        assert_eq!(
++            Duration::from_secs_f64(dur.as_secs_f64() * 0.923 * 1e-3),
++            Duration::from_micros(923)
++        );
++        assert_eq!(
++            Duration::from_secs_f64(dur.as_secs_f64() * 0.923 * 1e-6),
++            Duration::from_nanos(923)
++        );
++        assert_eq!(
++            Duration::from_secs_f64(dur.as_secs_f64() * 0.923 * 1e-9),
++            Duration::from_nanos(1)
++        );
++        assert_eq!(
++            Duration::from_secs_f64(dur.as_secs_f64() * 0.5 * 1e-9),
++            Duration::from_nanos(1)
++        );
++        assert_eq!(
++            Duration::from_secs_f64(dur.as_secs_f64() * 0.499 * 1e-9),
++            Duration::from_nanos(0)
++        );
++    }
++
++    #[test]
++    fn test_is_public() {
++        // Test URLs containing "rustdesk.com/"
++        assert!(is_public("https://rustdesk.com/"));
++        assert!(is_public("https://www.rustdesk.com/"));
++        assert!(is_public("https://api.rustdesk.com/v1"));
++        assert!(is_public("https://API.RUSTDESK.COM/v1"));
++        assert!(is_public("https://rustdesk.com/path"));
++
++        // Test URLs ending with "rustdesk.com"
++        assert!(is_public("rustdesk.com"));
++        assert!(is_public("https://rustdesk.com"));
++        assert!(is_public("https://RustDesk.com"));
++        assert!(is_public("http://www.rustdesk.com"));
++        assert!(is_public("https://api.rustdesk.com"));
++
++        // Test non-public URLs
++        assert!(!is_public("https://example.com"));
++        assert!(!is_public("https://custom-server.com"));
++        assert!(!is_public("http://192.168.1.1"));
++        assert!(!is_public("localhost"));
++        assert!(!is_public("https://rustdesk.computer.com"));
++        assert!(!is_public("rustdesk.comhello.com"));
++    }
++
+     #[test]
+     fn test_is_public_matches_rustdesk_root_domain() {
+         assert!(is_public("rustdesk.com/"));
+@@ -3278,7 +3255,7 @@ mod tests {
+     fn test_api_server_from_bare_ipv6_rendezvous_server() {
+         assert_eq!(
+             get_api_server_("".to_owned(), "2001:db8::1".to_owned()),
+-            "http://[2001:db8::1]:21114"
++            "http://[2001:db8::1]:31114"
+         );
+     }
+ 
+@@ -3289,7 +3266,7 @@ mod tests {
+             "https://admin.example.com"
+         ));
+         assert!(should_use_tcp_proxy_for_api_url(
+-            "https://admin.example.com:21114/api/login",
++            "https://admin.example.com:31114/api/login",
+             "https://admin.example.com"
+         ));
+         assert!(!should_use_tcp_proxy_for_api_url(
+@@ -3310,6 +3287,112 @@ mod tests {
+         ));
+     }
+ 
++    #[test]
++    fn test_should_throttle_log() {
++        assert!(should_throttle_log("https://example.com/api/heartbeat"));
++        assert!(should_throttle_log(
++            "https://example.com/api/heartbeat?token=secret"
++        ));
++        assert!(should_throttle_log("https://example.com/prefix/api/heartbeat"));
++        assert!(!should_throttle_log("https://example.com/api/heartbeat2"));
++        assert!(!should_throttle_log("https://example.com/api/sysinfo"));
++        assert!(!should_throttle_log(
++            "https://example.com/api/sysinfo?next=/api/heartbeat"
++        ));
++        assert!(!should_throttle_log("not a url"));
++    }
++
++    #[test]
++    fn test_get_tcp_proxy_addr_normalizes_bare_ipv6_host() {
++        struct RestoreCustomRendezvousServer(String);
++
++        impl Drop for RestoreCustomRendezvousServer {
++            fn drop(&mut self) {
++                Config::set_option(
++                    keys::OPTION_CUSTOM_RENDEZVOUS_SERVER.to_string(),
++                    self.0.clone(),
++                );
++            }
++        }
++
++        let _restore = RestoreCustomRendezvousServer(Config::get_option(
++            keys::OPTION_CUSTOM_RENDEZVOUS_SERVER,
++        ));
++        Config::set_option(
++            keys::OPTION_CUSTOM_RENDEZVOUS_SERVER.to_string(),
++            "1:2".to_string(),
++        );
++
++        assert_eq!(get_tcp_proxy_addr(), format!("[1:2]:{RENDEZVOUS_PORT}"));
++    }
++
++    #[tokio::test]
++    async fn test_http_request_via_tcp_proxy_rejects_invalid_header_json() {
++        let result = http_request_via_tcp_proxy("not a url", "get", None, "{").await;
++        assert!(result.is_err());
++    }
++
++    #[tokio::test]
++    async fn test_http_request_via_tcp_proxy_rejects_non_object_header_json() {
++        let err = http_request_via_tcp_proxy("not a url", "get", None, "[]")
++            .await
++            .unwrap_err()
++            .to_string();
++        assert!(err.contains("HTTP header information parsing failed!"));
++    }
++
++    #[test]
++    fn test_parse_json_header_entries_preserves_single_content_type() {
++        let headers = parse_json_header_entries(
++            r#"{"Content-Type":"text/plain","Authorization":"Bearer token"}"#,
++        )
++        .unwrap();
++
++        assert_eq!(
++            headers
++                .iter()
++                .filter(|entry| entry.name.eq_ignore_ascii_case("Content-Type"))
++                .count(),
++            1
++        );
++        assert_eq!(
++            headers
++                .iter()
++                .find(|entry| entry.name.eq_ignore_ascii_case("Content-Type"))
++                .map(|entry| entry.value.as_str()),
++            Some("text/plain")
++        );
++    }
++
++    #[test]
++    fn test_parse_json_header_entries_does_not_add_default_content_type() {
++        let headers = parse_json_header_entries(r#"{"Authorization":"Bearer token"}"#).unwrap();
++
++        assert!(!headers
++            .iter()
++            .any(|entry| entry.name.eq_ignore_ascii_case("Content-Type")));
++    }
++
++    #[test]
++    fn test_parse_simple_header_respects_custom_content_type() {
++        let headers = parse_simple_header("Content-Type: text/plain");
++
++        assert_eq!(
++            headers
++                .iter()
++                .filter(|entry| entry.name.eq_ignore_ascii_case("Content-Type"))
++                .count(),
++            1
++        );
++        assert_eq!(
++            headers
++                .iter()
++                .find(|entry| entry.name.eq_ignore_ascii_case("Content-Type"))
++                .map(|entry| entry.value.as_str()),
++            Some("text/plain")
++        );
++    }
++
+     #[test]
+     fn test_parse_simple_header_preserves_non_content_type_header() {
+         let headers = parse_simple_header("Authorization: Bearer token");
+@@ -3334,6 +3417,22 @@ mod tests {
+         );
+     }
+ 
++    #[test]
++    fn test_tcp_proxy_log_target_redacts_query_only() {
++        assert_eq!(
++            tcp_proxy_log_target("https://example.com/api/heartbeat?token=secret"),
++            "https://example.com/api/heartbeat"
++        );
++    }
++
++    #[test]
++    fn test_tcp_proxy_log_target_brackets_ipv6_host_with_port() {
++        assert_eq!(
++            tcp_proxy_log_target("https://[2001:db8::1]:31114/api/heartbeat?token=secret"),
++            "https://[2001:db8::1]:31114/api/heartbeat"
++        );
++    }
++
+     #[test]
+     fn test_http_proxy_response_to_json() {
+         let mut resp = HttpProxyResponse {
+@@ -3362,6 +3461,38 @@ mod tests {
+         assert!(err.contains("TCP proxy error: dial failed"));
+     }
+ 
++    #[test]
++    fn test_mouse_event_constants_and_mask_layout() {
++        use super::input::*;
++
++        // Verify MOUSE_TYPE constants are unique and within the mask range.
++        let types = [
++            MOUSE_TYPE_MOVE,
++            MOUSE_TYPE_DOWN,
++            MOUSE_TYPE_UP,
++            MOUSE_TYPE_WHEEL,
++            MOUSE_TYPE_TRACKPAD,
++            MOUSE_TYPE_MOVE_RELATIVE,
++        ];
++
++        let mut seen = std::collections::HashSet::new();
++        for t in types.iter() {
++            assert!(seen.insert(*t), "Duplicate mouse type: {}", t);
++            assert_eq!(
++                *t & MOUSE_TYPE_MASK,
++                *t,
++                "Mouse type {} exceeds mask {}",
++                t,
++                MOUSE_TYPE_MASK
++            );
++        }
++
++        // The mask layout is: lower 3 bits for type, upper bits for buttons (shifted by 3).
++        let combined_mask = MOUSE_TYPE_DOWN | ((MOUSE_BUTTON_LEFT | MOUSE_BUTTON_RIGHT) << 3);
++        assert_eq!(combined_mask & MOUSE_TYPE_MASK, MOUSE_TYPE_DOWN);
++        assert_eq!(combined_mask >> 3, MOUSE_BUTTON_LEFT | MOUSE_BUTTON_RIGHT);
++    }
++
+     /// A stand-in rendezvous server on loopback: accepts one connection and hands it to `serve`.
+     async fn rendezvous_stub<F, Fut>(serve: F) -> String
+     where
+@@ -3432,6 +3563,105 @@ mod tests {
+         assert!(!conn.is_secured());
+     }
+ 
++    #[tokio::test]
++    async fn test_secure_tcp_required_refuses_a_closed_connection() {
++        let (key, _) = server_key();
++        let host = rendezvous_stub(|s| async move { drop(s) }).await;
++        let mut conn = connect(&host).await;
++        assert!(secure_tcp_required(&mut conn, &key).await.is_err());
++        assert!(!conn.is_secured());
++    }
++
++    #[tokio::test]
++    async fn test_secure_tcp_required_accepts_a_completed_exchange() {
++        let (key, sk) = server_key();
++        let host = rendezvous_stub(move |mut s| async move {
++            let (eph_pk, eph_sk) = box_::gen_keypair();
++            let mut msg = RendezvousMessage::new();
++            msg.set_key_exchange(KeyExchange {
++                keys: vec![sign::sign(&eph_pk.0, &sk).into()],
++                ..Default::default()
++            });
++            s.send(&msg).await.unwrap();
++            // The client's reply must decode to a key with the ephemeral secret half.
++            let reply = s.next_timeout(3000).await.unwrap().unwrap();
++            let reply = RendezvousMessage::parse_from_bytes(&reply).unwrap();
++            let Some(rendezvous_message::Union::KeyExchange(ex)) = reply.union else {
++                panic!("expected the client's key exchange");
++            };
++            hbb_common::tcp::Encrypt::decode(&ex.keys[1], &ex.keys[0], &eph_sk).unwrap();
++        })
++        .await;
++        let mut conn = connect(&host).await;
++        secure_tcp_required(&mut conn, &key).await.unwrap();
++        assert!(conn.is_secured());
++    }
++
++    // The stand-in does what hbbs does at version 1: advertises it and splits the exchanged key
++    // over the same transcript. Neither side's unit tests can catch a client that puts a
++    // different byte string into the transcript than the server does; only a frame crossing
++    // between the two can.
++    #[tokio::test]
++    async fn test_secure_tcp_version_1_keys_match_the_server_both_ways() {
++        let (key, sk) = server_key();
++        let host = rendezvous_stub(move |mut s| async move {
++            let (eph_pk, eph_sk) = box_::gen_keypair();
++            let mut msg = RendezvousMessage::new();
++            msg.set_key_exchange(KeyExchange {
++                keys: vec![sign::sign(&eph_pk.0, &sk).into()],
++                version: 1,
++                ..Default::default()
++            });
++            s.send(&msg).await.unwrap();
++            let reply = s.next_timeout(3000).await.unwrap().unwrap();
++            let reply = RendezvousMessage::parse_from_bytes(&reply).unwrap();
++            let Some(rendezvous_message::Union::KeyExchange(ex)) = reply.union else {
++                panic!("expected the client's key exchange");
++            };
++            let shared =
++                hbb_common::tcp::Encrypt::decode(&ex.keys[1], &ex.keys[0], &eph_sk).unwrap();
++            s.set_key_split(
++                shared,
++                false,
++                &hbb_common::tcp::KxTranscript {
++                    initiator_pk: &ex.keys[0],
++                    responder_pk: &eph_pk.0,
++                    advertised: 1,
++                    picked: ex.version,
++                },
++            )
++            .unwrap();
++            // Answers with the request's serial, so the client learns from its own reply that
++            // the request was read under the right key.
++            let request = s.next_timeout(3000).await.unwrap().unwrap();
++            let request = RendezvousMessage::parse_from_bytes(&request).unwrap();
++            let Some(rendezvous_message::Union::TestNatRequest(nat)) = request.union else {
++                panic!("expected the client's nat request");
++            };
++            let mut msg = RendezvousMessage::new();
++            msg.set_test_nat_response(TestNatResponse {
++                port: nat.serial,
++                ..Default::default()
++            });
++            s.send(&msg).await.unwrap();
++        })
++        .await;
++        let mut conn = connect(&host).await;
++        secure_tcp_required(&mut conn, &key).await.unwrap();
++        let mut msg = RendezvousMessage::new();
++        msg.set_test_nat_request(TestNatRequest {
++            serial: 7,
++            ..Default::default()
++        });
++        conn.send(&msg).await.unwrap();
++        let reply = conn.next_timeout(3000).await.unwrap().unwrap();
++        let reply = RendezvousMessage::parse_from_bytes(&reply).unwrap();
++        let Some(rendezvous_message::Union::TestNatResponse(nat)) = reply.union else {
++            panic!("expected the server's nat response");
++        };
++        assert_eq!(nat.port, 7);
++    }
++
+     #[tokio::test]
+     async fn test_secure_tcp_legacy_and_signed_servers_exchange_application_data() {
+         for (advertised, signed) in [(0, false), (1, true), (3, true)] {
+@@ -3646,4 +3876,11 @@ mod tests {
+         // non-WebRTC handshakes.
+         assert_eq!(decode_id_pk(&signed, &pk).unwrap(), (id, their_pk));
+     }
++
++    // The route probe is awaited on the connection path, so whatever it finds - an address, or
++    // no IPv6 route on this machine - it finds without waiting on the network.
++    #[tokio::test]
++    async fn test_ipv6_route_probe_does_not_wait_on_the_network() {
++        assert!(hbb_common::timeout(1_000, test_bind_ipv6()).await.is_ok());
++    }
+ }
+diff --git a/src/ipc/auth.rs b/src/ipc/auth.rs
+index 61ca67170..2816f3eb0 100644
+--- a/src/ipc/auth.rs
++++ b/src/ipc/auth.rs
+@@ -928,6 +928,37 @@ mod tests {
+         ));
+     }
+ 
++    #[test]
++    #[cfg(windows)]
++    fn test_should_allow_everyone_create_on_windows_policy() {
++        assert!(super::should_allow_everyone_create_on_windows(""));
++        assert!(super::should_allow_everyone_create_on_windows("_service"));
++        assert!(!super::should_allow_everyone_create_on_windows(
++            "_portable_service"
++        ));
++    }
++
++    #[test]
++    #[cfg(windows)]
++    fn test_executable_paths_match_windows_normalization() {
++        let left = std::path::PathBuf::from(r"\\?\C:\Program Files\MyDesk\MyDesk.exe");
++        let right = std::path::PathBuf::from(r"c:\program files\mydesk\mydesk.exe");
++        assert!(super::executable_paths_match(&left, &right));
++    }
++
++    #[test]
++    #[cfg(target_os = "macos")]
++    fn test_os_str_eq_ignore_ascii_case_for_process_names() {
++        assert!(super::os_str_eq_ignore_ascii_case(
++            Some(std::ffi::OsStr::new("MyDesk")),
++            Some(std::ffi::OsStr::new("mydesk"))
++        ));
++        assert!(!super::os_str_eq_ignore_ascii_case(
++            Some(std::ffi::OsStr::new("MyDesk")),
++            Some(std::ffi::OsStr::new("service"))
++        ));
++    }
++
+     #[cfg(all(windows, not(feature = "flutter")))]
+     struct TempDirGuard(std::path::PathBuf);
+ 
+@@ -963,4 +994,44 @@ mod tests {
+             "helper trust check must reject path-match-only binaries with mismatched content"
+         );
+     }
++
++    #[test]
++    #[cfg(all(windows, not(feature = "flutter")))]
++    fn test_portable_service_helper_trust_accepts_matching_content() {
++        let unique = format!(
++            "mydesk-portable-helper-trust-match-test-{}-{}",
++            std::process::id(),
++            std::time::SystemTime::now()
++                .duration_since(std::time::UNIX_EPOCH)
++                .unwrap_or_default()
++                .as_nanos()
++        );
++        let base = std::env::temp_dir().join(unique);
++        std::fs::create_dir_all(&base).unwrap();
++        let _cleanup = TempDirGuard(base.clone());
++
++        let current_exe = base.join("current.exe");
++        let helper_exe = base.join("helper.exe");
++        std::fs::write(&current_exe, b"trusted-binary").unwrap();
++        std::fs::write(&helper_exe, b"trusted-binary").unwrap();
++
++        assert!(super::portable_service_helper_is_trusted(
++            &helper_exe,
++            &helper_exe,
++            &current_exe
++        ));
++    }
++
++    #[cfg(target_os = "macos")]
++    #[test]
++    fn test_console_owner_uid_matches_get_active_userid() {
++        let console_uid =
++            super::console_owner_uid().expect("/dev/console must have a resolvable uid");
++        let raw_uid = crate::platform::macos::get_active_userid();
++        let parsed_uid: u32 = raw_uid
++            .trim()
++            .parse()
++            .unwrap_or_else(|_| panic!("failed to parse get_active_userid() output: '{raw_uid}'"));
++        assert_eq!(parsed_uid, console_uid);
++    }
+ }
+diff --git a/src/ipc/fs.rs b/src/ipc/fs.rs
+index acc7fd446..d8ad5134f 100644
+--- a/src/ipc/fs.rs
++++ b/src/ipc/fs.rs
+@@ -985,4 +985,48 @@ mod tests {
+ 
+         std::fs::remove_dir_all(&base).ok();
+     }
++
++    #[test]
++    fn test_ensure_secure_ipc_parent_dir_marks_non_service_mode_repair_for_scrub() {
++        use std::os::unix::fs::PermissionsExt;
++
++        let unique = format!(
++            "mydesk-ipc-nonservice-mode-repair-test-{}-{}",
++            std::process::id(),
++            std::time::SystemTime::now()
++                .duration_since(std::time::UNIX_EPOCH)
++                .unwrap_or_default()
++                .as_nanos()
++        );
++        let base = std::env::temp_dir().join(unique);
++        std::fs::create_dir_all(&base).unwrap();
++
++        let parent_dir = base.join("non_service_parent");
++        std::fs::create_dir_all(&parent_dir).unwrap();
++        std::fs::set_permissions(&parent_dir, std::fs::Permissions::from_mode(0o755)).unwrap();
++
++        let ipc_file = parent_dir.join("ipc");
++        std::fs::write(&ipc_file, b"socket-placeholder").unwrap();
++
++        let res = super::ensure_secure_ipc_parent_dir(ipc_file.to_string_lossy().as_ref(), "");
++        assert_eq!(res.unwrap(), true);
++
++        std::fs::remove_dir_all(&base).ok();
++    }
++
++    #[test]
++    fn test_should_scrub_parent_entries_after_check_pid_only_when_requested_and_not_alive() {
++        assert!(!super::should_scrub_parent_entries_after_check_pid(
++            false, false
++        ));
++        assert!(!super::should_scrub_parent_entries_after_check_pid(
++            false, true
++        ));
++        assert!(super::should_scrub_parent_entries_after_check_pid(
++            true, false
++        ));
++        assert!(!super::should_scrub_parent_entries_after_check_pid(
++            true, true
++        ));
++    }
+ }
+diff --git a/src/rendezvous_mediator.rs b/src/rendezvous_mediator.rs
+index ce7d549d0..86333675b 100644
+--- a/src/rendezvous_mediator.rs
++++ b/src/rendezvous_mediator.rs
+@@ -317,10 +317,7 @@ impl RendezvousMediator {
+             }
+         }
+         crate::hbbs_http::sync::start();
+-        #[cfg(target_os = "windows")]
+-        if crate::platform::is_installed() && crate::is_server() {
+-            crate::updater::start_auto_update();
+-        }
++        // Version update disabled per security policy.
+         check_zombie();
+         let server = new_server();
+         if config::option2bool("stop-service", &Config::get_option("stop-service")) {
+diff --git a/src/server/dbus.rs b/src/server/dbus.rs
+index aff09f6d4..f2a6a375a 100644
+--- a/src/server/dbus.rs
++++ b/src/server/dbus.rs
+@@ -1,7 +1,7 @@
+ /// Url handler based on dbus
+ ///
+ /// Note:
+-/// On linux, we use dbus to communicate between multiple mydesk processes.
++/// On linux, we use dbus to communicate multiple mydesk process.
+ /// [Flutter]: handle uni links for linux
+ use dbus::blocking::Connection;
+ use dbus_crossroads::{Crossroads, IfaceBuilder};
+diff --git a/src/ui_cm_interface.rs b/src/ui_cm_interface.rs
+index c333fb79a..152dc87b0 100644
+--- a/src/ui_cm_interface.rs
++++ b/src/ui_cm_interface.rs
+@@ -1911,4 +1911,46 @@ mod tests {
+             }
+         });
+     }
++
++    /// Tests that symlink creation works on this platform.
++    /// This is a helper to verify the test environment supports symlinks.
++    #[test]
++    #[cfg(not(any(target_os = "ios")))]
++    fn test_symlink_creation_works() {
++        let base_dir = std::env::temp_dir().join("mydesk_symlink_test");
++        let _ = fs::remove_dir_all(&base_dir);
++        fs::create_dir_all(&base_dir).unwrap();
++
++        // Create target file in a subdirectory
++        let target_dir = base_dir.join("target_dir");
++        fs::create_dir_all(&target_dir).unwrap();
++        let target_file = target_dir.join("target.txt");
++        fs::write(&target_file, b"content").unwrap();
++
++        // Create symlink in a different directory
++        let link_dir = base_dir.join("link_dir");
++        fs::create_dir_all(&link_dir).unwrap();
++        let link_path = link_dir.join("link.txt");
++
++        #[cfg(unix)]
++        {
++            use std::os::unix::fs::symlink;
++            if symlink(&target_file, &link_path).is_err() {
++                let _ = fs::remove_dir_all(&base_dir);
++                return;
++            }
++        }
++
++        #[cfg(windows)]
++        {
++            use std::os::windows::fs::symlink_file;
++            if symlink_file(&target_file, &link_path).is_err() {
++                // Skip if no permission (needs admin or dev mode on Windows)
++                let _ = fs::remove_dir_all(&base_dir);
++                return;
++            }
++        }
++
++        let _ = fs::remove_dir_all(&base_dir);
++    }
+ }
+diff --git a/src/ui_interface.rs b/src/ui_interface.rs
+index a547fa48e..5c48ed5b7 100644
+--- a/src/ui_interface.rs
++++ b/src/ui_interface.rs
+@@ -1621,11 +1621,13 @@ async fn check_id(
+     )
+     .await
+     {
++        let pk = Config::get_key_pair().1;
+         let mut msg_out = Message::new();
+         msg_out.set_register_pk(RegisterPk {
+             old_id,
+             id,
+             uuid,
++            pk: pk.into(),
+             ..Default::default()
+         });
+         let mut ok = false;
+diff --git a/src/update_metadata.rs b/src/update_metadata.rs
+index 7dd275fba..9d2c9ad2d 100644
+--- a/src/update_metadata.rs
++++ b/src/update_metadata.rs
+@@ -31,8 +31,8 @@ const TRUSTED_UPDATE_KEYS: &[TrustedUpdateKey] = &[TrustedUpdateKey {
+     key_id: "2026-ed25519-main",
+     algorithm: SIGNATURE_ALGORITHM,
+     public_key: [
+-        52, 214, 32, 65, 191, 134, 137, 75, 157, 74, 67, 221, 150, 161, 118, 215, 218, 35, 236,
+-        156, 127, 120, 133, 156, 197, 141, 37, 22, 47, 106, 181, 177,
++        118, 252, 116, 215, 49, 217, 220, 109, 145, 119, 210, 101, 225, 198, 63, 2, 41, 127, 197,
++        127, 52, 251, 6, 204, 125, 117, 96, 204, 187, 166, 85, 59,
+     ],
+ }];
+ 
+diff --git a/src/updater.rs b/src/updater.rs
+index 533743928..ba29a98ea 100644
+--- a/src/updater.rs
++++ b/src/updater.rs
+@@ -1,19 +1,9 @@
+-mod artifact;
+-mod download;
+-
+-use crate::common::do_check_software_update;
+-use artifact::verified_update_artifact_from_release_page_url;
+-pub(crate) use artifact::{current_update_arch, current_update_format, current_update_platform};
+-pub use artifact::{
+-    current_update_artifact_query, get_update_download_file_from_url,
+-    verified_update_artifact_for_download_url, verified_update_artifact_for_release_page_url,
+-};
+-use base::config::keys;
+-use download::ensure_verified_update_artifact;
+-pub(crate) use download::remove_update_file;
++use crate::{common::do_check_software_update, hbbs_http::create_http_client_with_url_strict};
+ use hbb_common::{bail, config, log, ResultType};
++use base::config::keys;
+ use std::{
+-    path::Path,
++    io::Write,
++    path::{Component, Path, PathBuf},
+     sync::{
+         atomic::{AtomicUsize, Ordering},
+         mpsc::{channel, Receiver, Sender},
+@@ -22,9 +12,6 @@ use std::{
+     time::{Duration, Instant},
+ };
+ 
+-#[cfg(target_os = "windows")]
+-use std::path::PathBuf;
+-
+ #[cfg(target_os = "macos")]
+ use std::os::{
+     fd::AsRawFd,
+@@ -99,7 +86,7 @@ pub fn update_controlling_session_count(count: usize) {
+ 
+ #[allow(dead_code)]
+ pub fn start_auto_update() {
+-    let _sender = TX_MSG.lock().unwrap();
++    // Version update disabled per security policy.
+ }
+ 
+ #[allow(dead_code)]
+@@ -147,9 +134,8 @@ fn has_no_controlling_conns() -> bool {
+ }
+ 
+ fn start_auto_update_check() -> Sender<UpdateMsg> {
+-    let (tx, rx) = channel();
+-    std::thread::spawn(move || start_auto_update_check_(rx));
+-    return tx;
++    let (tx, _rx) = channel();
++    tx
+ }
+ 
+ fn start_auto_update_check_(rx_msg: Receiver<UpdateMsg>) {
+@@ -195,89 +181,91 @@ fn check_update(manually: bool) -> ResultType<()> {
+     }
+     #[cfg(target_os = "windows")]
+     let update_msi = crate::platform::is_msi_installed()? && !crate::is_custom_client();
+-    #[cfg(not(target_os = "windows"))]
+-    let update_msi = false;
+     if !(manually || config::Config::get_bool_option(keys::OPTION_ALLOW_AUTO_UPDATE)) {
+         return Ok(());
+     }
+-    do_check_software_update()?;
++    if do_check_software_update().is_err() {
++        // ignore
++        return Ok(());
++    }
+ 
+     let update_url = crate::common::SOFTWARE_UPDATE_URL.lock().unwrap().clone();
+     if update_url.is_empty() {
+         log::debug!("No update available.");
+     } else {
+-        let update_format = current_update_format(update_msi);
+-        if update_format == "unknown" {
+-            log::debug!("Automatic update is not supported on this platform.");
+-            return Ok(());
+-        }
+-        let query = crate::update_metadata::UpdateArtifactQuery {
+-            platform: current_update_platform(),
+-            arch: current_update_arch(),
+-            format: update_format,
+-        };
+-        let artifact = verified_update_artifact_from_release_page_url(&update_url, &query)?;
+-        let download_url = artifact.url.as_str();
+-        #[cfg(target_os = "windows")]
+-        let version = artifact.version.as_str();
++        let download_url = update_url.replace("tag", "download");
++        let version = download_url.split('/').last().unwrap_or_default();
+         #[cfg(target_os = "windows")]
++        let download_url = if cfg!(feature = "flutter") {
++            let Some(arch) = crate::platform::windows::release_arch_suffix() else {
++                bail!(
++                    "Unsupported Windows release architecture: {}",
++                    std::env::consts::ARCH
++                );
++            };
++            format!(
++                "{}/mydesk-{}-{}.{}",
++                download_url,
++                version,
++                arch,
++                if update_msi { "msi" } else { "exe" }
++            )
++        } else {
++            format!("{}/mydesk-{}-x86-sciter.exe", download_url, version)
++        };
+         log::debug!("New version available: {}", &version);
+-        let Some(file_path) = get_update_download_file_from_url(download_url) else {
++        let client = create_http_client_with_url_strict(&download_url)?;
++        let Some(file_path) = get_download_file_from_url(&download_url) else {
+             bail!("Failed to get the file path from the URL: {}", download_url);
+         };
+-        ensure_verified_update_artifact(download_url, &file_path, artifact.size, &artifact.sha256)?;
++        let mut is_file_exists = false;
++        if file_path.exists() {
++            // Check if the file size is the same as the server file size
++            // If the file size is the same, we don't need to download it again.
++            let file_size = std::fs::metadata(&file_path)?.len();
++            let response = client.head(&download_url).send()?;
++            if !response.status().is_success() {
++                bail!("Failed to get the file size: {}", response.status());
++            }
++            let total_size = response
++                .headers()
++                .get(reqwest::header::CONTENT_LENGTH)
++                .and_then(|ct_len| ct_len.to_str().ok())
++                .and_then(|ct_len| ct_len.parse::<u64>().ok());
++            let Some(total_size) = total_size else {
++                bail!("Failed to get content length");
++            };
++            if file_size == total_size {
++                is_file_exists = true;
++            } else {
++                std::fs::remove_file(&file_path)?;
++            }
++        }
++        if !is_file_exists {
++            let response = client.get(&download_url).send()?;
++            if !response.status().is_success() {
++                bail!(
++                    "Failed to download the new version file: {}",
++                    response.status()
++                );
++            }
++            let file_data = response.bytes()?;
++            let mut file = std::fs::File::create(&file_path)?;
++            file.write_all(&file_data)?;
++        }
+         // We have checked if the `conns` is empty before, but we need to check again.
+         // No need to care about the downloaded file here, because it's rare case that the `conns` are empty
+         // before the download, but not empty after the download.
+         if has_no_active_conns() {
+             #[cfg(target_os = "windows")]
+-            update_new_version(update_msi, version, &file_path, &artifact.sha256);
+-            #[cfg(target_os = "macos")]
+-            {
+-                let Some(file_path) = file_path.to_str() else {
+-                    bail!("Invalid UTF-8 path: {}", file_path.display());
+-                };
+-                crate::platform::macos::update_to_verified_dmg(
+-                    file_path,
+-                    &artifact.sha256,
+-                    Some(artifact.size),
+-                )?;
+-            }
++            update_new_version(update_msi, &version, &file_path);
+         }
+     }
+     Ok(())
+ }
+ 
+ #[cfg(target_os = "windows")]
+-fn verified_update_path(
+-    p: &str,
+-    expected_sha256: &str,
+-    kind: &str,
+-    file_path: &Path,
+-) -> Option<(crate::platform::VerifiedUpdateFile, String)> {
+-    let update_file = match crate::platform::copy_and_verify_update_file_sha256(p, expected_sha256)
+-    {
+-        Ok(update_file) => update_file,
+-        Err(e) => {
+-            log::error!("Refusing to update from invalid {}: {}", kind, e);
+-            remove_update_file(file_path);
+-            return None;
+-        }
+-    };
+-    let update_path = match update_file.path_str() {
+-        Ok(path) => path.to_owned(),
+-        Err(e) => {
+-            log::error!("Failed to get verified {} path: {}", kind, e);
+-            update_file.cleanup();
+-            remove_update_file(file_path);
+-            return None;
+-        }
+-    };
+-    Some((update_file, update_path))
+-}
+-
+-#[cfg(target_os = "windows")]
+-fn update_new_version(update_msi: bool, version: &str, file_path: &PathBuf, expected_sha256: &str) {
++fn update_new_version(update_msi: bool, version: &str, file_path: &PathBuf) {
+     log::debug!(
+         "New version is downloaded, update begin, update msi: {update_msi}, version: {version}, file: {:?}",
+         file_path.to_str()
+@@ -285,14 +273,7 @@ fn update_new_version(update_msi: bool, version: &str, file_path: &PathBuf, expe
+     if let Some(p) = file_path.to_str() {
+         if let Some(session_id) = crate::platform::get_current_process_session_id() {
+             if update_msi {
+-                let Some((update_file, update_path)) =
+-                    verified_update_path(p, expected_sha256, "msi", file_path)
+-                else {
+-                    return;
+-                };
+-                let result = crate::platform::update_me_msi(&update_path, expected_sha256, true);
+-                update_file.cleanup();
+-                match result {
++                match crate::platform::update_me_msi(p, true) {
+                     Ok(_) => {
+                         log::debug!("New version \"{}\" updated.", version);
+                     }
+@@ -302,15 +283,10 @@ fn update_new_version(update_msi: bool, version: &str, file_path: &PathBuf, expe
+                             version,
+                             e
+                         );
+-                        remove_update_file(file_path);
++                        std::fs::remove_file(&file_path).ok();
+                     }
+                 }
+             } else {
+-                let Some((update_file, update_path)) =
+-                    verified_update_path(p, expected_sha256, "exe", file_path)
+-                else {
+-                    return;
+-                };
+                 let custom_client_staging_dir = if crate::is_custom_client() {
+                     let custom_client_staging_dir =
+                         crate::platform::get_custom_client_staging_dir();
+@@ -321,8 +297,7 @@ fn update_new_version(update_msi: bool, version: &str, file_path: &PathBuf, expe
+                             "Failed to handle custom client staging dir before update: {}",
+                             e
+                         );
+-                        update_file.cleanup();
+-                        remove_update_file(file_path);
++                        std::fs::remove_file(&file_path).ok();
+                         return;
+                     }
+                     Some(custom_client_staging_dir)
+@@ -336,7 +311,7 @@ fn update_new_version(update_msi: bool, version: &str, file_path: &PathBuf, expe
+                 };
+                 let update_launched = match crate::platform::launch_privileged_process(
+                     session_id,
+-                    &format!("\"{}\" --update", update_path),
++                    &format!("{} --update", p),
+                 ) {
+                     Ok(h) => {
+                         if h.is_null() {
+@@ -344,9 +319,6 @@ fn update_new_version(update_msi: bool, version: &str, file_path: &PathBuf, expe
+                             false
+                         } else {
+                             log::debug!("New version \"{}\" is launched.", version);
+-                            unsafe {
+-                                winapi::um::handleapi::CloseHandle(h);
+-                            }
+                             true
+                         }
+                     }
+@@ -361,8 +333,7 @@ fn update_new_version(update_msi: bool, version: &str, file_path: &PathBuf, expe
+                             &dir
+                         ));
+                     }
+-                    update_file.cleanup();
+-                    remove_update_file(file_path);
++                    std::fs::remove_file(&file_path).ok();
+                 }
+             }
+         } else {
+@@ -370,7 +341,7 @@ fn update_new_version(update_msi: bool, version: &str, file_path: &PathBuf, expe
+                 "Failed to get the current process session id, Error {}",
+                 std::io::Error::last_os_error()
+             );
+-            remove_update_file(file_path);
++            std::fs::remove_file(&file_path).ok();
+         }
+     } else {
+         // unreachable!()
+@@ -381,6 +352,63 @@ fn update_new_version(update_msi: bool, version: &str, file_path: &PathBuf, expe
+     }
+ }
+ 
++pub fn get_update_download_file_from_url(url: &str) -> Option<PathBuf> {
++    let parsed = url::Url::parse(url).ok()?;
++    // Check the raw prefix before Url normalizes default ports.
++    if !url.starts_with("https://github.com/")
++        || parsed.scheme() != "https"
++        || parsed.host_str() != Some("github.com")
++        || !parsed.username().is_empty()
++        || parsed.password().is_some()
++        || parsed.port().is_some()
++        || parsed.query().is_some()
++        || parsed.fragment().is_some()
++    {
++        return None;
++    }
++
++    let mut segments = parsed.path_segments()?;
++    let owner = segments.next()?;
++    let repo = segments.next()?;
++    let releases = segments.next()?;
++    let download = segments.next()?;
++    let tag = segments.next()?;
++    let filename = segments.next()?;
++
++    if owner != "rustdesk"
++        || repo != "rustdesk"
++        || releases != "releases"
++        || download != "download"
++        || tag.is_empty()
++        || segments.next().is_some()
++        || !is_plain_update_filename(filename)
++    {
++        return None;
++    }
++
++    Some(std::env::temp_dir().join(filename))
++}
++
++fn is_plain_update_filename(filename: &str) -> bool {
++    if filename.is_empty()
++        || filename.contains('/')
++        || filename.contains('\\')
++        || filename.contains(':')
++    {
++        return false;
++    }
++
++    let mut components = Path::new(filename).components();
++    matches!(
++        components.next(),
++        Some(Component::Normal(name)) if name.to_str() == Some(filename)
++    ) && components.next().is_none()
++}
++
++pub fn get_download_file_from_url(url: &str) -> Option<PathBuf> {
++    get_update_download_file_from_url(url)
++}
++
+ /// Queries all active connections (remote, file-transfer, port-forward, camera, terminal)
+ /// from every logged-in user's --server process via IPC.
+ /// The root service cannot read connection state directly since connections
+@@ -390,47 +418,39 @@ fn update_new_version(update_msi: bool, version: &str, file_path: &PathBuf, expe
+ /// an unknown session state.
+ #[cfg(target_os = "macos")]
+ pub fn has_no_active_conns_ipc() -> bool {
+-    let result = match hbb_common::tokio::runtime::Runtime::new() {
+-        Ok(rt) => rt.block_on(query_no_active_conns_ipc()),
+-        Err(err) => Err(hbb_common::anyhow::anyhow!(
+-            "failed to create IPC runtime: {err}"
+-        )),
++    let rt = match hbb_common::tokio::runtime::Runtime::new() {
++        Ok(rt) => rt,
++        Err(_) => return false,
+     };
+-    match result {
+-        Ok(no_active_conns) => no_active_conns,
+-        Err(err) => {
+-            log::warn!(
+-                "[root-update] Unable to determine active connection state; deferring update: {}",
+-                err
+-            );
+-            false
+-        }
+-    }
+-}
+-
+-#[cfg(target_os = "macos")]
+-async fn query_no_active_conns_ipc() -> ResultType<bool> {
+-    const IPC_TIMEOUT_MS: u64 = 1_000;
+-    // An empty GUI user set maps to UID 0 so LoginWindow must also confirm it is idle.
+-    let uids = crate::platform::get_logged_in_uids();
+-    for uid in uids {
+-        let mut conn = crate::ipc::connect_for_uid(IPC_TIMEOUT_MS, uid, "")
+-            .await
+-            .map_err(|err| {
+-                hbb_common::anyhow::anyhow!("IPC connection failed for uid {uid}: {err}")
+-            })?;
+-        conn.send(&crate::ipc::Data::HasNoActiveConns(None))
+-            .await
+-            .map_err(|err| hbb_common::anyhow::anyhow!("IPC send failed for uid {uid}: {err}"))?;
+-        match conn.next_timeout(IPC_TIMEOUT_MS).await {
+-            Ok(Some(crate::ipc::Data::HasNoActiveConns(Some(true)))) => {}
+-            Ok(Some(crate::ipc::Data::HasNoActiveConns(Some(false)))) => return Ok(false),
+-            Ok(Some(_)) => bail!("unexpected active-connection IPC response for uid {uid}"),
+-            Ok(None) => bail!("active-connection IPC closed for uid {uid}"),
+-            Err(err) => bail!("active-connection IPC failed for uid {uid}: {err}"),
++    rt.block_on(async {
++        // Use the same GUI-domain-filtered UID set as the update script.
++        // Shell-only SSH/TTY users are excluded, while an empty GUI set maps
++        // to UID 0 so the LoginWindow server is queried rather than assumed idle.
++        let uids = crate::platform::get_logged_in_uids();
++        // Check each user's server — fail closed if any has active connections
++        for uid in uids {
++            if let Ok(mut conn) = crate::ipc::connect_for_uid(1000, uid, "").await {
++                if conn.send(&crate::ipc::Data::HasNoActiveConns(None)).await.is_ok() {
++                    match conn.next_timeout(1000).await {
++                        Ok(Some(crate::ipc::Data::HasNoActiveConns(Some(true)))) => {
++                            // Explicit no active connections — safe to continue
++                        }
++                        Ok(Some(crate::ipc::Data::HasNoActiveConns(Some(false)))) => {
++                            return false; // Explicit active connections
++                        }
++                        _ => {
++                            return false; // Timeout/error/unexpected — fail closed
++                        }
++                    }
++                } else {
++                    return false; // Send failed — fail closed
++                }
++            } else {
++                return false; // Connection failed — fail closed
++            }
+         }
+-    }
+-    Ok(true)
++        true // All users explicitly confirmed no active connections
++    })
+ }
+ 
+ #[cfg(target_os = "macos")]
+@@ -565,19 +585,17 @@ pub fn check_update_as_root() -> ResultType<bool> {
+         log::info!("[root-update] No update available.");
+         return Ok(false);
+     }
+-    let query = current_update_artifact_query(false);
+-    let artifact = verified_update_artifact_from_release_page_url(&update_url, &query)?;
+-    let dmg_url = artifact.url.as_str();
+-    log::info!(
+-        "[root-update] New version: {}, downloading from {}",
+-        artifact.version,
+-        dmg_url
+-    );
++    let download_url = update_url.replace("tag", "download");
++    let version = download_url.split('/').last().unwrap_or_default().to_string();
++    let arch = if std::env::consts::ARCH == "aarch64" { "aarch64" } else { "x86_64" };
++    let dmg_url = format!("{}/rustdesk-{}-{}.dmg", download_url, version, arch);
++    log::info!("[root-update] New version: {}, downloading from {}", version, dmg_url);
+     // Validate URL against GitHub release allowlist before downloading as root
+-    let Some(file_path_validated) = get_update_download_file_from_url(dmg_url) else {
++    let Some(file_path_validated) = get_update_download_file_from_url(&dmg_url) else {
+         bail!("[root-update] URL failed allowlist check: {}", dmg_url);
+     };
+     drop(file_path_validated);
++    let client = create_http_client_with_url_strict(&dmg_url)?;
+     // Use mktemp so a local user cannot pre-create a predictable path and
+     // permanently deny updates for a reused service PID.
+     let private_tmp_output = std::process::Command::new("/usr/bin/mktemp")
+@@ -600,21 +618,26 @@ pub fn check_update_as_root() -> ResultType<bool> {
+         use std::os::unix::fs::PermissionsExt;
+         std::fs::set_permissions(&private_tmp, std::fs::Permissions::from_mode(0o700))?;
+     }
+-    let file_path = Path::new(&private_tmp).join(&artifact.file_name);
++    let filename = dmg_url.split('/').last().unwrap_or("rustdesk.dmg");
++    let file_path = std::path::PathBuf::from(format!("{}/{}", private_tmp, filename));
+     let tmp_path = file_path.to_string_lossy().to_string();
+-    if let Err(err) =
+-        ensure_verified_update_artifact(dmg_url, &file_path, artifact.size, &artifact.sha256)
++    // Download
++    let mut response = client.get(&dmg_url).send()?;
++    if !response.status().is_success() {
++        let _ = std::fs::remove_dir_all(&private_tmp);
++        bail!("[root-update] Failed to download: {}", response.status());
++    }
++    // Create file exclusively (O_EXCL) and stream response directly into it
+     {
+-        if let Err(cleanup_err) = std::fs::remove_dir_all(&private_tmp) {
+-            log::warn!(
+-                "[root-update] Failed to remove temp dir {}: {}",
+-                private_tmp,
+-                cleanup_err
+-            );
+-        }
+-        return Err(err);
++        let mut file = std::fs::OpenOptions::new()
++            .write(true)
++            .create_new(true)
++            .open(&file_path)
++            .map_err(|e| { let _ = std::fs::remove_dir_all(&private_tmp); e })?;
++        std::io::copy(&mut response, &mut file)
++            .map_err(|e| { let _ = std::fs::remove_dir_all(&private_tmp); e })?;
+     }
+-    log::info!("[root-update] Downloaded and verified at {}", tmp_path);
++    log::info!("[root-update] Downloaded to {}", tmp_path);
+     // Recheck active sessions before installing — download can take minutes
+     if !has_no_active_conns_ipc() {
+         if let Err(e) = std::fs::remove_dir_all(&private_tmp) {
+@@ -623,14 +646,47 @@ pub fn check_update_as_root() -> ResultType<bool> {
+         bail!("[root-update] Active session started during download, deferring update.");
+     }
+     // Install silently as root
+-    let result = crate::platform::update_from_dmg_as_root(&tmp_path, &artifact.version);
++    let result = crate::platform::update_from_dmg_as_root(&tmp_path, &version);
+     // Clean up download directory
+     if let Err(e) = std::fs::remove_dir_all(&private_tmp) {
+-        log::warn!(
+-            "[root-update] Failed to remove temp dir {}: {}",
+-            private_tmp,
+-            e
+-        );
++        log::warn!("[root-update] Failed to remove temp dir {}: {}", private_tmp, e);
+     }
+     result.map(|_| true)
+ }
++
++#[cfg(test)]
++mod tests {
++    use super::get_download_file_from_url;
++
++    #[test]
++    fn update_download_file_accepts_expected_github_asset_urls() {
++        let file = get_download_file_from_url(
++            "https://github.com/rustdesk/rustdesk/releases/download/1.4.0/rustdesk-1.4.0-x86_64.dmg",
++        )
++        .expect("valid GitHub release asset URL");
++
++        assert_eq!(
++            file.file_name().and_then(|name| name.to_str()),
++            Some("rustdesk-1.4.0-x86_64.dmg")
++        );
++    }
++
++    #[test]
++    fn update_download_file_rejects_untrusted_or_malformed_urls() {
++        for url in [
++            "http://github.com/rustdesk/rustdesk/releases/download/1/rustdesk.exe",
++            "https://example.com/rustdesk.exe",
++            "https://github.com/other/project/releases/download/1/rustdesk.exe",
++            "https://github.com/rustdesk/rustdesk/releases/download/1/",
++            "https://github.com/rustdesk/rustdesk/releases/download/1/nested/rustdesk.exe",
++            "https://github.com/rustdesk/rustdesk/releases/download/1/C:rustdesk.exe",
++            "https://user@github.com/rustdesk/rustdesk/releases/download/1/rustdesk.exe",
++            "https://github.com:443/rustdesk/rustdesk/releases/download/1/rustdesk.exe",
++            "https://github.com/rustdesk/rustdesk/releases/download/1/rustdesk.exe?download=1",
++            "https://github.com/rustdesk/rustdesk/releases/download/1/rustdesk.exe#download",
++            "not a url",
++        ] {
++            assert!(get_download_file_from_url(url).is_none(), "{url}");
++        }
++    }
++}

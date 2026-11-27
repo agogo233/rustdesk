@@ -1,0 +1,420 @@
+diff --git a/flutter/android/app/build.gradle b/flutter/android/app/build.gradle
+index 07f029cf5..1cf7d257b 100644
+--- a/flutter/android/app/build.gradle
++++ b/flutter/android/app/build.gradle
+@@ -82,7 +82,7 @@ protobuf {
+ }
+ 
+ android {
+-    namespace "com.carriez.flutter_hbb"
++    namespace "com.mydesk.mydesk"
+     compileSdkVersion 36
+     sourceSets {
+         main.java.srcDirs += 'src/main/kotlin'
+@@ -99,7 +99,7 @@ android {
+ 
+     defaultConfig {
+         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+-        applicationId "com.carriez.flutter_hbb"
++        applicationId "com.mydesk.mydesk"
+         minSdkVersion 22
+         targetSdkVersion 36
+         versionCode flutterVersionCode.toInteger()
+@@ -117,9 +117,11 @@ android {
+ 
+     buildTypes {
+         release {
+-            // TODO: Add your own signing config for the release build.
+-            // Signing with the debug keys for now, so `flutter run --release` works.
+-            signingConfig signingConfigs.release
++            if (keystoreProperties['storeFile'] != null) {
++                signingConfig signingConfigs.release
++            } else {
++                signingConfig signingConfigs.debug
++            }
+             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules'
+         }
+     }
+@@ -134,7 +136,7 @@ dependencies {
+     implementation 'com.google.protobuf:protobuf-javalite:3.20.1'
+     implementation "androidx.media:media:1.6.0"
+     implementation 'com.github.getActivity:XXPermissions:18.5'
+-    implementation("org.jetbrains.kotlin:kotlin-stdlib") { version { strictly("1.9.10") } }
++
+     implementation 'com.caverock:androidsvg-aar:1.4'
+     implementation "rustls:rustls-platform-verifier:0.1.1"
+ }
+diff --git a/flutter/android/app/src/debug/AndroidManifest.xml b/flutter/android/app/src/debug/AndroidManifest.xml
+index 64d68a588..b6b50ef23 100644
+--- a/flutter/android/app/src/debug/AndroidManifest.xml
++++ b/flutter/android/app/src/debug/AndroidManifest.xml
+@@ -1,5 +1,5 @@
+ <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+-    package="com.carriez.flutter_hbb">
++    package="com.mydesk.mydesk">
+     <!-- Flutter needs it to communicate with the running application
+          to allow setting breakpoints, to provide hot reload, etc.
+     -->
+diff --git a/flutter/android/app/src/main/AndroidManifest.xml b/flutter/android/app/src/main/AndroidManifest.xml
+index 84e7c8095..7a4f26d17 100644
+--- a/flutter/android/app/src/main/AndroidManifest.xml
++++ b/flutter/android/app/src/main/AndroidManifest.xml
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:tools="http://schemas.android.com/tools"
+-    package="com.carriez.flutter_hbb">
++    package="com.mydesk.mydesk">
+ 
+     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" tools:node="remove" />
+     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" tools:node="remove" />
+@@ -41,7 +41,7 @@
+                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                 <!--ACTION_BOOT_COMPLETED for debug test on no root device-->
+-                <action android:name="com.carriez.flutter_hbb.DEBUG_BOOT_COMPLETED" />
++                <action android:name="com.mydesk.mydesk.DEBUG_BOOT_COMPLETED" />
+             </intent-filter>
+         </receiver>
+ 
+diff --git a/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/AudioRecordHandle.kt b/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/AudioRecordHandle.kt
+index b88f80386..ae6e8d6a3 100644
+--- a/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/AudioRecordHandle.kt
++++ b/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/AudioRecordHandle.kt
+@@ -1,4 +1,4 @@
+-package com.carriez.flutter_hbb
++package com.mydesk.mydesk
+ 
+ import ffi.FFI
+ 
+diff --git a/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/BootReceiver.kt b/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/BootReceiver.kt
+index c212b791f..1e124a216 100644
+--- a/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/BootReceiver.kt
++++ b/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/BootReceiver.kt
+@@ -1,4 +1,4 @@
+-package com.carriez.flutter_hbb
++package com.mydesk.mydesk
+ 
+ import android.Manifest.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+ import android.Manifest.permission.SYSTEM_ALERT_WINDOW
+@@ -11,7 +11,7 @@ import android.widget.Toast
+ import com.hjq.permissions.XXPermissions
+ import io.flutter.embedding.android.FlutterActivity
+ 
+-const val DEBUG_BOOT_COMPLETED = "com.carriez.flutter_hbb.DEBUG_BOOT_COMPLETED"
++const val DEBUG_BOOT_COMPLETED = "com.mydesk.mydesk.DEBUG_BOOT_COMPLETED"
+ 
+ class BootReceiver : BroadcastReceiver() {
+     private val logTag = "tagBootReceiver"
+diff --git a/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/DocumentDescriptors.kt b/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/DocumentDescriptors.kt
+index 764bec43b..bbdd67d67 100644
+--- a/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/DocumentDescriptors.kt
++++ b/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/DocumentDescriptors.kt
+@@ -1,4 +1,4 @@
+-package com.carriez.flutter_hbb
++package com.mydesk.mydesk
+ 
+ import android.os.ParcelFileDescriptor
+ import org.json.JSONObject
+diff --git a/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/DocumentLogs.kt b/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/DocumentLogs.kt
+index ae6886fba..351655243 100644
+--- a/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/DocumentLogs.kt
++++ b/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/DocumentLogs.kt
+@@ -1,4 +1,4 @@
+-package com.carriez.flutter_hbb
++package com.mydesk.mydesk
+ 
+ import android.content.Context
+ import android.content.Intent
+diff --git a/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/DocumentPicker.kt b/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/DocumentPicker.kt
+index 51357b70a..3e6c59d59 100644
+--- a/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/DocumentPicker.kt
++++ b/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/DocumentPicker.kt
+@@ -1,4 +1,4 @@
+-package com.carriez.flutter_hbb
++package com.mydesk.mydesk
+ 
+ import android.app.Activity
+ import android.content.Intent
+diff --git a/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/DocumentStorage.kt b/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/DocumentStorage.kt
+index 36dc13efe..e3fd5489a 100644
+--- a/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/DocumentStorage.kt
++++ b/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/DocumentStorage.kt
+@@ -1,4 +1,4 @@
+-package com.carriez.flutter_hbb
++package com.mydesk.mydesk
+ 
+ import android.content.Context
+ import android.content.Intent
+diff --git a/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/DocumentTree.kt b/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/DocumentTree.kt
+index d39169e6f..aaf883e65 100644
+--- a/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/DocumentTree.kt
++++ b/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/DocumentTree.kt
+@@ -1,4 +1,4 @@
+-package com.carriez.flutter_hbb
++package com.mydesk.mydesk
+ 
+ import android.content.Context
+ import android.net.Uri
+diff --git a/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/FloatingWindowService.kt b/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/FloatingWindowService.kt
+index 908428ff0..772e3c5cc 100644
+--- a/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/FloatingWindowService.kt
++++ b/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/FloatingWindowService.kt
+@@ -1,4 +1,4 @@
+-package com.carriez.flutter_hbb
++package com.mydesk.mydesk
+ 
+ import android.annotation.SuppressLint
+ import android.app.PendingIntent
+diff --git a/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/InputService.kt b/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/InputService.kt
+index f85f5436b..3bf3a02e8 100644
+--- a/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/InputService.kt
++++ b/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/InputService.kt
+@@ -1,4 +1,4 @@
+-package com.carriez.flutter_hbb
++package com.mydesk.mydesk
+ 
+ /**
+  * Handle remote input and dispatch android gesture
+@@ -452,7 +452,7 @@ class InputService : AccessibilityService() {
+ 
+         // [down] indicates the key's state(down or up).
+         // [press] indicates a click event(down and up).
+-        // https://github.com/mydesk/mydesk/blob/3a7594755341f023f56fa4b6a43b60d6b47df88d/flutter/lib/models/input_model.dart#L688
++        // https://github.com/rustdesk/rustdesk/blob/3a7594755341f023f56fa4b6a43b60d6b47df88d/flutter/lib/models/input_model.dart#L688
+         if (keyEvent.hasSeq()) {
+             textToCommit = keyEvent.getSeq()
+         } else if (keyboardMode == KeyboardMode.Legacy) {
+diff --git a/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/MainActivity.kt b/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/MainActivity.kt
+index 06ecd1d50..4ab736c89 100644
+--- a/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/MainActivity.kt
++++ b/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/MainActivity.kt
+@@ -1,4 +1,4 @@
+-package com.carriez.flutter_hbb
++package com.mydesk.mydesk
+ 
+ /**
+  * Handle events from flutter
+diff --git a/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/MainApplication.kt b/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/MainApplication.kt
+index 7ee8be2af..b6d75005f 100644
+--- a/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/MainApplication.kt
++++ b/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/MainApplication.kt
+@@ -1,4 +1,4 @@
+-package com.carriez.flutter_hbb
++package com.mydesk.mydesk
+ 
+ import android.app.Application
+ import android.util.Log
+diff --git a/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/MainService.kt b/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/MainService.kt
+index 222ee63c0..66765949c 100644
+--- a/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/MainService.kt
++++ b/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/MainService.kt
+@@ -1,4 +1,4 @@
+-package com.carriez.flutter_hbb
++package com.mydesk.mydesk
+ 
+ import ffi.FFI
+ 
+@@ -646,7 +646,7 @@ class MainService : Service() {
+             virtualDisplay?.release()
+         }
+         // suface needs to be release after `imageReader.close()` to imageReader access released surface
+-        // https://github.com/mydesk/mydesk/issues/4118#issuecomment-1515666629
++        // https://github.com/rustdesk/rustdesk/issues/4118#issuecomment-1515666629
+         imageReader?.close()
+         imageReader = null
+         videoEncoder?.let {
+@@ -659,7 +659,7 @@ class MainService : Service() {
+         }
+         videoEncoder = null
+         // suface needs to be release after `imageReader.close()` to imageReader access released surface
+-        // https://github.com/mydesk/mydesk/issues/4118#issuecomment-1515666629
++        // https://github.com/rustdesk/rustdesk/issues/4118#issuecomment-1515666629
+         surface?.release()
+ 
+         // release audio
+diff --git a/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/PermissionRequestTransparentActivity.kt b/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/PermissionRequestTransparentActivity.kt
+index 0464962ca..688ca4f07 100644
+--- a/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/PermissionRequestTransparentActivity.kt
++++ b/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/PermissionRequestTransparentActivity.kt
+@@ -1,4 +1,4 @@
+-package com.carriez.flutter_hbb
++package com.mydesk.mydesk
+ 
+ import android.app.Activity
+ import android.content.Intent
+diff --git a/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/RdClipboardManager.kt b/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/RdClipboardManager.kt
+index fc50c3750..5257d6c44 100644
+--- a/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/RdClipboardManager.kt
++++ b/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/RdClipboardManager.kt
+@@ -1,4 +1,4 @@
+-package com.carriez.flutter_hbb
++package com.mydesk.mydesk
+ 
+ import java.nio.ByteBuffer
+ import java.util.Timer
+diff --git a/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/VolumeController.kt b/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/VolumeController.kt
+index be30b653e..5e0dfa344 100644
+--- a/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/VolumeController.kt
++++ b/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/VolumeController.kt
+@@ -1,4 +1,4 @@
+-package com.carriez.flutter_hbb
++package com.mydesk.mydesk
+ 
+ // Inspired by https://github.com/yosemiteyss/flutter_volume_controller/blob/main/android/src/main/kotlin/com/yosemiteyss/flutter_volume_controller/VolumeController.kt
+ 
+diff --git a/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/common.kt b/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/common.kt
+index b59dca945..4891bf1dd 100644
+--- a/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/common.kt
++++ b/flutter/android/app/src/main/kotlin/com/mydesk/mydesk/common.kt
+@@ -1,4 +1,4 @@
+-package com.carriez.flutter_hbb
++package com.mydesk.mydesk
+ 
+ import android.Manifest.permission.*
+ import android.annotation.SuppressLint
+diff --git a/flutter/android/app/src/main/kotlin/ffi.kt b/flutter/android/app/src/main/kotlin/ffi.kt
+index ef21b658a..5776fe444 100644
+--- a/flutter/android/app/src/main/kotlin/ffi.kt
++++ b/flutter/android/app/src/main/kotlin/ffi.kt
+@@ -5,7 +5,7 @@ package ffi
+ import android.content.Context
+ import java.nio.ByteBuffer
+ 
+-import com.carriez.flutter_hbb.RdClipboardManager
++import com.mydesk.mydesk.RdClipboardManager
+ 
+ object FFI {
+     init {
+diff --git a/flutter/android/app/src/main/res/values/strings.xml b/flutter/android/app/src/main/res/values/strings.xml
+index 52007e28a..d0f995e24 100644
+--- a/flutter/android/app/src/main/res/values/strings.xml
++++ b/flutter/android/app/src/main/res/values/strings.xml
+@@ -1,5 +1,5 @@
+ <resources>
+-    <string name="app_name">MyDesk</string>
++<string name="app_name">MyDesk</string>
+     <string name="accessibility_service_description">Allow other devices to control your phone using virtual touch, when MyDesk screen sharing is established</string>
+     <string name="foreground_service_special_use_subtype">Keeps the MyDesk remote desktop host available for authorized unattended connections and foreground notifications without starting screen capture before user approval.</string>
+ </resources>
+diff --git a/flutter/android/app/src/profile/AndroidManifest.xml b/flutter/android/app/src/profile/AndroidManifest.xml
+index 64d68a588..b6b50ef23 100644
+--- a/flutter/android/app/src/profile/AndroidManifest.xml
++++ b/flutter/android/app/src/profile/AndroidManifest.xml
+@@ -1,5 +1,5 @@
+ <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+-    package="com.carriez.flutter_hbb">
++    package="com.mydesk.mydesk">
+     <!-- Flutter needs it to communicate with the running application
+          to allow setting breakpoints, to provide hot reload, etc.
+     -->
+diff --git a/flutter/android/build.gradle b/flutter/android/build.gradle
+index 5733740c2..eaede1bdb 100644
+--- a/flutter/android/build.gradle
++++ b/flutter/android/build.gradle
+@@ -1,3 +1,14 @@
++buildscript {
++    ext.kotlin_version = '2.1.21'
++    repositories {
++        google()
++        mavenCentral()
++    }
++    dependencies {
++        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
++    }
++}
++
+ def legacyPluginNamespaces = [
+     external_path: 'com.pinciat.external_path',
+     flutter_keyboard_visibility: 'com.jrai.flutter_keyboard_visibility',
+@@ -27,7 +38,7 @@ def configureKotlinJvmTarget = { Project project, String kotlinJvmTarget ->
+ allprojects {
+     repositories {
+         google()
+-        jcenter()
++        mavenCentral()
+         maven { url 'https://jitpack.io' }
+     }
+ }
+@@ -52,4 +63,4 @@ subprojects {
+ 
+ tasks.register("clean", Delete) {
+     delete rootProject.buildDir
+-}
++}
+\ No newline at end of file
+diff --git a/flutter/lib/mobile/pages/settings_page.dart b/flutter/lib/mobile/pages/settings_page.dart
+index 95fd7061d..b6682586c 100644
+--- a/flutter/lib/mobile/pages/settings_page.dart
++++ b/flutter/lib/mobile/pages/settings_page.dart
+@@ -73,7 +73,6 @@ class _SettingsState extends State<SettingsPage> with WidgetsBindingObserver {
+       false; //androidVersion >= 26; // remove because not work on every device
+   var _ignoreBatteryOpt = false;
+   var _enableStartOnBoot = false;
+-  var _checkUpdateOnStartup = false;
+   var _showTerminalExtraKeys = false;
+   var _floatingWindowDisabled = false;
+   var _keepScreenOn = KeepScreenOn.duringControlled; // relay on floating window
+@@ -190,13 +189,6 @@ class _SettingsState extends State<SettingsPage> with WidgetsBindingObserver {
+         _enableStartOnBoot = enableStartOnBoot;
+       }
+ 
+-      var checkUpdateOnStartup =
+-          mainGetLocalBoolOptionSync(kOptionEnableCheckUpdate);
+-      if (checkUpdateOnStartup != _checkUpdateOnStartup) {
+-        update = true;
+-        _checkUpdateOnStartup = checkUpdateOnStartup;
+-      }
+-
+       var floatingWindowDisabled =
+           bind.mainGetLocalOption(key: kOptionDisableFloatingWindow) == "Y" ||
+               !await AndroidPermissionManager.check(kSystemAlertWindow);
+@@ -647,22 +639,6 @@ class _SettingsState extends State<SettingsPage> with WidgetsBindingObserver {
+           gFFI.invokeMethod(AndroidChannel.kSetStartOnBootOpt, toValue);
+         }));
+ 
+-    if (!bind.isCustomClient()) {
+-      enhancementsTiles.add(
+-        SettingsTile.switchTile(
+-          initialValue: _checkUpdateOnStartup,
+-          title:
+-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+-            Text(translate('Check for software update on startup')),
+-          ]),
+-          onToggle: (bool toValue) async {
+-            await mainSetLocalBoolOption(kOptionEnableCheckUpdate, toValue);
+-            setState(() => _checkUpdateOnStartup = toValue);
+-          },
+-        ),
+-      );
+-    }
+-
+     enhancementsTiles.add(
+       SettingsTile.switchTile(
+         initialValue: _showTerminalExtraKeys,
+@@ -1212,7 +1188,7 @@ void showAbout(OverlayDialogManager dialogManager) {
+         Text('Version: $version'),
+         InkWell(
+             onTap: () async {
+-              const url = 'https://mydesk.com/';
++const url = 'https://mydesk.com/';
+               await launchUrl(Uri.parse(url));
+             },
+             child: Padding(
+diff --git a/flutter/test/api_server_warning_test.dart b/flutter/test/api_server_warning_test.dart
+index d93f043b5..e769e1e08 100644
+--- a/flutter/test/api_server_warning_test.dart
++++ b/flutter/test/api_server_warning_test.dart
+@@ -10,9 +10,9 @@ void main() {
+       'https://api.example.com': false,
+       'http://api.example.com': true,
+       'http://192.168.1.13:13000': true,
+-      'http://localhost:21114': false,
+-      'http://127.0.0.1:21114': false,
+-      'http://[::1]:21114': false,
++      'http://localhost:31114': false,
++      'http://127.0.0.1:31114': false,
++      'http://[::1]:31114': false,
+     };
+     for (final entry in cases.entries) {
+       expect(shouldWarnApiServer(entry.key), entry.value, reason: entry.key);

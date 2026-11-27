@@ -1,0 +1,2 @@
+# 子模块 pin: <路径>	<URL>	<branch>	<gitlink sha>
+libs/hbb_common	https://github.com/agogo233/hbb_common.git	Mod	d7266caa67e373e9b104d1bf40e984f352c909b7

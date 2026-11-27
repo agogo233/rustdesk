@@ -241,6 +241,23 @@ Then translate that source into the file's target language (infer the language f
 2. 提交推送 → `git -C /home/git/working/hbb_common add -A && git commit -m "..." && git push origin Mod`
 3. 同步子模块 → `git submodule update --remote libs/hbb_common`
 4. 更新指针 → `git add libs/hbb_common && git commit -m "fix: update hbb_common submodule pointer"`
+5. 同步快照 → 更新 `branding/rules/submodule.txt` 的 gitlink 值（品牌化层重放依赖它）
+
+## 品牌化层工作流（`branding/`）
+
+fork 相对上游的全部定制 = `branding/` 的可重放变换（apply.sh + rules + overlays）+ 按域编号的
+patches。上游合并按 `UPSTREAM_MERGE_PROMPT.md` 的流程从干净基线重建，不再做全库 merge 冲突解决。
+
+约束：
+* 改动 fork 定制时，同步回写对应载体：品牌替换改 `rules/text.tsv`，例外行改
+  `rules/exceptions.txt` 与 `rules/rustdesk-baseline.txt`，整文件/资源改 `overlays/`，
+  功能定制改 `patches/NN-*.patch`
+* patch 冲突解决后必须回写 patch 文件，否则下次重放仍用旧版
+* 逻辑禁区（`src/lang.rs`、`src/common.rs:2603`、`src/platform/macos.rs:311`、
+  `src/platform/mod.rs:249`、`flutter/lib/web/bridge.dart` 的 `!= "RustDesk"`）依赖字面
+  `RustDesk`，禁止品牌化
+* 每次重放后运行 `branding/verify.sh`（静态检查，不编译）
+
 
 ### Adding new keys (feature work)
 

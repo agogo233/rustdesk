@@ -1,576 +1,79 @@
-# 上游合并策略提示词
+# 上游合并策略
 
-> 此文件为 git 追踪版本，整合了本地全部独有变更的引用清单、合并策略决策指引和可执行的 AI prompt。
-
----
-
-将此文档作为完整 prompt 提供给 AI 编码助手（如 Claude、Cursor 等），即可自动执行一次完整的上游合并。
-
-hbb_common 子模块在同级文件夹 `hbb_common` 中，但本文档**不包含**其内部 merge 细节——请参考 `AGENTS.md` 中的 hbb_common 工作流处理。
-
----
-
-## 角色设定
-
-你是一个 Git 合并专家，专门负责将 `rustdesk/rustdesk`（upstream）的最新代码合并到 `agogo233/rustdesk` 的 `Mod` 分支。
+> fork 定制已抽离为可重放的 `branding/` 层(2026-11 重构, 经树等价验证)。
+> 本文档描述基于该层的合并流程; 层内细节见 `branding/README.md`。
 
 ## 仓库信息
 
 - **本地分支**：`Mod`（默认分支）
-- **Fork 来源**：`rustdesk/rustdesk`（remote name: `upstream`）
-- **子模块**：`libs/hbb_common` 指向 `https://github.com/agogo233/hbb_common.git`（Mod 分支）
-- **默认端口范围**：`31115~31119`（上游为 `21115~21119`）
-- **品牌名**：`MyDesk`（上游为 `RustDesk`）
-- **应用标识**：`com.mydesk.mydesk`（上游为 `com.carriez.rustdesk`）
-- **自定义客户端标识**：`app_name() != "RustDesk"` → 自动视作 custom client（`is_custom_client()` 返回 `true`）
+- **Fork 来源**：`rustdesk/rustdesk`（remote: `upstream`），远程 fork：`agogo233/rustdesk`（remote: `origin`）
+- **子模块**：`libs/hbb_common` → `https://github.com/agogo233/hbb_common.git`（Mod 分支），内部同步见 AGENTS.md
+- **品牌**：MyDesk（上游 RustDesk）；`app_name() != "RustDesk"` 使 `is_custom_client()` 自动为 true
+- **端口**：31115~31119（上游 21115~21119，仅语言文案迁移；src 测试代码保留上游端口）
 
-### 本地独有变更总览
+## 定制层一览
 
-| 类别 | 变更内容 | 影响范围 | 合并上游建议 |
-|------|----------|----------|-------------|
-| **Branding** | RustDesk → MyDesk 全量重命名（4 阶段） | 代码、FFI、Flutter、构建脚本、资源文件、翻译 | **上游可能拒绝**，需作为独立 patch 维护 |
-| **端口迁移** | 2111x → 3111x | 网络通信、配置常量、i18n | 需确认上游是否接受端口变更 |
-| **禁用自动更新** | 删除 `do_check_software_update` 调用 | `src/common.rs`, `src/rendezvous_mediator.rs`, `src/updater.rs` | **上游大概率拒绝**，需单独维护 |
-| **Submodule** | hbb_common 指向自定义 Mod branch | `OPTION_START_ON_BOOT`、空字符串修复 | 合并上游后需确认 submodule 指向 |
+| 层 | 位置 | 内容 |
+|---|---|---|
+| 品牌化变换 | `branding/apply.sh` + `rules/` | 标识符替换(text.tsv)、端口(ports.txt)、例外行(exceptions.txt)、rename/delete(files.tsv)、overlays 覆盖(二进制/SVG/新增文件/.gitmodules)、子模块 pin |
+| 定制 patch | `branding/patches/NN-*.patch` | 10-security-core / 20-windows-msi / 30-macos / 40-android / 50-packaging / 60-ci / 70-flutter-ui / 80-lang-full / 90-docs / 95-misc |
 
----
-
-## 合并前策略决策
-
-**在开始合并前，逐项确认以下决策。每一项都可能影响半数以上 diff 的去留。**
-
-### 1. 决策清单
-
-- [ ] **Branding 策略**：**已定 — 保持 MyDesk**
-  - `is_custom_client()` 依赖：MyDesk ≠ `"RustDesk"`，自动触发 custom client 路径
-  - P0 冲突全取 `--ours`
-- [ ] **端口策略**：保持 3111x。需要确认上游是否已使用 2111x，以及是否有新增端口
-- [ ] **禁用更新检查**：fork 专属 patch，必须在 P1 重新应用
-- [ ] **Submodule 策略**：保持指向 `agogo233/hbb_common` Mod 分支，按 `AGENTS.md` 流程同步
-
-### 2. 变更分类与上游接受度参考
-
-| 变更 | 上游接受度 | 维护策略 |
-|------|-----------|---------|
-| MyDesk Branding | ❌ 上游拒绝 | 独立 patch（P0） |
-| 端口 3111x | ❓ 不确定 | 需确认后再决 |
-| 禁用更新检查 | ❌ 上游拒绝 | 独立 fork patch（P1） |
-| Windows 开机自启 | ✅ 可贡献 | 建议合并前提交 PR |
-| MSI WiX v4 修复 | ✅ 可贡献 | 建议合并前提交 PR |
-| CI 加密 + 自动清理 | ✅ 可贡献 | 建议合并前提交 PR |
-| 空字符串覆盖修复 | ✅ bugfix | 建议合并前提交 PR |
-| Android CI 修复 | ✅ 可贡献 | 建议合并前提交 PR |
-
-### 3. 可先行向上游提交的 PR 清单
-
-合并之前先向上游提 PR，可以减少冲突面：
-
-| 改动 | 说明 |
-|------|------|
-| Windows 开机自启（`HKCU Run`） | 纯功能增强，无冲突风险 |
-| MSI 构建修复（WiX v4 兼容） | 修复 ICE60、移除 `Language` 属性 |
-| CI 产物加密 + 自动清理 | 安全加固，通用价值 |
-| 空字符串覆盖默认值修复 | bugfix，已在 hbb_common 修复 |
-| Android CI 目录泄漏修复 | bugfix |
-| 签名服务空值检查容错 | CI 健壮性改进 |
-| APK 签名流程优化 | Android 构建改进 |
-| Kotlin 版本管理改进 | Android 构建改进 |
-
----
-
-## 合并前置检查
+## 合并流程
 
 ```bash
-# 1. 确认工作区干净
-git status --porcelain | grep -v '^\?' || true
-
-# 2. 确认远端最新
+# 0. 前置(主仓库): 工作树干净才继续, 脏则 stash
+cd /home/git/working/rustdesk
+git diff --quiet && git diff --cached --quiet || git stash
 git fetch upstream
+git branch backup-$(date +%Y%m%d)   # 备份
 
-# 3. 记录当前状态
-BASE=$(git merge-base upstream/master HEAD)
-echo "当前 merge-base: $BASE"
-echo "上游 HEAD: $(git rev-parse upstream/master)"
-echo "本地 HEAD: $(git rev-parse HEAD)"
+# 1. 干净上游基线 worktree
+git worktree add /tmp/opencode/upstream-rebuild --detach upstream/master
+cd /tmp/opencode/upstream-rebuild
 
-# 4. 记录本地未合并提交数
-echo "本地领先上游提交数: $(git log --oneline upstream/master..HEAD --no-merges | wc -l)"
-```
+# 2. 品牌化层
+/home/git/working/rustdesk/branding/apply.sh
+git commit -qm "branding layer"
 
----
-
-## 步骤 1：执行合并
-
-```bash
-git merge upstream/master --no-ff -m "Merge upstream/master into Mod"
-```
-
----
-
-## 步骤 2：冲突分类处理
-
-冲突文件按以下优先级依次解决。**每个类别解决完毕后立即 `git add` 并继续下一类。**
-
-### P0 — 品牌重命名冲突（脚本批量处理）
-
-**特征**：仅是 `RustDesk` ↔ `MyDesk` / `rustdesk` ↔ `mydesk` / `rust_desk` ↔ `my_desk` 等标识符替换，无逻辑变更。
-
-> **⚠️ 关于 `is_custom_client()`**：品牌改为 MyDesk 后（`app_name() != "RustDesk"`），本 fork 自动满足 custom client 条件。合并时需确保 `is_custom_client` 的判断逻辑未被上游重构覆盖。
-
-**处理方法**：对每个冲突文件，检查是否是 100% 的纯重命名冲突。如果是，执行：
-
-```bash
-git checkout --ours -- <冲突文件>
-git add <冲突文件>
-```
-
-或者对批量文件自动处理：
-
-```bash
-# 方案 A：接受本地版本（保留品牌重命名）
-git diff --name-only --diff-filter=U | while read f; do
-  if git diff upstream/master -- "$f" | grep -qE '^[-+].*[Rr]ust[Dd]esk' && \
-     ! git diff upstream/master -- "$f" | grep -qE '^[-+].*(feat|fix|refactor|new|add|remove|change)' 2>/dev/null; then
-    git checkout --ours -- "$f"
-    git add "$f"
-    echo "P0 已解决: $f"
-  fi
+# 3. 定制 patch(顺序应用; 任一失败必须中止人工解决, 不得跳过继续)
+for p in /home/git/working/rustdesk/branding/patches/*.patch; do
+    git apply --check "$p" || { echo "需人工解决: $p"; exit 1; }
+    git apply "$p"
 done
+# patch 冲突解决后回写对应 patch 文件(见 branding/README.md 的闭环)
+
+# 4. 收尾: 暂存 + 带上 branding/ + pin 子模块 + 验证
+git add -A -- . ':(exclude)libs/hbb_common'
+git checkout /home/git/working/rustdesk/Mod -- branding/
+git add branding
+sha=$(awk -F'\t' '$1=="libs/hbb_common"{print $4}' /home/git/working/rustdesk/branding/rules/submodule.txt)
+git update-index --cacheinfo "160000,$sha,libs/hbb_common"
+git commit -qm "Merge upstream/master into Mod"
+UP_HEAD=$(git rev-parse HEAD)
+/home/git/working/rustdesk/branding/verify.sh
+# 附加人工检查: git log <旧merge-base>..upstream/master --oneline 逐条确认上游提交的取舍
+
+# 5. 落库(树取重放提交, commit-tree 双父保留历史) + 推送
+cd /home/git/working/rustdesk
+TREE=$(git -C /tmp/opencode/upstream-rebuild rev-parse HEAD^{tree})
+NEW=$(git commit-tree "$TREE" -p HEAD -p "$UP_HEAD" -m "Merge upstream/master into Mod")
+git update-ref refs/heads/Mod "$NEW" && git reset --hard Mod
+git push origin Mod
+git worktree remove --force /tmp/opencode/upstream-rebuild
 ```
 
-**涉及文件清单（高频冲突）**：
-
-| 文件 | 重命名模式 |
-|------|-----------|
-| `src/client/io_loop.rs` | `RustDeskInterval`→`MyDeskInterval`, `rustdesk_interval`→`mydesk_interval`, `rustdesk_idd`→`mydesk_idd` |
-| `src/server/connection.rs` | 同上 |
-| `src/rendezvous_mediator.rs` | 同上 + 注释中的 `rustdesk --deploy`→`mydesk --deploy` |
-| `src/client.rs` | `RustDeskInterval`, URL `rustdesk.com`→`mydesk.com` |
-| `src/server.rs` | `try_kill_rustdesk_main_window_process`→`try_kill_mydesk_main_window_process` |
-| `src/clipboard.rs` | `RUSTDESK_CLIPBOARD_OWNER_FORMAT`→`MYDESK_CLIPBOARD_OWNER_FORMAT`, `is_file_url_set_by_rustdesk`→`is_file_url_set_by_mydesk`, 路径 `/tmp/.rustdesk_`→`/tmp/.mydesk_` |
-| `src/ipc.rs` | 注释中的 `rustdesk`→`mydesk` |
-| `src/ipc/fs.rs` | 注释/测试中的 `rustdesk-ipc`→`mydesk-ipc` |
-| `src/flutter.rs` | `rustdesk_core_main`→`mydesk_core_main`, `get_rustdesk_app_name`→`get_mydesk_app_name` |
-| `src/flutter_ffi.rs` | 下载文件名 `rustdesk-`→`mydesk-` |
-| `src/core_main.rs` | 模块路径 `rustdesk_idd`→`mydesk_idd`, 注释 |
-| `src/updater.rs` | 下载 URL 路径 `rustdesk-`→`mydesk-` |
-| `src/server/input_service.rs` | 注释中的 `RustDesk`→`MyDesk` 和路径 |
-| `src/virtual_display_manager.rs` | `IDD_IMPL_RUSTDESK`→`IDD_IMPL_MYDESK`, `rustdesk_idd::`→`mydesk_idd::`, 字段名 |
-| `src/plugin/*.rs` | `RustDesk`→`MyDesk` |
-| `src/privacy_mode/*.rs` | `RustDesk`→`MyDesk` |
-| `src/platform/*.rs` | `RustDesk`→`MyDesk`（windows.rs: 路径、进程名；macos/linux: 注释） |
-| `src/lang/*.rs` | 翻译条目中的 `"RustDesk"`→`"MyDesk"` |
-| `flutter/lib/*.dart` | `rustDeskWinManager`→`myDeskWinManager`, `RustDeskImpl`→`MyDeskImpl`, `RUSTDESK_APPNAME`→`MYDESK_APPNAME`, 注释 |
-| `flutter/lib/common.dart` | `DISABLE_RUSTDESK_RESTORE_WINDOW_POSITION`→`DISABLE_MYDESK_RESTORE_WINDOW_POSITION` |
-| `flutter/android/**/*.kt` | 包路径 `com.carriez.flutter_hbb`→`mydesk.mydesk` |
-| `flutter/ios/**/*.swift/.plist` | 应用名和 bundle ID |
-| `flutter/linux/**` | 应用名 |
-| `flutter/macos/**` | 应用名和 bundle ID |
-| `flutter/windows/**` | 应用名和资源 |
-| `res/msi/**/*.wxs/.cpp` | `RustDesk`→`MyDesk`, 组件 GUID |
-| `res/*.{desktop,service,spec}` | 服务名、包名 |
-| `build.py` | `rustdesk`→`mydesk`（包名、路径、桌面文件、控制文件） |
-| `Cargo.toml` | `name`, `authors`, `description`, `default-run`, lib/Windows 元数据/macOS bundle ID |
-
-**红色警告 — 几乎必然冲突**（以下文件冲突程度最高）：
-
-| 文件 | 原因 |
-|------|------|
-| `.github/workflows/build.yml` | 完全重写（简化 + 中文 + 加密 + 新 steps） |
-| `.github/workflows/flutter-build.yml` | 重命名 + 加密 + 分支构建限制 |
-| `Cargo.toml` | lib 名 `librustdesk` → `libmydesk`, 依赖版本, 更新检测 |
-| `src/platform/windows.rs` | IDD 命名 + MSI 启动项 + 审计修复 + 配置 |
-| `src/server/connection.rs` | 审计特性修改（controller audit） |
-| `src/rendezvous_mediator.rs` | 审计特性修改（controller audit） |
-| `res/msi/**` | 中文默认语言 + 启动快捷方式 + WiX v4 兼容 |
-| `build.py` | 打包脚本全面重命名 |
-
-**黄色预警 — 视上游改动范围可能冲突**：
-
-| 文件 | 原因 |
-|------|------|
-| `flutter/lib/**` | 平台通道名 + 类名 + URI scheme 重命名 |
-| `flutter/android/**` | package path + Kotlin source 路径 |
-| `flutter/macos/**` / `flutter/ios/**` | `pbxproj` lib 引用重命名 |
-| `libs/clipboard/**` | 运行时字符串 `rustdesk` → `mydesk` |
-| `res/*.desktop` / `res/*.service` | 文件名变更 |
-| `src/virtual_display_manager.rs` | `RUSTDESK_IDD_DEVICE_STRING` 重命名 |
-| `libs/hbb_common` | 子模块指针变更（必须指向 `origin/Mod`） |
-
-**自动化替换脚本（对已解决冲突的文件执行二次检查）**：
-
-```bash
-# 对 Rust 源文件应用品牌重命名
-find src/ -name '*.rs' -exec sed -i \
-  -e 's/RustDeskInterval/MyDeskInterval/g' \
-  -e 's/rustdesk_interval/mydesk_interval/g' \
-  -e 's/RustDeskIddDriver/MyDeskIddDriver/g' \
-  -e 's/IDD_IMPL_RUSTDESK/IDD_IMPL_MYDESK/g' \
-  -e 's/rustdesk_idd/mydesk_idd/g' \
-  -e 's/get_rustdesk_app_name/get_mydesk_app_name/g' \
-  -e 's/rustdesk_core_main/mydesk_core_main/g' \
-  -e 's/rustdesk_com/mydesk_com/g' \
-  -e 's/RUSTDESK_APPNAME/MYDESK_APPNAME/g' \
-  -e 's/RUSTDESK_CLIPBOARD_OWNER_FORMAT/MYDESK_CLIPBOARD_OWNER_FORMAT/g' \
-  -e 's/is_file_url_set_by_rustdesk/is_file_url_set_by_mydesk/g' \
-  -e 's|/tmp/\.rustdesk_|/tmp/.mydesk_|g' \
-  -e 's|rustdesk-ipc|mydesk-ipc|g' \
-  -e 's|rustdesk\.com|mydesk.com|g' \
-  {} +
-
-# 对 Flutter/Dart 源文件
-find flutter/lib/ -name '*.dart' -exec sed -i \
-  -e 's/rustDeskWinManager/myDeskWinManager/g' \
-  -e 's/RustDeskImpl/MyDeskImpl/g' \
-  -e 's/RUSTDESK_APPNAME/MYDESK_APPNAME/g' \
-  -e 's/DISABLE_RUSTDESK_RESTORE_WINDOW_POSITION/DISABLE_MYDESK_RESTORE_WINDOW_POSITION/g' \
-  -e 's/RustDeskRemoteWindow/MyDeskRemoteWindow/g' \
-  {} +
-
-# 对 Flutter Android Kotlin
-find flutter/android/ -name '*.kt' -exec sed -i \
-  -e 's/com\.carriez\.flutter_hbb/mydesk.mydesk/g' \
-  {} +
-
-# 对 MSI 文件
-find res/msi/ -name '*.wxs' -o -name '*.cpp' -o -name '*.wxl' | xargs sed -i \
-  -e 's/RustDesk/MyDesk/g' \
-  -e 's/rustdesk/mydesk/g' 2>/dev/null
-
-# 对 build.py
-sed -i \
-  -e 's/rustdesk/mydesk/g' \
-  -e 's/RustDesk/MyDesk/g' \
-  build.py
-
-# 对 Cargo.toml
-sed -i \
-  -e 's/rustdesk/mydesk/g' \
-  -e 's/RustDesk/MyDesk/g' \
-  -e 's/com\.carriez/com.mydesk/g' \
-  Cargo.toml
-```
-
-> **注意**：`sed` 批量替换是「安全检查后」的加速手段。推荐流程：先 `git checkout --ours` 接受本地版本 → `git add` → 运行 sed 确保一致。不要对上游新增的、包含复杂逻辑的文件直接运行 sed。
-
-> **注意（cherry-pick rebase 方式）**：如果使用 cherry-pick 而非 merge 来合并上游，冲突解决可能导致品牌命名从 `MyDesk` 回退为 `RustDesk`。修复方法：从备份分支 `backup-pre-squash` 检出文件覆盖（`git checkout backup-pre-squash -- <目录>`），再手动合并上游功能变更。本操作中有 82 个 `flutter/` 和 `src/` 文件通过此方式修复。
-
----
-
-### P1 — 安全策略变更（手动确认）
-
-**本地已做的安全策略修改，合并后需要重新应用**：
-
-| 修改点 | 文件 | 需要做的操作 |
-|--------|------|-------------|
-| 禁用自动更新检查 | `src/common.rs` → `check_software_update()` | 确认函数体为空桩（只保留 `Ok(())`） |
-| 禁用启动时自动更新 | `src/rendezvous_mediator.rs` | 确认 `start_auto_update()` 调用被注释或移除 |
-| 禁用更新线程 | `src/updater.rs` → `update_controlling_session_count()` | 确认函数体为空 |
-| 端口范围 2111x→3111x | `libs/hbb_common` 子模块（由 fork 维护） | 确认子模块指针正确 |
-| 空配置覆盖防护 | `src/common.rs` 配置读取逻辑 | 确认空字符串不会覆盖有默认值的配置项 |
-
-**处理方法**：
-
-```bash
-# 对 src/common.rs：找到合并后的 check_software_update，确保它是空桩
-# 对 src/rendezvous_mediator.rs：找到并注释 start_auto_update() 调用
-# 对 src/updater.rs：找到并清空 update_controlling_session_count 函数体
-```
-
----
-
-### P1.5 — RegisterPk 公钥保留
-
-**上游变更**：优化移除了 `RegisterPk` 消息中的 `pk` 字段（`src/ui_interface.rs`）。
-
-**本地保留原因**：本 fork 的自定义服务端（`rustdesk-server`）使用纯 TCP，无法从 TLS 获取客户端公钥，`RegisterPk.pk` 是服务端获取公钥的唯一途径。服务端 `process_register_pk()` 行 435 含硬性检查 `rk.pk.is_empty()`，空 pk 将导致注册/改 ID 被丢弃。
-
-**操作**：已回退此变更，恢复 `pk: pk.into()`。后续合并上游时需确保此变更不被覆盖。
-
----
-
-### P2 — 功能新增冲突（逐个审查）
-
-本地新增的功能需要与上游新代码融合：
-
-| 功能 | 文件 | 冲突说明 |
-|------|------|---------|
-| Windows 开机自启 | `src/platform/windows.rs`, `src/flutter_ffi.rs`, `src/lang/*.rs` | 检查上游是否已有类似功能，若已实现则适配；若无则重新应用本地代码 |
-| MSI 启动快捷方式 | `res/msi/Package/Fragments/ShortcutProperties.wxs` 等 | 检查上游 MSI 结构是否变化，按需移植 |
-| 品牌 Logo 资源 | `res/*.png`, `flutter/assets/*`, `flutter/android/app/src/main/res/mipmap-*` 等 | 全量替换即可，上游不会触及这些文件 |
-| env var 注入 | `src/common.rs` 中的 `inject_env_vars()` | 确认该函数仍然独立存在，未被上游重构覆盖 |
-
----
-
-### P3 — CI/CD 工作流
-
-**本地 CI 只保留 `.github/workflows/build.yml`**（来自上游旧版的单文件，包含 Windows 编译 + Android APK 构建）。
-
-上游在 force-push 后新增了 11 个 workflow 文件（`bridge.yml`、`ci.yml`、`flutter-build.yml` 等），**已全部删除不保留**。
-
-```bash
-# 删除上游新增的 workflow 文件
-git ls-tree -r HEAD --name-only -- .github/ | while read f; do
-  if ! git ls-tree -r backup-pre-squash --name-only -- .github/ | grep -qx "$f"; then
-    git rm "$f"
-  fi
-done
-```
-
-**当前 workflow 说明**：
-- 仅保留 `build.yml`（Windows x86_64 + Android arm64）
-- 无 GitHub Release 发布权限
-- 包含 AES-256 加密和自动清理
-
----
-
-### P4 — 子模块指针冲突
-
-**注意**：本文档仅处理 rustdesk 主仓库侧的操作。hbb_common 的源码修改和内部 merge 请参考 `AGENTS.md` 中的 hbb_common 工作流。
-
-```bash
-# 子模块保持指向 agogo233/hbb_common 的 Mod 分支
-git checkout --ours -- libs/hbb_common
-git add libs/hbb_common
-
-# 更新子模块到包含上游最新代码的版本
-git submodule update --remote libs/hbb_common
-```
-
-**确认 `.gitmodules` 保持**：
-```
-url = https://github.com/agogo233/hbb_common.git
-```
-
----
-
-### P5 — 杂项修复
-
-| 修复项 | 说明 |
-|--------|------|
-| MSI WiX v4 兼容 | `Language` 属性移除、ICE60 修复 |
-| MSI 默认语言 zh-CN | `res/msi/Package/Language/Package.en-us.wxl` 中的语言代码 |
-| Android .so 路径 | 确认 `flutter/android/app/build.gradle` 中 jniLibs 路径 |
-| Android 条件签名 | `flutter/android/app/build.gradle` 中的 signingConfigs |
-| CI Node.js 版本 | 确认 workflow 使用 node20（非已弃用的 node16/node12） |
-| dependabot 禁用 | 确认 `.github/dependabot.yml` 不存在或配置正确 |
-
----
-
-### P6 — 保留的上游功能变更
-
-以下上游变更经评估后认为安全且有益，在合并过程中主动保留：
-
-| 变更 | 文件 | 说明 |
-|------|------|------|
-| 签名配置简化 | `flutter/android/app/build.gradle` | 去掉条件判断，硬编码 `signingConfigs.release`（CI 始终有 key） |
-| kotlin-stdlib 锁定 | `flutter/android/app/build.gradle` | 版本锁定 `strictly("1.9.10")` |
-| buildscript 移除 + jcenter→mavenCentral | `flutter/android/build.gradle` | JCenter 已关停必须替换 |
-
----
-
-## 步骤 3：验证清单
-
-```bash
-# 1. 基础编译
-cargo check 2>&1 | head -50
-
-# 2. 检查关键品牌标识一致性
-grep -rn 'RustDesk' src/Cargo.toml src/main.rs src/flutter.rs 2>/dev/null || echo "无残留 RustDesk（正确）"
-grep -rn 'com\.carriez' Cargo.toml 2>/dev/null || echo "无残留 com.carriez（正确）"
-
-# 3. 检查 is_custom_client 逻辑未被上游覆盖
-grep -n 'is_custom_client' src/ 2>/dev/null
-# 预期输出类似：app_name() != "RustDesk" 的判断，MyDesk 应返回 true
-
-# 4. 检查端口一致性
-grep -rn '2111[5-9]' src/ 2>/dev/null || echo "无残留 2111x 端口（正确）"
-grep -rn '3111[5-9]' src/ 2>/dev/null | head -5
-
-# 5. 检查安全策略
-grep -n 'do_check_software_update' src/common.rs  # 应为空桩
-grep -rn 'start_auto_update' src/ 2>/dev/null      # 应无调用（注释除外）
-
-# 6. 子模块指针确认
-git submodule status
-
-# 7. 完整编译（耗时较长，但推荐）
-# cargo build
-```
-
----
-
-## 步骤 4：回滚方案
-
-如果在合并过程中发现问题：
-
-```bash
-# 终止合并并回退到合并前状态
-git merge --abort
-
-# 如果 merge --abort 不可用（部分已提交），硬重置到合并前
-git log --oneline --all --graph | grep -v 'Merge'
-git reset --hard <合并前最后一个提交的 hash>
-
-# 恢复子模块指针
-git submodule update --init --recursive
-```
-
----
+## 决策原则(仍适用)
+
+- `.github/workflows/` 只保留 `build-New.yml`，上游 workflow 一律不并入
+- `libs/hbb_common` 指针只指向本 fork 的 Mod 分支
+- RegisterPk 的 `pk: pk.into()` 必须保留(纯 TCP 服务端依赖它取公钥, 见 10-security-core.patch)
+- 禁用自动更新三处空桩在 10-security-core.patch 内
+- DRM 打包走本地 `--drm` + `mydesk-unattended-wayland` 独立变体, 不接上游 allow-drm-capture 运行时开关
+- 语言表: 上游新 key 跟随, 译文含 RustDesk 处换 MyDesk(80-lang-full.patch 域)
 
 ## 常见陷阱
 
-1. **不要把 `RustDesk` 字符串全部替换**：上游的一些 RustDesk-specific 标识符不应替换（如 `rustdesk-server` 的协议字段），只替换应用自身的品牌名。
-2. **`.github/workflows/` 整目录冲突**：直接取本地版本，因为本地 workflow 是完全独立的一套。
-3. **`src/lang/*.rs` 冲突**：这些文件的冲突通常是上游添加了新翻译键与本地重命名冲突。接受本地版本，然后更新新键的 "MyDesk" 条目。
-4. **`build.py` 冲突**：上游此文件改动频繁。接受本地版本，然后手动挑选上游有价值的构建修复。
-5. **`Cargo.toml` 冲突**：品牌重命名 + 依赖版本。先接受本地版本，然后手动将上游新增的依赖合并进来。
-6. **`is_custom_client` 依赖关系**：品牌改为 MyDesk 后自动触发 custom client 路径。如果上游重构了 `app_name()` 或 `is_custom_client()` 的实现，需手动确认 MyDesk 仍被视作 custom client。常见陷阱：上游可能将 `is_custom_client` 改为基于白名单判断，此时 MyDesk 不再自动满足条件。
-
----
-
-## 合并后提交模板
-
-```bash
-git commit -m "Merge upstream/master into Mod
-
-# 合并摘要：
-# - P0: 品牌重命名冲突已批量解决（保持 MyDesk）
-# - P0 is_custom_client: 已确认 MyDesk 被视作 custom client
-# - P1: 安全策略已重新应用（禁用更新检查、空配置防护）
-# - P2: 功能新增已融合（开机自启、MSI 快捷方式等）
-# - P3: CI/CD 工作流已保留本地版本
-# - P4: 子模块已同步（hbb_common 指向 origin/Mod）
-# - P5: 杂项修复已应用
-"
-```
-
----
-
-## 完整自动化脚本（单文件版本）
-
-以下是一个可直接执行的 bash 脚本，封装了上述所有步骤：
-
-```bash
-#!/usr/bin/env bash
-set -euo pipefail
-
-# === 配置 ===
-UPSTREAM_REMOTE="upstream"
-UPSTREAM_BRANCH="master"
-LOCAL_BRANCH="Mod"
-
-echo "=== 步骤 1: 前置检查 ==="
-git fetch "$UPSTREAM_REMOTE"
-if [ -d .git/MERGE_MSG ]; then
-    echo "警告: 存在未完成的合并，尝试 git merge --abort"
-    git merge --abort 2>/dev/null || true
-fi
-if ! git diff --stat --cached | grep -q . && ! git diff --stat | grep -q .; then
-    echo "工作区干净 ✓"
-else
-    echo "工作区不干净，请先 stash 或提交"
-    exit 1
-fi
-
-BASE=$(git merge-base "$UPSTREAM_REMOTE/$UPSTREAM_BRANCH" HEAD)
-echo "merge-base: $BASE"
-echo "上游 HEAD: $(git rev-parse "$UPSTREAM_REMOTE/$UPSTREAM_BRANCH")"
-
-echo "=== 步骤 2: 执行合并 ==="
-git merge "$UPSTREAM_REMOTE/$UPSTREAM_BRANCH" --no-ff -m "Merge $UPSTREAM_REMOTE/$UPSTREAM_BRANCH into $LOCAL_BRANCH" || true
-
-echo "=== 步骤 3: 解决冲突 ==="
-
-# P0: 品牌重命名 — 纯重命名文件取本地版本
-echo "--- P0: 品牌重命名 ---"
-git diff --name-only --diff-filter=U | while read f; do
-    case "$f" in
-        src/lang/*.rs|src/client/io_loop.rs|src/server/connection.rs|src/clipboard.rs|src/ipc.rs|src/ipc/fs.rs|src/flutter.rs|src/core_main.rs|src/server/input_service.rs|src/virtual_display_manager.rs)
-            git checkout --ours -- "$f"
-            git add "$f"
-            echo "  P0 已解决: $f"
-            ;;
-        flutter/lib/*.dart)
-            git checkout --ours -- "$f"
-            git add "$f"
-            echo "  P0 已解决: $f"
-            ;;
-        Cargo.toml|build.py)
-            git checkout --ours -- "$f"
-            git add "$f"
-            echo "  P0 已解决: $f"
-            ;;
-    esac
-done
-
-# P3: CI/CD 工作流
-echo "--- P3: CI/CD ---"
-git diff --name-only --diff-filter=U | grep '^\.github/' | while read f; do
-    git checkout --ours -- "$f"
-    git add "$f"
-    echo "  P3 已解决: $f"
-done
-
-# P4: 子模块
-echo "--- P4: 子模块 ---"
-if git diff --name-only --diff-filter=U | grep -q 'libs/hbb_common'; then
-    git checkout --ours -- libs/hbb_common
-    git add libs/hbb_common
-    echo "  子模块冲突已解决（使用本地指针）"
-    echo "  注意: 请参考 AGENTS.md 处理 hbb_common 内部 merge"
-fi
-
-# 输出未解决的冲突
-REMAINING=$(git diff --name-only --diff-filter=U)
-if [ -n "$REMAINING" ]; then
-    echo "=== 需要手动解决的冲突 ==="
-    echo "$REMAINING"
-    echo "请手动解决后执行: git add <文件> && git commit"
-    exit 1
-fi
-
-echo "=== 步骤 4: 无残留冲突，提交合并 ==="
-# 安全策略检查确认
-echo "  请确认安全策略变更已重新应用（见文档 P1 部分）"
-
-git commit
-echo "=== 合并完成 ==="
-```
-
----
-
-## 快速参考表
-
-| 优先级 | 类别 | 处理方式 | 涉及文件数 |
-|--------|------|---------|-----------|
-| P0 | 品牌重命名 | `git checkout --ours` + 批量 sed | ~269 个（cherry-pick 需注意命名回退） |
-| P1 | 安全策略 | 手动确认 3 个关键函数 | 3 个 |
-| P1.5 | RegisterPk 公钥保留 | 保留 `pk: pk.into()` | 1 个 |
-| P2 | 功能新增 | 逐个审查融合 | ~8 个 |
-| P3 | CI/CD | 只保留 build.yml，删除上游新增 | 1 个 |
-| P4 | 子模块 | 取本地指针（hbb_common 内部见 AGENTS.md） | 1 个 |
-| P5 | 杂项 | 按清单检查 | 若干 |
-| P6 | 上游功能保留 | 主动保留 | 3 个 |
-
----
-
-## 附录 A：历史合并记录
-
-### 2025-06-25 — 合并上游 2 个提交（FUSE 路径修复 + ptbr 翻译）
-
-| 提交 | 内容 | 合并方式 |
-|------|------|----------|
-| `b8117c5c` | fix(fuse): fuse path broken, since ipc path changed | 自动合并，保留 `mydesk-cliprdr-fs` 品牌 |
-| `a69614d4` | Update translation for 'Control Actions' in ptbr.rs | 自动合并，保留 MyDesk 品牌 |
-
-**验证结果：** 零冲突、品牌保留、功能修复采纳、端口/更新/`is_mydesk()` 均正常。
-
-### 2025-06-25 — 合并上游 2 个提交（clipboard 指纹去重 + tray 图标修复）
-
-| 提交 | 内容 | 合并方式 |
-|------|------|----------|
-| `ff226f6d8` | fix(clipboard): unix, refresh cached file size/mtime on re-copy | 自动合并，品牌无影响 |
-| `0cbdb6ffb` | Fix tray icon click (regression due to breaking change in tray-icon) | 自动合并，保留 `mydesk_interval` 品牌 |
-
-**验证结果：** 零冲突、`FileSig`/`fingerprint()` 已采纳、tray 图标修复已采纳、品牌/端口/更新均正常。
+1. `git apply` 失败的 patch 解决后**必须回写**(见 branding/README.md 的闭环)
+2. 上游新增含 RustDesk 的文件不会被自动品牌化(scope 外), 需人工替换并更新 scope
+3. 树等价 gate(重构期验证)已通过; 未来合并的最终校验以 `verify.sh` + CI 为准
+4. hbb_common 上游修复(websocket 等)需在 fork 源仓库单独合并, 再更新 submodule.txt 的 sha
