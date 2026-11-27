@@ -1067,8 +1067,6 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Use all my displays for the remote session", "Bruk alle skjermene mine til fjernsesjonen"),
 
-        ("selinux_tip", "SELinux er aktivert på enheten din, noe som kan hindre MyDesk i å fungere som det skal på den kontrollerte siden."),
-
         ("Change view", "Endre visning"),
 
         ("Big tiles", "Store fliser"),
@@ -1643,6 +1641,16 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("install-directory-not-empty-tip", "Den valgte mappen er ikke tom. Installasjonen kan slette eksisterende data. Vurder å velge en annen mappe."),
         ("Request approval", "Be om godkjenning"),
         ("Forever", "For alltid"),
+
+        ("username-login-disabled-oidc-unavailable", "Innlogging med brukernavn og passord er deaktivert, og ingen OIDC-innloggingsmetoder er tilgjengelige."),
+
+        ("Use DRM screen capture", "Bruk DRM-skjermopptak"),
+
+        ("drm-capture-tip", "Tar opp skjermen direkte fra grafikkortet via MyDesk-tjenesten, uten Waylands forespørsel om skjermdeling, også på påloggingsskjermen. Fungerer kanskje ikke på alle enheter; hvis tilkoblinger fortsatt ber om skjermdeling, slå dette av eller bruk X11. Endring kobler fra gjeldende økter."),
+
+        ("wayland-drm-tip", "Prøv DRM-skjermopptak for uovervåket tilgang på Wayland, eller bruk X11 hvis det ikke virker."),
+
+        ("login-wayland-drm-tip", "Prøv DRM-skjermopptak for å nå Waylands påloggingsskjerm, eller bytt den til X11."),
     ].iter().cloned().collect();
 }
 

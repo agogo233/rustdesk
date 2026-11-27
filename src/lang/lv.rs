@@ -1067,8 +1067,6 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Use all my displays for the remote session", "Izmantot visus manus displejus attālajai sesijai"),
 
-        ("selinux_tip", "Jūsu ierīcē ir iespējots SELinux, kas var neļaut MyDesk pareizi darboties kā kontrolētajai pusei."),
-
         ("Change view", "Mainīt skatu"),
 
         ("Big tiles", "Lielas flīzes"),
@@ -1643,6 +1641,16 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("install-directory-not-empty-tip", "Izvēlētā mape nav tukša. Instalēšana var izdzēst esošos datus. Apsveriet iespēju izvēlēties citu mapi."),
         ("Request approval", "Pieprasīt apstiprinājumu"),
         ("Forever", "Uz visiem laikiem"),
+
+        ("username-login-disabled-oidc-unavailable", "Pieteikšanās ar lietotājvārdu un paroli ir atspējota, un nav pieejamu OIDC pieteikšanās metožu."),
+
+        ("Use DRM screen capture", "Izmantot DRM ekrāna tveršanu"),
+
+        ("drm-capture-tip", "Tver ekrānu tieši no videokartes, izmantojot MyDesk pakalpojumu, bez Wayland ekrāna kopīgošanas pieprasījuma, arī pieteikšanās ekrānā. Var nedarboties visās ierīcēs; ja savienojumi joprojām pieprasa kopīgot ekrānu, izslēdziet šo vai izmantojiet X11. Mainot šo iestatījumu, pašreizējās sesijas tiek atvienotas."),
+
+        ("wayland-drm-tip", "Neuzraudzītai piekļuvei Wayland vidē izmēģiniet DRM ekrāna tveršanu vai izmantojiet X11, ja tā nedarbojas."),
+
+        ("login-wayland-drm-tip", "Lai piekļūtu Wayland pieteikšanās ekrānam, izmēģiniet DRM ekrāna tveršanu vai pārslēdziet to uz X11."),
     ].iter().cloned().collect();
 }
 

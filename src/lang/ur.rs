@@ -1069,8 +1069,6 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Use all my displays for the remote session", "ریموٹ سیشن کے لیے میرے تمام ڈسپلے استعمال کریں"),
 
-        ("selinux_tip", "آپ کے آلے پر SELinux فعال ہے، جو MyDesk کو بطور کنٹرول شدہ فریق درست طور پر چلنے سے روک سکتا ہے۔"),
-
         ("Change view", "ویو تبدیل کریں"),
 
         ("Big tiles", "بڑے ٹائل"),
@@ -1643,5 +1641,15 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("install-directory-not-empty-tip", "منتخب فولڈر خالی نہیں ہے۔ انسٹالیشن موجودہ ڈیٹا کو حذف کر سکتی ہے۔ کوئی دوسرا فولڈر منتخب کرنے پر غور کریں۔"),
         ("Request approval", "منظوری کی درخواست کریں"),
         ("Forever", "ہمیشہ کے لیے"),
+
+        ("username-login-disabled-oidc-unavailable", "صارف نام اور پاس ورڈ کے ذریعے لاگ ان غیر فعال ہے اور OIDC کے ذریعے لاگ ان کا کوئی طریقہ دستیاب نہیں ہے۔"),
+
+        ("Use DRM screen capture", "DRM اسکرین کیپچر استعمال کریں"),
+
+        ("drm-capture-tip", "MyDesk سروس کے ذریعے براہِ راست گرافکس کارڈ سے اسکرین کیپچر کرتا ہے، Wayland کی اسکرین شیئرنگ کی تصدیق کے بغیر، لاگ ان اسکرین پر بھی۔ ہو سکتا ہے یہ ہر ڈیوائس پر کام نہ کرے؛ اگر کنکشن اب بھی اسکرین شیئر کرنے کا کہیں تو اسے بند کریں یا X11 استعمال کریں۔ اسے تبدیل کرنے سے موجودہ سیشن منقطع ہو جاتے ہیں۔"),
+
+        ("wayland-drm-tip", "Wayland پر بغیر نگرانی رسائی کے لیے DRM اسکرین کیپچر آزمائیں، کام نہ کرے تو X11 استعمال کریں۔"),
+
+        ("login-wayland-drm-tip", "Wayland لاگ ان اسکرین تک رسائی کے لیے DRM اسکرین کیپچر آزمائیں یا اسے X11 پر منتقل کریں۔"),
     ].iter().cloned().collect();
 }

@@ -9,89 +9,89 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Password", "رمز عبور"),
 
-        ("Ready", "آماده به کار"),
+        ("Ready", "آماده"),
 
         ("Established", "اتصال برقرار شد"),
 
-        ("connecting_status", "...در حال برقراری ارتباط با سرور"),
+        ("connecting_status", "در حال اتصال به سرور..."),
 
-        ("Enable service", "فعالسازی سرویس"),
+        ("Enable service", "فعال‌سازی سرویس"),
 
-        ("Start service", "اجرای سرویس"),
+        ("Start service", "شروع سرویس"),
 
         ("Service is running", "سرویس در حال اجرا است"),
 
-        ("Service is not running", "سرویس اجرا نشده"),
+        ("Service is not running", "سرویس در حال اجرا نیست"),
 
         ("not_ready_status", "ارتباط برقرار نشد. لطفا شبکه خود را بررسی کنید"),
 
-        ("Control Remote Desktop", "کنترل دسکتاپ میزبان"),
+        ("Control Remote Desktop", "کنترل دسکتاپ راه دور"),
 
         ("Transfer file", "انتقال فایل"),
 
         ("Connect", "اتصال"),
 
-        ("Recent sessions", "جلسات اخیر"),
+        ("Recent sessions", "نشست‌های اخیر"),
 
         ("Address book", "دفترچه آدرس"),
 
-        ("Confirmation", "تایید"),
+        ("Confirmation", "تأیید"),
 
-        ("TCP tunneling", "TCP تانل"),
+        ("TCP tunneling", "تونل TCP"),
 
         ("Remove", "حذف"),
 
-        ("Refresh random password", "بروزرسانی رمز عبور تصادفی"),
+        ("Refresh random password", "تازه‌سازی رمز عبور تصادفی"),
 
-        ("Set your own password", "!رمز عبور دلخواه بگذارید"),
+        ("Set your own password", "تنظیم رمز عبور دلخواه"),
 
-        ("Enable keyboard/mouse", " فعالسازی ماوس/صفحه کلید"),
+        ("Enable keyboard/mouse", "فعال‌سازی صفحه‌کلید/ماوس"),
 
-        ("Enable clipboard", "فعال سازی کلیپبورد"),
+        ("Enable clipboard", "فعال‌سازی کلیپ‌بورد"),
 
-        ("Enable file transfer", "انتقال فایل را فعال کنید"),
+        ("Enable file transfer", "فعال‌سازی انتقال فایل"),
 
-        ("Enable TCP tunneling", "را فعال کنید TCP تانل"),
+        ("Enable TCP tunneling", "فعال‌سازی تونل TCP"),
 
-        ("IP Whitelisting", "های مجاز IP لیست"),
+        ("IP Whitelisting", "لیست IPهای مجاز"),
 
-        ("ID/Relay Server", "ID/Relay سرور"),
+        ("ID/Relay Server", "سرور شناسه/رله"),
 
-        ("Import server config", "تنظیم سرور با فایل"),
+        ("Import server config", "درون‌ریزی پیکربندی سرور"),
 
-        ("Export Server Config", "ایجاد فایل تظیمات از سرور فعلی"),
+        ("Export Server Config", "برون‌ریزی پیکربندی سرور"),
 
-        ("Import server configuration successfully", "تنظیمات سرور با فایل کانفیگ با موفقیت انجام شد"),
+        ("Import server configuration successfully", "درون‌ریزی پیکربندی سرور با موفقیت انجام شد"),
 
-        ("Export server configuration successfully", "ایجاد فایل کانفیگ از تنظیمات فعلی با موفقیت انجام شد"),
+        ("Export server configuration successfully", "برون‌ریزی پیکربندی سرور با موفقیت انجام شد"),
 
-        ("Invalid server configuration", "تنظیمات سرور نامعتبر است"),
+        ("Invalid server configuration", "پیکربندی سرور نامعتبر است"),
 
-        ("Clipboard is empty", "کلیپبورد خالی است"),
+        ("Clipboard is empty", "کلیپ‌بورد خالی است"),
 
         ("Stop service", "توقف سرویس"),
 
-        ("Change ID", "تعویض شناسه"),
+        ("Change ID", "تغییر شناسه"),
 
-        ("Your new ID", "جدید ID"),
+        ("Your new ID", "شناسه جدید شما"),
 
-        ("length %min% to %max%", "%max% تا %min% طول از"),
+        ("length %min% to %max%", "طول از %min% تا %max%"),
 
-        ("starts with a letter", "با حرف شروع می شود"),
+        ("starts with a letter", "با یک حرف شروع می‌شود"),
 
-        ("allowed characters", "کارکترهای مجاز"),
+        ("allowed characters", "کاراکترهای مجاز"),
 
-        ("id_change_tip", "شناسه باید طبق این شرایط باشد : حروف کوچک و بزرگ انگلیسی و اعداد از 0 تا 9، _ و همچنین حرف اول آن فقط حروف بزرگ یا کوچک انگلیسی و طول آن بین 6 الی 16 کاراکتر باشد"),
+        ("id_change_tip", "فقط کاراکترهای a-z، A-Z، 0-9، - (خط تیره) و _ (زیرخط) مجاز هستند. حرف اول باید یکی از حروف انگلیسی (a-z یا A-Z) و طول آن بین 6 تا 16 کاراکتر باشد."),
 
-        ("Website", "وب سایت"),
+        ("Website", "وب‌سایت"),
 
         ("About", "درباره"),
 
-        ("Slogan_tip", "ساخته شده با ❤️‍(عشق) در این دنیای پر هرج و مرج!"),
+        ("Slogan_tip", "ساخته‌شده با ❤️ در این دنیای پر هرج‌ومرج!"),
 
         ("Privacy Statement", "بیانیه حریم خصوصی"),
 
-        ("Mute", "بستن صدا"),
+        ("Mute", "بی‌صدا"),
 
         ("Build Date", "تاریخ ساخت"),
 
@@ -103,27 +103,27 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Enhancements", "بهبودها"),
 
-        ("Hardware Codec", "کدک سخت افزاری"),
+        ("Hardware Codec", "کدک سخت‌افزاری"),
 
-        ("Adaptive bitrate", "سازگار Bitrate"),
+        ("Adaptive bitrate", "نرخ بیت تطبیقی"),
 
-        ("ID Server", "شناسه سرور"),
+        ("ID Server", "سرور شناسه"),
 
-        ("Relay Server", "Relay سرور"),
+        ("Relay Server", "سرور رله"),
 
-        ("API Server", "API سرور"),
+        ("API Server", "سرور API"),
 
-        ("invalid_http", "شروع شود http:// یا https:// باید با"),
+        ("invalid_http", "باید با http:// یا https:// شروع شود"),
 
-        ("Invalid IP", "نامعتبر است IP آدرس"),
+        ("Invalid IP", "آدرس IP نامعتبر است"),
 
-        ("Invalid format", "فرمت نادرست است"),
+        ("Invalid format", "فرمت نامعتبر است"),
 
-        ("server_not_support", "هنوز توسط سرور مورد نظر پشتیبانی نمی شود"),
+        ("server_not_support", "هنوز توسط سرور پشتیبانی نمی‌شود"),
 
-        ("Not available", "در دسترسی نیست"),
+        ("Not available", "در دسترس نیست"),
 
-        ("Too frequent", "خیلی رایج"),
+        ("Too frequent", "درخواست‌های بیش از حد"),
 
         ("Cancel", "لغو"),
 
@@ -133,67 +133,67 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Retry", "تلاش مجدد"),
 
-        ("OK", "قبول"),
+        ("OK", "تأیید"),
 
         ("Password Required", "رمز عبور لازم است"),
 
-        ("Please enter your password", "رمز عبور خود را وارد کنید"),
+        ("Please enter your password", "لطفاً رمز عبور خود را وارد کنید"),
 
-        ("Remember password", "رمز عبور را به خاطر بسپار"),
+        ("Remember password", "به خاطر سپردن رمز عبور"),
 
         ("Wrong Password", "رمز عبور اشتباه است"),
 
-        ("Do you want to enter again?", "آیا میخواهید مجددا وارد شوید؟"),
+        ("Do you want to enter again?", "آیا می‌خواهید مجدداً وارد شوید؟"),
 
-        ("Connection Error", "خطا در اتصال"),
+        ("Connection Error", "خطای اتصال"),
 
         ("Error", "خطا"),
 
-        ("Reset by the peer", "توسط میزبان حذف شد"),
+        ("Reset by the peer", "اتصال توسط میزبان بازنشانی شد"),
 
-        ("Connecting...", "...در حال اتصال"),
+        ("Connecting...", "در حال اتصال..."),
 
-        ("Connection in progress. Please wait.", "در حال اتصال. لطفا متظر بمانید"),
+        ("Connection in progress. Please wait.", "در حال اتصال. لطفاً منتظر بمانید."),
 
-        ("Please try 1 minute later", "لطفا بعد از 1 دقیقه مجددا تلاش کنید"),
+        ("Please try 1 minute later", "لطفاً 1 دقیقه دیگر مجدداً تلاش کنید"),
 
-        ("Login Error", "ورود ناموفق بود"),
+        ("Login Error", "خطا در ورود"),
 
-        ("Successful", "با موفقیت انجام شد"),
+        ("Successful", "موفقیت‌آمیز"),
 
-        ("Connected, waiting for image...", "...ارتباط برقرار شد. انتظار برای دریافت تصاویر"),
+        ("Connected, waiting for image...", "متصل شد، در انتظار دریافت تصویر..."),
 
         ("Name", "نام"),
 
-        ("Type", "نوع فایل"),
+        ("Type", "نوع"),
 
         ("Modified", "تاریخ تغییر"),
 
-        ("Size", "سایز"),
+        ("Size", "اندازه"),
 
-        ("Show Hidden Files", "نمایش فایل های مخفی"),
+        ("Show Hidden Files", "نمایش فایل‌های مخفی"),
 
         ("Receive", "دریافت"),
 
         ("Send", "ارسال"),
 
-        ("Refresh File", "به روزرسانی فایل"),
+        ("Refresh File", "تازه‌سازی فایل"),
 
         ("Local", "محلی"),
 
         ("Remote", "از راه دور"),
 
-        ("Remote Computer", "سیستم راه دور"),
+        ("Remote Computer", "رایانه راه دور"),
 
-        ("Local Computer", "سیسستم محلی"),
+        ("Local Computer", "رایانه محلی"),
 
-        ("Confirm Delete", "تایید حذف"),
+        ("Confirm Delete", "تأیید حذف"),
 
         ("Delete", "حذف"),
 
         ("Properties", "مشخصات"),
 
-        ("Multi Select", "انتخاب دسته ای"),
+        ("Multi Select", "انتخاب چندتایی"),
 
         ("Select All", "انتخاب همه"),
 
@@ -203,73 +203,73 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Not an empty directory", "پوشه خالی نیست"),
 
-        ("Are you sure you want to delete this file?", "از حذف این فایل مطمئن هستید؟"),
+        ("Are you sure you want to delete this file?", "آیا از حذف این فایل مطمئن هستید؟"),
 
-        ("Are you sure you want to delete this empty directory?", "از حذف این پوشه خالی مطمئن هستید؟"),
+        ("Are you sure you want to delete this empty directory?", "آیا از حذف این پوشه خالی مطمئن هستید؟"),
 
-        ("Are you sure you want to delete the file of this directory?", "از حذف فایل موجود در این پوشه مطمئن هستید؟"),
+        ("Are you sure you want to delete the file of this directory?", "آیا از حذف فایل موجود در این پوشه مطمئن هستید؟"),
 
-        ("Do this for all conflicts", "این عمل برای همه ی تضادها انجام شود"),
+        ("Do this for all conflicts", "این کار برای همه تداخل‌ها انجام شود"),
 
-        ("This is irreversible!", "این اقدام برگشت ناپذیر است!"),
+        ("This is irreversible!", "این اقدام برگشت‌ناپذیر است!"),
 
         ("Deleting", "در حال حذف"),
 
-        ("files", "فایل ها"),
+        ("files", "فایل‌ها"),
 
-        ("Waiting", "انتظار"),
+        ("Waiting", "در انتظار"),
 
         ("Finished", "تکمیل شد"),
 
         ("Speed", "سرعت"),
 
-        ("Custom Image Quality", "سفارشی سازی : کیفیت تصاویر"),
+        ("Custom Image Quality", "کیفیت تصویر سفارشی"),
 
         ("Privacy mode", "حالت حریم خصوصی"),
 
-        ("Block user input", "بستن ورودی کاربر"),
+        ("Block user input", "مسدود کردن ورودی کاربر"),
 
-        ("Unblock user input", "بازکردن ورودی کاربر"),
+        ("Unblock user input", "رفع مسدودیت ورودی کاربر"),
 
         ("Adjust Window", "تنظیم پنجره"),
 
-        ("Original", "اصل"),
+        ("Original", "اصلی"),
 
         ("Shrink", "کوچک کردن"),
 
-        ("Stretch", "کشیدن تصویر"),
+        ("Stretch", "کشیدن"),
 
-        ("Scrollbar", "اسکرول بار"),
+        ("Scrollbar", "نوار اسکرول"),
 
-        ("ScrollAuto", "پیمایش/اسکرول خودکار"),
+        ("ScrollAuto", "اسکرول خودکار"),
 
-        ("Good image quality", "کیفیت خوب تصویر"),
+        ("Good image quality", "کیفیت تصویر خوب"),
 
         ("Balanced", "متعادل"),
 
-        ("Optimize reaction time", "بهینه سازی : زمان واکنش"),
+        ("Optimize reaction time", "بهینه‌سازی زمان واکنش"),
 
         ("Custom", "سفارشی"),
 
-        ("Show remote cursor", "نمایش مکان نما موس میزبان"),
+        ("Show remote cursor", "نمایش نشانگر راه دور"),
 
-        ("Show quality monitor", "نمایش کیفیت مانیتور"),
+        ("Show quality monitor", "نمایش پایشگر کیفیت"),
 
-        ("Disable clipboard", " غیرفعالسازی کلیپبورد"),
+        ("Disable clipboard", "غیرفعال‌سازی کلیپ‌بورد"),
 
-        ("Lock after session end", "قفل کردن حساب کاربری سیستم عامل پس از پایان جلسه"),
+        ("Lock after session end", "قفل کردن سیستم پس از پایان نشست"),
 
-        ("Insert Ctrl + Alt + Del", "Ctrl + Alt + Del افزودن"),
+        ("Insert Ctrl + Alt + Del", "ارسال Ctrl + Alt + Del"),
 
         ("Insert Lock", "قفل کردن سیستم"),
 
-        ("Refresh", "تازه سازی"),
+        ("Refresh", "تازه‌سازی"),
 
         ("ID does not exist", "شناسه وجود ندارد"),
 
-        ("Failed to connect to rendezvous server", "اتصال به سرور تولید شناسه انجام نشد"),
+        ("Failed to connect to rendezvous server", "اتصال به سرور شناسه انجام نشد"),
 
-        ("Please try later", "لطفا بعدا تلاش کنید"),
+        ("Please try later", "لطفاً بعداً تلاش کنید"),
 
         ("Remote desktop is offline", "دسکتاپ راه دور آفلاین است"),
 
@@ -277,55 +277,55 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Timeout", "زمان انتظار به پایان رسید"),
 
-        ("Failed to connect to relay server", "سرور وصل نشد Relay به"),
+        ("Failed to connect to relay server", "اتصال به سرور رله انجام نشد"),
 
-        ("Failed to connect via rendezvous server", "اتصال از طریق سرور تولید شناسه انجام نشد"),
+        ("Failed to connect via rendezvous server", "اتصال از طریق سرور شناسه انجام نشد"),
 
-        ("Failed to connect via relay server", "انجام نشد Relay اتصال از طریق سرور"),
+        ("Failed to connect via relay server", "اتصال از طریق سرور رله انجام نشد"),
 
         ("Failed to make direct connection to remote desktop", "اتصال مستقیم به دسکتاپ راه دور انجام نشد"),
 
-        ("Set Password", "تنظیم رمزعبور"),
+        ("Set Password", "تنظیم رمز عبور"),
 
-        ("OS Password", "رمز عبور سیستم عامل"),
+        ("OS Password", "رمز عبور سیستم‌عامل"),
 
-        ("install_tip", "لطفا برنامه را نصب کنید UAC و جلوگیری از خطای MyDesk برای راحتی در استفاده از نرم افزار"),
+        ("install_tip", "برای جلوگیری از خطای UAC و استفاده بهتر از MyDesk، لطفاً برنامه را نصب کنید."),
 
         ("Click to upgrade", "برای ارتقا کلیک کنید"),
 
-        ("Configure", "تنظیم"),
+        ("Configure", "پیکربندی"),
 
-        ("config_acc", "بدهید \"access\" مجوز MyDesk برای کنترل از راه دور دسکتاپ باید به"),
+        ("config_acc", "برای کنترل از راه دور دسکتاپ، باید مجوز \"Accessibility\" را به MyDesk بدهید."),
 
-        ("config_screen", "بدهید \"screenshot\" مجوز MyDesk برای کنترل از راه دور دسکتاپ باید به"),
+        ("config_screen", "برای دسترسی از راه دور به دسکتاپ، باید مجوز \"Screen Recording\" را به MyDesk بدهید."),
 
-        ("Installing ...", "...در حال نصب"),
+        ("Installing ...", "در حال نصب..."),
 
         ("Install", "نصب"),
 
-        ("Installation", "نصب و راه اندازی"),
+        ("Installation", "نصب"),
 
-        ("Installation Path", "محل نصب"),
+        ("Installation Path", "مسیر نصب"),
 
-        ("Create start menu shortcuts", "Start ایجاد میانبرها در منوی"),
+        ("Create start menu shortcuts", "ایجاد میانبرها در منوی Start"),
 
-        ("Create desktop icon", "ایجاد آیکن در دسکتاپ"),
+        ("Create desktop icon", "ایجاد آیکون در دسکتاپ"),
 
-        ("agreement_tip", "با شروع نصب، شرایط توافق نامه مجوز را می پذیرید"),
+        ("agreement_tip", "با شروع نصب، شرایط قرارداد مجوز را می‌پذیرید"),
 
-        ("Accept and Install", "قبول و شروع نصب"),
+        ("Accept and Install", "پذیرش و نصب"),
 
         ("End-user license agreement", "قرارداد مجوز کاربر نهایی"),
 
-        ("Generating ...", "...در حال تولید"),
+        ("Generating ...", "در حال تولید..."),
 
-        ("Your installation is lower version.", "نسخه قدیمی تری نصب شده است"),
+        ("Your installation is lower version.", "نسخه نصب‌شده شما قدیمی‌تر است."),
 
         ("not_close_tcp_tip", "هنگام استفاده از تونل این پنجره را نبندید"),
 
-        ("Listening ...", "...انتظار"),
+        ("Listening ...", "در حال گوش دادن..."),
 
-        ("Remote Host", "هاست راه دور"),
+        ("Remote Host", "میزبان راه دور"),
 
         ("Remote Port", "پورت راه دور"),
 
@@ -339,65 +339,65 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Change Local Port", "تغییر پورت محلی"),
 
-        ("setup_server_tip", "برای اتصال سریعتر، سرور اتصال شخصی خود را راه اندازی کنید"),
+        ("setup_server_tip", "برای اتصال سریع‌تر، سرور شخصی خود را راه‌اندازی کنید"),
 
-        ("Too short, at least 6 characters.", "بسیار کوتاه حداقل 6 کاراکتر مورد نیاز است"),
+        ("Too short, at least 6 characters.", "بسیار کوتاه است؛ حداقل 6 کاراکتر مورد نیاز است."),
 
-        ("The confirmation is not identical.", "تأیید ناموفق بود."),
+        ("The confirmation is not identical.", "تأیید رمز عبور یکسان نیست."),
 
-        ("Permissions", "دسترسی ها"),
+        ("Permissions", "مجوزها"),
 
-        ("Accept", "پذیرفتن"),
+        ("Accept", "پذیرش"),
 
-        ("Dismiss", "رد کردن"),
+        ("Dismiss", "نادیده گرفتن"),
 
         ("Disconnect", "قطع اتصال"),
 
-        ("Enable file copy and paste", "مجاز بودن کپی و چسباندن فایل"),
+        ("Enable file copy and paste", "فعال‌سازی کپی و پیست فایل"),
 
-        ("Connected", "متصل شده"),
+        ("Connected", "متصل"),
 
-        ("Direct and encrypted connection", "اتصال مستقیم و رمزگذاری شده"),
+        ("Direct and encrypted connection", "اتصال مستقیم و رمزنگاری‌شده"),
 
-        ("Relayed and encrypted connection", "و رمزگذاری شده Relay اتصال از طریق"),
+        ("Relayed and encrypted connection", "اتصال از طریق رله و رمزنگاری‌شده"),
 
-        ("Direct and unencrypted connection", "اتصال مستقیم و بدون رمزگذاری"),
+        ("Direct and unencrypted connection", "اتصال مستقیم و بدون رمزنگاری"),
 
-        ("Relayed and unencrypted connection", "و رمزگذاری نشده Relay اتصال از طریق"),
+        ("Relayed and unencrypted connection", "اتصال از طریق رله و بدون رمزنگاری"),
 
-        ("Enter Remote ID", "شناسه از راه دور را وارد کنید"),
+        ("Enter Remote ID", "شناسه راه دور را وارد کنید"),
 
         ("Enter your password", "رمز عبور خود را وارد کنید"),
 
-        ("Logging in...", "...در حال ورود"),
+        ("Logging in...", "در حال ورود..."),
 
-        ("Enable RDP session sharing", "را فعال کنید RDP اشتراک گذاری جلسه"),
+        ("Enable RDP session sharing", "فعال‌سازی اشتراک‌گذاری نشست RDP"),
 
         ("Auto Login", "ورود خودکار"),
 
-        ("Enable direct IP access", "را فعال کنید IP دسترسی مستقیم"),
+        ("Enable direct IP access", "فعال‌سازی دسترسی مستقیم IP"),
 
         ("Rename", "تغییر نام"),
 
         ("Space", "فضا"),
 
-        ("Create desktop shortcut", "ساخت میانبر روی دسکتاپ"),
+        ("Create desktop shortcut", "ایجاد میانبر روی دسکتاپ"),
 
         ("Change Path", "تغییر مسیر"),
 
         ("Create Folder", "ایجاد پوشه"),
 
-        ("Please enter the folder name", "نام پوشه را وارد کنید"),
+        ("Please enter the folder name", "لطفاً نام پوشه را وارد کنید"),
 
-        ("Fix it", "بازسازی"),
+        ("Fix it", "رفع مشکل"),
 
         ("Warning", "هشدار"),
 
-        ("Login screen using Wayland is not supported", "پشتیبانی نمی شود Wayland ورود به سیستم با استفاده از "),
+        ("Login screen using Wayland is not supported", "صفحه ورود با استفاده از Wayland پشتیبانی نمی‌شود"),
 
-        ("Reboot required", "راه اندازی مجدد مورد نیاز است"),
+        ("Reboot required", "راه‌اندازی مجدد مورد نیاز است"),
 
-        ("Unsupported display server", "سرور تصویر پشتیبانی نشده است"),
+        ("Unsupported display server", "سرور نمایش پشتیبانی نمی‌شود"),
 
         ("x11 expected", "X11 مورد انتظار است"),
 
@@ -409,51 +409,51 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Invalid port", "پورت نامعتبر است"),
 
-        ("Closed manually by the peer", "به صورت دستی توسط میزبان بسته شد"),
+        ("Closed manually by the peer", "به‌صورت دستی توسط میزبان بسته شد"),
 
-        ("Enable remote configuration modification", "فعال بودن اعمال تغییرات پیکربندی از راه دور"),
+        ("Enable remote configuration modification", "فعال‌سازی تغییر پیکربندی از راه دور"),
 
-        ("Run without install", "بدون نصب اجرا شود"),
+        ("Run without install", "اجرا بدون نصب"),
 
-        ("Connect via relay", "اتصال با رله"),
+        ("Connect via relay", "اتصال از طریق رله"),
 
-        ("Always connect via relay", "برای اتصال استفاده شود Relay از"),
+        ("Always connect via relay", "همیشه از طریق رله متصل شوید"),
 
-        ("whitelist_tip", "های مجاز می توانند به این دسکتاپ متصل شوند IP فقط"),
+        ("whitelist_tip", "فقط IPهای مجاز می‌توانند به این دسکتاپ متصل شوند"),
 
         ("Login", "ورود"),
 
-        ("Verify", "تأیید کنید"),
+        ("Verify", "تأیید"),
 
-        ("Remember me", "مرا به یاد داشته باش"),
+        ("Remember me", "مرا به خاطر بسپار"),
 
-        ("Trust this device", "به این دستگاه اعتماد کنید"),
+        ("Trust this device", "اعتماد به این دستگاه"),
 
-        ("Verification code", "کد تایید"),
+        ("Verification code", "کد تأیید"),
 
-        ("verification_tip", "یک دستگاه جدید شناسایی شده است و یک کد تأیید به آدرس ایمیل ثبت شده ارسال شده است، برای ادامه ورود، کد تأیید را وارد کنید."),
+        ("verification_tip", "یک دستگاه جدید شناسایی شده است و یک کد تأیید به آدرس ایمیل ثبت‌شده ارسال شده است. برای ادامه ورود، کد تأیید را وارد کنید."),
 
-        ("Logout", "خروج"),
+        ("Logout", "خروج از حساب"),
 
-        ("Tags", "برچسب ها"),
+        ("Tags", "برچسب‌ها"),
 
         ("Search ID", "جستجوی شناسه"),
 
-        ("whitelist_sep", "با کاما، نقطه ویرگول، فاصله یا خط جدید از هم جدا می شوند"),
+        ("whitelist_sep", "با کاما، نقطه‌ویرگول، فاصله یا خط جدید از هم جدا می‌شوند"),
 
         ("Add ID", "افزودن شناسه"),
 
         ("Add Tag", "افزودن برچسب"),
 
-        ("Unselect all tags", "همه برچسب ها را لغو انتخاب کنید"),
+        ("Unselect all tags", "لغو انتخاب همه برچسب‌ها"),
 
         ("Network error", "خطای شبکه"),
 
-        ("Username missed", "نام کاربری وجود ندارد"),
+        ("Username missed", "نام کاربری وارد نشده است"),
 
-        ("Password missed", "رمزعبور وجود ندارد"),
+        ("Password missed", "رمز عبور وارد نشده است"),
 
-        ("Wrong credentials", "اعتبارنامه نادرست است"),
+        ("Wrong credentials", "اطلاعات ورود نادرست است"),
 
         ("The verification code is incorrect or has expired", "کد تأیید نادرست است یا منقضی شده است"),
 
@@ -461,31 +461,31 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Forget Password", "پاک کردن رمز عبور ذخیره‌شده"),
 
-        ("Favorites", "اتصالات دلخواه"),
+        ("Favorites", "علاقه‌مندی‌ها"),
 
-        ("Add to Favorites", "افزودن به علاقه مندی ها"),
+        ("Add to Favorites", "افزودن به علاقه‌مندی‌ها"),
 
-        ("Remove from Favorites", "از علاقه مندی ها حذف شود"),
+        ("Remove from Favorites", "حذف از علاقه‌مندی‌ها"),
 
-        ("Empty", "موردی وجود ندارد"),
+        ("Empty", "خالی"),
 
         ("Invalid folder name", "نام پوشه نامعتبر است"),
 
-        ("Socks5 Proxy", "Socks5 پروکسی"),
+        ("Socks5 Proxy", "پروکسی Socks5"),
 
-        ("Socks5/Http(s) Proxy", "Socks5/Http(s) پروکسی"),
+        ("Socks5/Http(s) Proxy", "پروکسی Socks5/Http(s)"),
 
-        ("Discovered", "پیدا شده"),
+        ("Discovered", "یافت‌شده"),
 
-        ("install_daemon_tip", "برای شروع در هنگام راه اندازی، باید سرویس سیستم را نصب کنید"),
+        ("install_daemon_tip", "برای شروع هنگام راه‌اندازی سیستم، باید سرویس سیستم را نصب کنید"),
 
         ("Remote ID", "شناسه راه دور"),
 
-        ("Paste", "درج"),
+        ("Paste", "جای‌گذاری"),
 
-        ("Paste here?", "اینجا درج شود؟"),
+        ("Paste here?", "اینجا جای‌گذاری شود؟"),
 
-        ("Are you sure to close the connection?", "آیا مطمئن هستید که می خواهید اتصال را پایان دهید؟"),
+        ("Are you sure to close the connection?", "آیا مطمئن هستید که می‌خواهید اتصال را ببندید؟"),
 
         ("Download new version", "دانلود نسخه جدید"),
 
@@ -493,51 +493,51 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Mouse mode", "حالت ماوس"),
 
-        ("One-Finger Tap", "با یک انگشت لمس کنید"),
+        ("One-Finger Tap", "لمس با یک انگشت"),
 
-        ("Left Mouse", "دکمه سمت چپ ماوس"),
+        ("Left Mouse", "دکمه چپ ماوس"),
 
         ("One-Long Tap", "لمس طولانی با یک انگشت"),
 
         ("Two-Finger Tap", "لمس دو انگشتی"),
 
-        ("Right Mouse", "دکمه سمت راست ماوس"),
+        ("Right Mouse", "دکمه راست ماوس"),
 
-        ("One-Finger Move", "با یک انگشت حرکت کنید"),
+        ("One-Finger Move", "حرکت با یک انگشت"),
 
-        ("Double Tap & Move", "دو ضربه سریع بزنید و حرکت دهید"),
+        ("Double Tap & Move", "دو ضربه سریع و حرکت"),
 
         ("Mouse Drag", "کشیدن ماوس"),
 
-        ("Three-Finger vertically", "سه انگشت عمودی"),
+        ("Three-Finger vertically", "حرکت عمودی سه انگشتی"),
 
         ("Mouse Wheel", "چرخ ماوس"),
 
-        ("Two-Finger Move", "با دو انگشت حرکت کنید"),
+        ("Two-Finger Move", "حرکت با دو انگشت"),
 
-        ("Canvas Move", "حرکت دادن صفحه"),
+        ("Canvas Move", "جابه‌جایی صفحه"),
 
-        ("Pinch to Zoom", "با دو انگشت بکشید تا زوم شود"),
+        ("Pinch to Zoom", "جمع و باز کردن دو انگشت برای بزرگ‌نمایی"),
 
-        ("Canvas Zoom", "بزرگنمایی صفحه"),
+        ("Canvas Zoom", "بزرگ‌نمایی صفحه"),
 
         ("Reset canvas", "بازنشانی صفحه"),
 
-        ("No permission of file transfer", "مجوز انتقال فایل داده نشده"),
+        ("No permission of file transfer", "مجوز انتقال فایل داده نشده است"),
 
         ("Note", "یادداشت"),
 
-        ("Connection", "ارتباط"),
+        ("Connection", "اتصال"),
 
-        ("Share screen", "اشتراک گذاری صفحه"),
+        ("Share screen", "اشتراک‌گذاری صفحه"),
 
         ("Chat", "چت"),
 
         ("Total", "مجموع"),
 
-        ("items", "آیتم ها"),
+        ("items", "موارد"),
 
-        ("Selected", "انتخاب شده"),
+        ("Selected", "انتخاب‌شده"),
 
         ("Screen Capture", "ضبط صفحه"),
 
@@ -545,33 +545,33 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Audio Capture", "ضبط صدا"),
 
-        ("Do you accept?", "آیا می پذیرید؟"),
+        ("Do you accept?", "آیا می‌پذیرید؟"),
 
         ("Open System Setting", "باز کردن تنظیمات سیستم"),
 
-        ("How to get Android input permission?", "چگونه مجوز ورود به سیستم اندروید را دریافت کنیم؟"),
+        ("How to get Android input permission?", "چگونه مجوز ورودی اندروید را دریافت کنیم؟"),
 
-        ("android_input_permission_tip1", "استفاده کند \"Accessibility\" اجازه دهید از ویژگی MyDesk شما را از طریق ماوس یا صفحه ی لمسی کنترل کند، باید به Android برای اینکه یک دستگاه از راه دور بتواند دستگاه"),
+        ("android_input_permission_tip1", "برای اینکه یک دستگاه راه دور بتواند دستگاه اندروید شما را از طریق ماوس یا لمس کنترل کند، باید به MyDesk اجازه دهید از سرویس \"Accessibility\" استفاده کند."),
 
-        ("android_input_permission_tip2", "را پیدا کنید و فعال نمایید \"MyDesk Input\" بشوید ، سپس گزینه \"Installed Services\" وارد قسمت \"Accessibility\" در صفحه تنظیمات "),
+        ("android_input_permission_tip2", "در صفحه تنظیمات وارد بخش \"Accessibility\" و سپس \"Installed Services\" شوید و گزینه \"MyDesk Input\" را پیدا کرده و فعال کنید."),
 
-        ("android_new_connection_tip", "درخواست جدیدی برای مدیریت دستگاه فعلی شما دریافت شده است."),
+        ("android_new_connection_tip", "درخواست جدیدی برای کنترل دستگاه فعلی شما دریافت شده است."),
 
-        ("android_service_will_start_tip", "فعال کردن ضبط صفحه به طور خودکار سرویس را راه اندازی می کند و به دستگاه های دیگر امکان می دهد درخواست اتصال به آن دستگاه را داشته باشند."),
+        ("android_service_will_start_tip", "فعال کردن ضبط صفحه به‌طور خودکار سرویس را شروع می‌کند و به دستگاه‌های دیگر امکان می‌دهد درخواست اتصال به این دستگاه را ارسال کنند."),
 
-        ("android_stop_service_tip", "با بستن سرویس، تمام اتصالات برقرار شده به طور خودکار بسته می شود"),
+        ("android_stop_service_tip", "با توقف سرویس، تمام اتصالات برقرارشده به‌طور خودکار بسته می‌شوند"),
 
         ("android_version_audio_tip", "نسخه فعلی اندروید از ضبط صدا پشتیبانی نمی‌کند، لطفاً به اندروید 10 یا بالاتر به‌روزرسانی کنید"),
 
-        ("android_start_service_tip", "را فعال کنید [Screen Capture] ضربه بزنید یا مجوز [Start service] برای شروع سرویس اشتراک ‌گذاری صفحه، روی"),
+        ("android_start_service_tip", "برای شروع سرویس اشتراک‌گذاری صفحه، روی [شروع سرویس] ضربه بزنید یا مجوز [ضبط صفحه] را فعال کنید"),
 
-        ("android_permission_may_not_change_tip", "مجوزهای ایجاد شده یا تغییر یافته برای اتصالات جاری تغییر نخواهد کرد، برای تغییر نیاز است مجددا اتصال برقرار گردد"),
+        ("android_permission_may_not_change_tip", "مجوزهای ایجادشده یا تغییریافته برای اتصالات جاری اعمال نخواهند شد؛ برای اعمال تغییرات نیاز است مجدداً اتصال برقرار شود"),
 
         ("Account", "حساب کاربری"),
 
         ("Overwrite", "بازنویسی"),
 
-        ("This file exists, skip or overwrite this file?", "این فایل وجود دارد، از فایل رد شود یا آن را بازنویسی کند؟"),
+        ("This file exists, skip or overwrite this file?", "این فایل وجود دارد؛ رد شود یا بازنویسی گردد؟"),
 
         ("Quit", "خروج"),
 
@@ -579,67 +579,67 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Failed", "ناموفق"),
 
-        ("Succeeded", "موفقیت آمیز"),
+        ("Succeeded", "با موفقیت انجام شد"),
 
-        ("Someone turns on privacy mode, exit", "اگر شخصی حالت حریم خصوصی را روشن کرد، خارج شوید"),
+        ("Someone turns on privacy mode, exit", "شخصی حالت حریم خصوصی را روشن کرد، خروج"),
 
-        ("Unsupported", "پشتیبانی نشده"),
+        ("Unsupported", "پشتیبانی‌نشده"),
 
-        ("Peer denied", "توسط میزبان راه دور رد شد"),
+        ("Peer denied", "توسط میزبان رد شد"),
 
         ("Peer exit", "میزبان خارج شد"),
 
-        ("Failed to turn off", "خاموش کردن انجام نشد"),
+        ("Failed to turn off", "خاموش کردن ناموفق بود"),
 
         ("Turned off", "خاموش شد"),
 
         ("Language", "زبان"),
 
-        ("Keep RustDesk background service", "را در پس زمینه نگه دارید MyDesk سرویس"),
+        ("Keep RustDesk background service", "نگه داشتن سرویس پس‌زمینه MyDesk"),
 
-        ("Ignore Battery Optimizations", "بهینه سازی باتری نادیده گرفته شود"),
+        ("Ignore Battery Optimizations", "نادیده گرفتن بهینه‌سازی باتری"),
 
         ("android_open_battery_optimizations_tip", "به صفحه تنظیمات بعدی بروید"),
 
-        ("Start on boot", "در هنگام بوت شروع شود"),
+        ("Start on boot", "شروع در هنگام بوت"),
 
-        ("Start the screen sharing service on boot, requires special permissions", "سرویس اشتراک‌گذاری صفحه را در بوت راه‌اندازی کنید، به مجوزهای خاصی نیاز دارد"),
+        ("Start the screen sharing service on boot, requires special permissions", "شروع سرویس اشتراک‌گذاری صفحه در هنگام بوت، نیازمند مجوزهای ویژه است"),
 
         ("Connection not allowed", "اتصال مجاز نیست"),
 
-        ("Legacy mode", "legacy حالت"),
+        ("Legacy mode", "حالت قدیمی"),
 
-        ("Map mode", "map حالت"),
+        ("Map mode", "حالت نگاشت"),
 
         ("Translate mode", "حالت ترجمه"),
 
-        ("Use permanent password", "از رمز عبور دائمی استفاده شود"),
+        ("Use permanent password", "استفاده از رمز عبور دائمی"),
 
-        ("Use both passwords", "از هر دو رمز عبور استفاده شود"),
+        ("Use both passwords", "استفاده از هر دو رمز عبور"),
 
-        ("Set permanent password", "یک رمز عبور دائمی تنظیم شود"),
+        ("Set permanent password", "تنظیم رمز عبور دائمی"),
 
-        ("Enable remote restart", "فعال کردن قابلیت ریستارت از راه دور"),
+        ("Enable remote restart", "فعال‌سازی راه‌اندازی مجدد از راه دور"),
 
-        ("Restart remote device", "ریستارت کردن از راه دور"),
+        ("Restart remote device", "راه‌اندازی مجدد دستگاه راه دور"),
 
-        ("Are you sure you want to restart", "ایا مطمئن هستید میخواهید راه اندازی مجدد انجام بدید؟"),
+        ("Are you sure you want to restart", "آیا مطمئن هستید که می‌خواهید راه‌اندازی مجدد کنید؟"),
 
-        ("Restarting remote device", "در حال راه اندازی مجدد دستگاه راه دور"),
+        ("Restarting remote device", "در حال راه‌اندازی مجدد دستگاه راه دور"),
 
-        ("remote_restarting_tip", "دستگاه راه دور در حال راه اندازی مجدد است. این پیام را ببندید و پس از مدتی با استفاده از یک رمز عبور دائمی دوباره وصل شوید."),
+        ("remote_restarting_tip", "دستگاه راه دور در حال راه‌اندازی مجدد است. این پیام را ببندید و پس از مدتی با استفاده از رمز عبور دائمی دوباره متصل شوید."),
 
-        ("Copied", "کپی شده است"),
+        ("Copied", "کپی شد"),
 
-        ("Exit Fullscreen", "از حالت تمام صفحه خارج شوید"),
+        ("Exit Fullscreen", "خروج از تمام‌صفحه"),
 
-        ("Fullscreen", "تمام صفحه"),
+        ("Fullscreen", "تمام‌صفحه"),
 
-        ("Mobile Actions", "اقدامات موبایل"),
+        ("Mobile Actions", "عملیات موبایل"),
 
-        ("Select Monitor", "مانیتور را انتخاب کنید"),
+        ("Select Monitor", "انتخاب نمایشگر"),
 
-        ("Control Actions", "اقدامات مدیریتی"),
+        ("Control Actions", "عملیات کنترلی"),
 
         ("Display Settings", "تنظیمات نمایشگر"),
 
@@ -653,13 +653,13 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Hide Toolbar", "پنهان کردن نوار ابزار"),
 
-        ("Direct Connection", "ارتباط مستقیم"),
+        ("Direct Connection", "اتصال مستقیم"),
 
-        ("Relay Connection", "Relay ارتباط"),
+        ("Relay Connection", "اتصال رله"),
 
-        ("Secure Connection", "ارتباط امن"),
+        ("Secure Connection", "اتصال امن"),
 
-        ("Insecure Connection", "ارتباط غیر امن"),
+        ("Insecure Connection", "اتصال ناامن"),
 
         ("Scale original", "مقیاس اصلی"),
 
@@ -669,11 +669,11 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Security", "امنیت"),
 
-        ("Theme", "نمایه"),
+        ("Theme", "پوسته"),
 
-        ("Dark Theme", "نمایه تیره"),
+        ("Dark Theme", "پوسته تیره"),
 
-        ("Light Theme", "نمایه روشن"),
+        ("Light Theme", "پوسته روشن"),
 
         ("Dark", "تیره"),
 
@@ -681,119 +681,119 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Follow System", "پیروی از سیستم"),
 
-        ("Enable hardware codec", "فعال سازی کدک سخت افزاری"),
+        ("Enable hardware codec", "فعال‌سازی کدک سخت‌افزاری"),
 
-        ("Unlock Security Settings", "دسترسی کامل به تنظیمات امنیتی"),
+        ("Unlock Security Settings", "باز کردن قفل تنظیمات امنیتی"),
 
-        ("Enable audio", "فعال شدن صدا"),
+        ("Enable audio", "فعال‌سازی صدا"),
 
-        ("Unlock Network Settings", "دسترسی کامل به تنظیمات شبکه"),
+        ("Unlock Network Settings", "باز کردن قفل تنظیمات شبکه"),
 
         ("Server", "سرور"),
 
-        ("Direct IP Access", "IP دسترسی مستقیم به"),
+        ("Direct IP Access", "دسترسی مستقیم IP"),
 
         ("Proxy", "پروکسی"),
 
-        ("Apply", "اعمال تغییرات"),
+        ("Apply", "اعمال"),
 
-        ("Disconnect all devices?", "همه دستگاه ها قطع شوند؟"),
+        ("Disconnect all devices?", "اتصال همه دستگاه‌ها قطع شود؟"),
 
         ("Clear", "پاک کردن"),
 
-        ("Audio Input Device", "منبع صدا"),
+        ("Audio Input Device", "دستگاه ورودی صدا"),
 
-        ("Use IP Whitelisting", "های مجاز IP استفاده از"),
+        ("Use IP Whitelisting", "استفاده از لیست IPهای مجاز"),
 
         ("Network", "شبکه"),
 
-        ("Pin Toolbar", "سجاق کردن نوار ابزار"),
+        ("Pin Toolbar", "سنجاق کردن نوار ابزار"),
 
-        ("Unpin Toolbar", "خروج از حالت سجاق نوار ابزار"),
+        ("Unpin Toolbar", "برداشتن سنجاق نوار ابزار"),
 
         ("Recording", "در حال ضبط"),
 
-        ("Directory", "مسیر"),
+        ("Directory", "پوشه"),
 
-        ("Automatically record incoming sessions", "ضبط خودکار جلسات ورودی"),
+        ("Automatically record incoming sessions", "ضبط خودکار نشست‌های ورودی"),
 
-        ("Automatically record outgoing sessions", "ضبط خودکار جلسات خروجی"),
+        ("Automatically record outgoing sessions", "ضبط خودکار نشست‌های خروجی"),
 
         ("Change", "تغییر"),
 
-        ("Start session recording", "شروع ضبط جلسه"),
+        ("Start session recording", "شروع ضبط نشست"),
 
-        ("Stop session recording", "توقف ضبط جلسه"),
+        ("Stop session recording", "توقف ضبط نشست"),
 
-        ("Enable recording session", "فعالسازی ضبط جلسه"),
+        ("Enable recording session", "فعال‌سازی ضبط نشست"),
 
-        ("Enable LAN discovery", "فعالسازی جستجو در شبکه"),
+        ("Enable LAN discovery", "فعال‌سازی جستجو در شبکه محلی"),
 
-        ("Deny LAN discovery", "غیر فعالسازی جستجو در شبکه"),
+        ("Deny LAN discovery", "عدم اجازه جستجو در شبکه محلی"),
 
         ("Write a message", "یک پیام بنویسید"),
 
-        ("Prompt", "سریع"),
+        ("Prompt", "اعلان"),
 
-        ("Please wait for confirmation of UAC...", "باشید UAC لطفا منتظر تایید"),
+        ("Please wait for confirmation of UAC...", "لطفاً منتظر تأیید UAC بمانید..."),
 
-        ("elevated_foreground_window_tip", "پنجره فعلی دسکتاپ راه دور برای کار کردن به دسترسی بالاتری نیاز دارد، بنابراین نمی‌تواند به طور موقت از ماوس و صفحه کلید استفاده کند. می توانید از کاربر راه دور درخواست کنید که پنجره فعلی را به پایین منتقل کند یا روی دکمه ارتقاء دسترسی در پنجره مدیریت اتصال کلیک کنید. برای جلوگیری از این مشکل، توصیه می شود نرم افزار را روی دستگاه از راه دور نصب کنید."),
+        ("elevated_foreground_window_tip", "پنجره فعلی دسکتاپ راه دور برای کار کردن به دسترسی بالاتری نیاز دارد، بنابراین موقتاً نمی‌تواند از ماوس و صفحه‌کلید استفاده کند. می‌توانید از کاربر راه دور بخواهید پنجره فعلی را کوچک کند یا روی دکمه ارتقای دسترسی در پنجره مدیریت اتصال کلیک کنید. برای جلوگیری از این مشکل، توصیه می‌شود نرم‌افزار را روی دستگاه راه دور نصب کنید."),
 
-        ("Disconnected", "قطع ارتباط"),
+        ("Disconnected", "قطع‌شده"),
 
         ("Other", "سایر"),
 
-        ("Confirm before closing multiple tabs", "تایید بستن دسته ای برگه ها"),
+        ("Confirm before closing multiple tabs", "تأیید پیش از بستن چندین زبانه"),
 
-        ("Keyboard Settings", "تنظیمات صفحه کلید"),
+        ("Keyboard Settings", "تنظیمات صفحه‌کلید"),
 
         ("Full Access", "دسترسی کامل"),
 
-        ("Screen Share", "اشتراک گذاری صفحه"),
+        ("Screen Share", "اشتراک‌گذاری صفحه"),
 
-        ("ubuntu-21-04-required", "نیازمند اوبونتو نسخه 21.04 یا بالاتر است Wayland"),
+        ("ubuntu-21-04-required", "Wayland نیازمند اوبونتو نسخه 21.04 یا بالاتر است"),
 
-        ("wayland-requires-higher-linux-version", "استفاده کنید و یا سیستم عامل خود را تغییر دهید X11 نیازمند نسخه بالاتری از توزیع لینوکس است. لطفا از دسکتاپ با سیستم"),
+        ("wayland-requires-higher-linux-version", "Wayland نیازمند نسخه بالاتری از توزیع لینوکس است. لطفاً از سیستم دسکتاپ X11 استفاده کنید یا سیستم‌عامل خود را ارتقا دهید."),
 
         ("xdp-portal-unavailable", "ضبط صفحه Wayland ناموفق بود. ممکن است XDG Desktop Portal از کار افتاده یا در دسترس نباشد. با اجرای دستور `systemctl --user restart xdg-desktop-portal` آن را مجدداً راه‌اندازی کنید."),
 
-        ("JumpLink", "چشم انداز"),
+        ("JumpLink", "JumpLink"),
 
-        ("Please Select the screen to be shared(Operate on the peer side).", "لطفاً صفحه‌ای را برای اشتراک‌گذاری انتخاب کنید (در سمت همتا به همتا کار کنید)."),
+        ("Please Select the screen to be shared(Operate on the peer side).", "لطفاً صفحه‌ای را برای اشتراک‌گذاری انتخاب کنید (در سمت میزبان انجام شود)."),
 
-        ("Show RustDesk", "MyDesk نمایش"),
+        ("Show RustDesk", "نمایش MyDesk"),
 
-        ("This PC", "This PC"),
+        ("This PC", "این رایانه"),
 
         ("or", "یا"),
 
-        ("Elevate", "ارتقاء"),
+        ("Elevate", "ارتقای دسترسی"),
 
-        ("Zoom cursor", " بزرگنمایی نشانگر ماوس"),
+        ("Zoom cursor", "بزرگ‌نمایی نشانگر"),
 
-        ("Accept sessions via password", "قبول درخواست با رمز عبور"),
+        ("Accept sessions via password", "پذیرش نشست‌ها با رمز عبور"),
 
-        ("Accept sessions via click", "قبول درخواست با کلیک موس"),
+        ("Accept sessions via click", "پذیرش نشست‌ها با کلیک"),
 
-        ("Accept sessions via both", "قبول درخواست با هر دو"),
+        ("Accept sessions via both", "پذیرش نشست‌ها با هر دو"),
 
-        ("Please wait for the remote side to accept your session request...", "...لطفا صبر کنید تا میزبان درخواست شما را قبول کند"),
+        ("Please wait for the remote side to accept your session request...", "لطفاً منتظر بمانید تا سمت راه دور درخواست نشست شما را بپذیرد..."),
 
-        ("One-time Password", "رمز عبور یکبار مصرف"),
+        ("One-time Password", "رمز عبور یک‌بار مصرف"),
 
-        ("Use one-time password", "استفاده از رمز عبور یکبار مصرف"),
+        ("Use one-time password", "استفاده از رمز عبور یک‌بار مصرف"),
 
-        ("One-time password length", "طول رمز عبور یکبار مصرف"),
+        ("One-time password length", "طول رمز عبور یک‌بار مصرف"),
 
-        ("Request access to your device", "دسترسی به دستگاه خود را درخواست کنید"),
+        ("Request access to your device", "درخواست دسترسی به دستگاه شما"),
 
         ("Hide connection management window", "پنهان کردن پنجره مدیریت اتصال"),
 
-        ("hide_cm_tip", "فقط در صورت پذیرفتن جلسات از طریق رمز عبور و استفاده از رمز عبور دائمی، مخفی شدن مجاز است"),
+        ("hide_cm_tip", "پنهان کردن فقط در صورت پذیرش نشست‌ها با رمز عبور و استفاده از رمز عبور دائمی مجاز است"),
 
-        ("wayland_experiment_tip", "پشتیبانی Wayland در مرحله آزمایشی است، لطفاً در صورت نیاز به دسترسی بدون مراقبت از X11 استفاده کنید."),
+        ("wayland_experiment_tip", "پشتیبانی Wayland در مرحله آزمایشی است، لطفاً در صورت نیاز به دسترسی بدون حضور کاربر از X11 استفاده کنید."),
 
-        ("Right click to select tabs", "برای انتخاب تب ها راست کلیک کنید"),
+        ("Right click to select tabs", "برای انتخاب زبانه‌ها راست‌کلیک کنید"),
 
         ("Skipped", "رد شد"),
 
@@ -803,39 +803,39 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Search", "جستجو"),
 
-        ("Closed manually by web console", "به صورت دستی توسط کنسول وب بسته شد"),
+        ("Closed manually by web console", "به‌صورت دستی توسط کنسول وب بسته شد"),
 
-        ("Local keyboard type", "نوع صفحه کلید محلی"),
+        ("Local keyboard type", "نوع صفحه‌کلید محلی"),
 
-        ("Select local keyboard type", "نوع صفحه کلید محلی را انتخاب کنید"),
+        ("Select local keyboard type", "نوع صفحه‌کلید محلی را انتخاب کنید"),
 
-        ("software_render_tip", "اگر کارت گرافیک Nvidia دارید و پنجره راه دور بلافاصله پس از اتصال بسته می شود، درایور nouveau را نصب نمایید و انتخاب گزینه استفاده از رندر نرم افزار می تواند کمک کننده باشد. راه اندازی مجدد نرم افزار مورد نیاز است."),
+        ("software_render_tip", "اگر کارت گرافیک Nvidia دارید و پنجره راه دور بلافاصله پس از اتصال بسته می‌شود، تغییر به درایور nouveau و انتخاب گزینه استفاده از رندر نرم‌افزاری می‌تواند کمک‌کننده باشد. راه‌اندازی مجدد نرم‌افزار مورد نیاز است."),
 
-        ("Always use software rendering", "همیشه از رندر نرم افزاری استفاده کنید"),
+        ("Always use software rendering", "استفاده همیشگی از رندر نرم‌افزاری"),
 
-        ("config_input", "برای کنترل دسکتاپ از راه دور با صفحه کلید، باید مجوز MyDesk \"Input Monitoring\" را بدهید."),
+        ("config_input", "برای کنترل دسکتاپ از راه دور با صفحه‌کلید، باید مجوز \"Input Monitoring\" را به MyDesk بدهید."),
 
-        ("config_microphone", "را بدهید. MyDesk \"Record Audio\" برای صحبت از راه دور، باید مجوز"),
+        ("config_microphone", "برای صحبت از راه دور، باید مجوز \"Record Audio\" را به MyDesk بدهید."),
 
-        ("request_elevation_tip", "همچنین می توانید در صورت وجود شخصی در سمت راه دور درخواست ارتقاء دسترسی دهید."),
+        ("request_elevation_tip", "همچنین می‌توانید در صورت حضور شخصی در سمت راه دور درخواست ارتقای دسترسی دهید."),
 
         ("Wait", "صبر کنید"),
 
-        ("Elevation Error", "خطای ارتقاء دسترسی"),
+        ("Elevation Error", "خطای ارتقای دسترسی"),
 
-        ("Ask the remote user for authentication", "درخواست احراز هویت از یک کاربر راه دور"),
+        ("Ask the remote user for authentication", "درخواست احراز هویت از کاربر راه دور"),
 
-        ("Choose this if the remote account is administrator", "اگر حساب راه دور یک مدیر است، این را انتخاب کنید"),
+        ("Choose this if the remote account is administrator", "اگر حساب کاربری راه دور مدیر سیستم است، این گزینه را انتخاب کنید"),
 
-        ("Transmit the username and password of administrator", "نام کاربری و رمز عبور مدیر را منتقل کنید"),
+        ("Transmit the username and password of administrator", "ارسال نام کاربری و رمز عبور مدیر سیستم"),
 
-        ("still_click_uac_tip", "همچنان کاربر از راه دور نیاز دارد که روی OK در پنجره UAC اجرای MyDesk کلیک کند."),
+        ("still_click_uac_tip", "کاربر راه دور همچنان باید روی OK در پنجره UAC اجرای MyDesk کلیک کند."),
 
-        ("Request Elevation", "درخواست ارتقاء دسترسی"),
+        ("Request Elevation", "درخواست ارتقای دسترسی"),
 
         ("wait_accept_uac_tip", "لطفاً منتظر بمانید تا کاربر راه دور درخواست پنجره UAC را بپذیرد."),
 
-        ("Elevate successfully", "ارتقاء دسترسی با موفقیت انجام شد"),
+        ("Elevate successfully", "ارتقای دسترسی با موفقیت انجام شد"),
 
         ("uppercase", "حروف بزرگ"),
 
@@ -853,35 +853,35 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Strong", "قوی"),
 
-        ("Switch Sides", "طرفین را عوض کنید"),
+        ("Switch Sides", "جابه‌جایی طرفین"),
 
-        ("Please confirm if you want to share your desktop?", "لطفاً تأیید کنید که آیا می خواهید دسکتاپ خود را به اشتراک بگذارید؟"),
+        ("Please confirm if you want to share your desktop?", "لطفاً تأیید کنید که می‌خواهید دسکتاپ خود را به اشتراک بگذارید؟"),
 
-        ("Display", "نمایش دادن"),
+        ("Display", "نمایشگر"),
 
-        ("Default View Style", "سبک نمایش پیش فرض"),
+        ("Default View Style", "سبک نمایش پیش‌فرض"),
 
-        ("Default Scroll Style", "سبک پیش‌ فرض اسکرول"),
+        ("Default Scroll Style", "سبک اسکرول پیش‌فرض"),
 
-        ("Default Image Quality", "کیفیت تصویر پیش فرض"),
+        ("Default Image Quality", "کیفیت تصویر پیش‌فرض"),
 
-        ("Default Codec", "کدک پیش فرض"),
+        ("Default Codec", "کدک پیش‌فرض"),
 
-        ("Bitrate", "میزان بیت صفحه نمایش"),
+        ("Bitrate", "نرخ بیت"),
 
         ("FPS", "فریم در ثانیه"),
 
         ("Auto", "خودکار"),
 
-        ("Other Default Options", "سایر گزینه های پیش فرض"),
+        ("Other Default Options", "سایر گزینه‌های پیش‌فرض"),
 
         ("Voice call", "تماس صوتی"),
 
-        ("Text chat", "گفتگو متنی (چت متنی)"),
+        ("Text chat", "چت متنی"),
 
         ("Stop voice call", "توقف تماس صوتی"),
 
-        ("relay_hint_tip", " را به شناسه اضافه کنید یا گزینه \" همیشه از طریق رله متصل شوید\" را در کارت همتا انتخاب کنید. همچنین، اگر می‌خواهید فوراً از سرور رله استفاده کنید، می‌توانید پسوند \"/r\".\n اتصال مستقیم ممکن است امکان پذیر نباشد. در این صورت می توانید سعی کنید از طریق سرور رله متصل شوید"),
+        ("relay_hint_tip", "اتصال مستقیم ممکن است امکان‌پذیر نباشد. در این صورت می‌توانید از طریق سرور رله متصل شوید.\nهمچنین، اگر می‌خواهید فوراً از سرور رله استفاده کنید، می‌توانید پسوند \"/r\" را به شناسه اضافه کنید یا گزینه «همیشه از طریق رله متصل شوید» را در کارت میزبان انتخاب کنید."),
 
         ("Reconnect", "اتصال مجدد"),
 
@@ -891,29 +891,29 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("No transfers in progress", "هیچ انتقالی در حال انجام نیست"),
 
-        ("Set one-time password length", "طول رمز یکبار مصرف را تعیین کنید"),
+        ("Set one-time password length", "تنظیم طول رمز عبور یک‌بار مصرف"),
 
-        ("RDP Settings", "RDP تنظیمات"),
+        ("RDP Settings", "تنظیمات RDP"),
 
-        ("Sort by", "مرتب سازی بر اساس"),
+        ("Sort by", "مرتب‌سازی بر اساس"),
 
         ("New Connection", "اتصال جدید"),
 
         ("Restore", "بازیابی"),
 
-        ("Minimize", "کوچک کردن پنجره"),
+        ("Minimize", "کوچک کردن"),
 
-        ("Maximize", "بزرک کردن پنجره"),
+        ("Maximize", "بزرگ کردن"),
 
         ("Your Device", "دستگاه شما"),
 
-        ("empty_recent_tip", "اوه، هیچ جلسه اخیری وجود ندارد!\nزمان برنامه ریزی جلسه جدید است"),
+        ("empty_recent_tip", "هیچ نشست اخیری وجود ندارد.\nمی‌توانید یک نشست جدید شروع کنید."),
 
-        ("empty_favorite_tip", "هنوز همتای مورد علاقه‌ای ندارید؟\nبیایید فردی را برای ارتباط پیدا کنیم و آن را به موارد دلخواه خود اضافه کنیم!"),
+        ("empty_favorite_tip", "هنوز میزبان مورد علاقه‌ای ندارید.\nمیزبانی را برای اتصال پیدا کنید و آن را به علاقه‌مندی‌ها اضافه کنید."),
 
-        ("empty_lan_tip", "اوه نه، به نظر می رسد که ما هنوز همتای خود را پیدا نکرده ایم"),
+        ("empty_lan_tip", "هنوز هیچ میزبانی در شبکه محلی پیدا نشده است."),
 
-        ("empty_address_book_tip", "اوه ، به نظر می رسد که در حال حاضر هیچ همتایی در دفترچه آدرس شما وجود ندارد"),
+        ("empty_address_book_tip", "در حال حاضر هیچ میزبانی در دفترچه آدرس شما وجود ندارد."),
 
         ("Empty Username", "نام کاربری خالی است"),
 
@@ -921,11 +921,11 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Me", "من"),
 
-        ("identical_file_tip", "این فایل با فایل همتا یکسان است."),
+        ("identical_file_tip", "این فایل با فایل میزبان یکسان است."),
 
-        ("show_monitors_tip", "نمایش مانیتورها در نوار ابزار"),
+        ("show_monitors_tip", "نمایش نمایشگرها در نوار ابزار"),
 
-        ("View Mode", "حالت مشاهده"),
+        ("View Mode", "حالت نمایش"),
 
         ("verify_mydesk_password_tip", "رمز عبور MyDesk را تأیید کنید"),
 
@@ -933,21 +933,21 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("OS Account", "حساب کاربری سیستم عامل"),
 
-        ("No need to elevate", "نیازی به ارتقاء نیست"),
+        ("No need to elevate", "نیازی به ارتقای دسترسی نیست"),
 
         ("System Sound", "صدای سیستم"),
 
-        ("Default", "پیش فرض"),
+        ("Default", "پیش‌فرض"),
 
-        ("New RDP", "ریموت جدید"),
+        ("New RDP", "RDP جدید"),
 
-        ("Fingerprint", "\n اثر انگشت"),
+        ("Fingerprint", "اثر انگشت"),
 
         ("Copy Fingerprint", "کپی کردن اثر انگشت"),
 
         ("no fingerprints", "بدون اثر انگشت"),
 
-        ("Update", "به روز رسانی"),
+        ("Update", "به‌روزرسانی"),
 
         ("resolution_original_tip", "وضوح اصلی"),
 
@@ -957,11 +957,11 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Collapse toolbar", "جمع کردن نوار ابزار"),
 
-        ("Accept and Elevate", "بپذیرید و افزایش دهید"),
+        ("Accept and Elevate", "پذیرش و ارتقای دسترسی"),
 
-        ("accept_and_elevate_btn_tooltip", "را افزایش دهید UAC اتصال را بپذیرید و مجوزهای."),
+        ("accept_and_elevate_btn_tooltip", "اتصال را بپذیرید و مجوزهای UAC را ارتقا دهید."),
 
-        ("clipboard_wait_response_timeout_tip", "زمان انتظار برای مشخص شدن وضعیت کپی تمام شد."),
+        ("clipboard_wait_response_timeout_tip", "زمان انتظار برای پاسخ کپی به پایان رسید."),
 
         ("Incoming connection", "اتصال ورودی"),
 
@@ -971,7 +971,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Open", "باز کردن"),
 
-        ("logout_tip", "آیا برای خارج شدن مطمئن هستید؟"),
+        ("logout_tip", "آیا برای خروج از حساب مطمئن هستید؟"),
 
         ("Service", "سرویس"),
 
@@ -979,113 +979,111 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Stop", "توقف"),
 
-        ("exceed_max_devices", "شما به حداکثر تعداد دستگاه های مدیریت شده رسیده اید."),
+        ("exceed_max_devices", "شما به حداکثر تعداد دستگاه‌های مدیریت‌شده رسیده‌اید."),
 
-        ("Sync with recent sessions", "با جلسات اخیر همگام سازی کنید"),
+        ("Sync with recent sessions", "همگام‌سازی با نشست‌های اخیر"),
 
-        ("Sort tags", "مرتب سازی برچسب ها"),
+        ("Sort tags", "مرتب‌سازی برچسب‌ها"),
 
-        ("Open connection in new tab", "اتصال را در تب جدید باز کنید"),
+        ("Open connection in new tab", "باز کردن اتصال در زبانه جدید"),
 
-        ("Move tab to new window", "تب را به پنجره جدید منتقل کنید"),
+        ("Move tab to new window", "انتقال زبانه به پنجره جدید"),
 
-        ("Can not be empty", "نمیتواند خالی باشد"),
+        ("Can not be empty", "نمی‌تواند خالی باشد"),
 
-        ("Already exists", "درحال حاضر وجود دارد"),
+        ("Already exists", "از قبل وجود دارد"),
 
-        ("Change Password", "رمز عبور را تغییر دهید"),
+        ("Change Password", "تغییر رمز عبور"),
 
-        ("Refresh Password", "رمز عبور را تازه کنید"),
+        ("Refresh Password", "تازه‌سازی رمز عبور"),
 
         ("ID", "شناسه"),
 
-        ("Grid View", "نمای توری شکل"),
+        ("Grid View", "نمای شبکه‌ای"),
 
-        ("List View", "نمایش به صورت لیست"),
+        ("List View", "نمای لیستی"),
 
-        ("Select", "انتخاب کنید"),
+        ("Select", "انتخاب"),
 
-        ("Toggle Tags", "تگ ها را تغییر دهید"),
+        ("Toggle Tags", "نمایش/پنهان کردن برچسب‌ها"),
 
         ("pull_ab_failed_tip", "دفترچه آدرس بازخوانی نشد"),
 
-        ("push_ab_failed_tip", "دفترچه آدرس با سرور همگام سازی نشد"),
+        ("push_ab_failed_tip", "دفترچه آدرس با سرور همگام‌سازی نشد"),
 
-        ("synced_peer_readded_tip", "دستگاه هایی که در جلسات اخیر حضور داشتند با دفترچه آدرس همگام سازی می شوند"),
+        ("synced_peer_readded_tip", "دستگاه‌هایی که در نشست‌های اخیر حضور داشتند مجدداً با دفترچه آدرس همگام‌سازی می‌شوند"),
 
         ("Change Color", "تغییر رنگ"),
 
-        ("Primary Color", "رنگ اولیه"),
+        ("Primary Color", "رنگ اصلی"),
 
         ("HSV Color", "رنگ HSV"),
 
         ("Installation Successful!", "نصب با موفقیت انجام شد!"),
 
-        ("Installation failed!", "نصب انجام نشد!"),
+        ("Installation failed!", "نصب ناموفق بود!"),
 
-        ("Reverse mouse wheel", "معکوس کردن چرخ موس"),
+        ("Reverse mouse wheel", "معکوس کردن چرخ ماوس"),
 
-        ("{} sessions", "{} جلسه"),
+        ("{} sessions", "{} نشست"),
 
-        ("scam_title", "ممکن است شما در حال کلاهبرداری باشید!"),
+        ("scam_title", "ممکن است در معرض کلاهبرداری باشید!"),
 
-        ("scam_text1", "استفاده کنید و سرویس را راه‌اندازی کنید، صحبت می‌کنید، ادامه ندهید و بلافاصله تلفن را قطع کنید MyDesk اگر با شخصی که نمی‌شناسید و به او اعتماد ندارید و از شما خواسته است از"),
+        ("scam_text1", "اگر در حال صحبت تلفنی با شخصی هستید که نمی‌شناسید و به او اعتماد ندارید و از شما خواسته است از MyDesk استفاده کنید و سرویس را شروع کنید، ادامه ندهید و بلافاصله تلفن را قطع کنید."),
 
-        ("scam_text2", "آنها احتمالا یک کلاهبردار هستند که سعی در سرقت پول یا سایر اطلاعات خصوصی شما دارند."),
+        ("scam_text2", "آن‌ها احتمالاً کلاهبردار هستند و قصد سرقت پول یا سایر اطلاعات خصوصی شما را دارند."),
 
         ("Don't show again", "دیگر نشان نده"),
 
         ("I Agree", "موافقم"),
 
-        ("Decline", "نمی پذیرم"),
+        ("Decline", "نمی‌پذیرم"),
 
-        ("Timeout in minutes", "مدت زمان انتظار به دقیقه"),
+        ("Timeout in minutes", "زمان انتظار به دقیقه"),
 
-        ("auto_disconnect_option_tip", "بسته شدن خودکار جلسات ورودی در صورت عدم فعالیت کاربر"),
+        ("auto_disconnect_option_tip", "بستن خودکار نشست‌های ورودی در صورت عدم فعالیت کاربر"),
 
-        ("Connection failed due to inactivity", "اتصال به دلیل عدم فعالیت بسته شد"),
+        ("Connection failed due to inactivity", "اتصال به‌دلیل عدم فعالیت قطع شد"),
 
-        ("Check for software update on startup", "در هنگلم شروع برنامه بروزرسانی را بررسی کن"),
+        ("Check for software update on startup", "بررسی به‌روزرسانی نرم‌افزار هنگام شروع برنامه"),
 
-        ("upgrade_mydesk_server_pro_to_{}_tip", "را به نسخه {} یا جدیدتر ارتقا دهید MyDesk Server Pro لظفا"),
+        ("upgrade_mydesk_server_pro_to_{}_tip", "لطفاً MyDesk Server Pro را به نسخه {} یا جدیدتر ارتقا دهید"),
 
         ("pull_group_failed_tip", "گروه بازخوانی نشد"),
 
         ("Filter by intersection", "فیلتر بر اساس اشتراک"),
 
-        ("Remove wallpaper during incoming sessions", "را در جلسات ورودی حذف کنید Wallpaper"),
+        ("Remove wallpaper during incoming sessions", "حذف تصویر پس‌زمینه در نشست‌های ورودی"),
 
-        ("Test", "تست"),
+        ("Test", "آزمایش"),
 
-        ("display_is_plugged_out_msg", "صفحه نمایش قطع شده است، به صفحه نمایش اول بروید."),
+        ("display_is_plugged_out_msg", "نمایشگر قطع شده است، به نمایشگر اول تغییر دهید."),
 
         ("No displays", "بدون نمایشگر"),
 
         ("Open in new window", "باز کردن در پنجره جدید"),
 
-        ("Show displays as individual windows", "نمایش نمایشگرها به عنوان پنجره های جداگانه"),
+        ("Show displays as individual windows", "نمایش نمایشگرها به‌صورت پنجره‌های جداگانه"),
 
-        ("Use all my displays for the remote session", "از همه نمایشگرهای من برای جلسه راه دور استفاده کنید"),
+        ("Use all my displays for the remote session", "استفاده از همه نمایشگرهای من برای نشست راه دور"),
 
-        ("selinux_tip", "به عنوان کنترل شده جلوگیری کند MyDesk روی دستگاه شما فعال است ، که ممکن است از اجرای صحیح SELinux"),
+        ("Change view", "تغییر نما"),
 
-        ("Change view", "تغییر نمای"),
+        ("Big tiles", "کاشی‌های بزرگ"),
 
-        ("Big tiles", "کاشی های بزرگ"),
-
-        ("Small tiles", "کاشی های کوچک"),
+        ("Small tiles", "کاشی‌های کوچک"),
 
         ("List", "لیست"),
 
-        ("Virtual display", "نمایش مجازی"),
+        ("Virtual display", "نمایشگر مجازی"),
 
-        ("Plug out all", "همه را خارج کنید"),
+        ("Plug out all", "جدا کردن همه"),
 
         ("True color (4:4:4)", "رنگ واقعی (4:4:4)"),
 
-        ("Enable blocking user input", "مسدود کردن ورودی کاربر را فعال کنید"),
+        ("Enable blocking user input", "فعال‌سازی مسدود کردن ورودی کاربر"),
 
-        ("id_input_tip", " \"<id>@public\" :برای دسترسی به سرورهای عمومی نیازی به کلید نیست ، مثل \n9123456234@192.168.16.1:31117?key=5Qbwsde3unUcJBtrx9ZkvUmwFNoExHzpryHuPUdqlWM=.\n برای مثال (<id>@<server_address>?key=<key_value>) :اگر می خواهید به دستگاه دیگری در سروری دسترسی پیدا کنید ، ادرس سرور را اضافه نمایید ماتتد \n (domain:port)یا یک دامنه با پورت را وارد کنید IP شما می توانید یک شناسه یا یک"),
+        ("id_input_tip", "می‌توانید یک شناسه، آدرس IP مستقیم یا دامنه همراه با پورت (<domain>:<port>) وارد کنید.\nاگر می‌خواهید به دستگاهی در سرور دیگری دسترسی پیدا کنید، آدرس سرور را اضافه کنید (<id>@<server_address>?key=<key_value>)، برای مثال:\n9123456234@192.168.16.1:31117?key=5Qbwsde3unUcJBtrx9ZkvUmwFNoExHzpryHuPUdqlWM=.\nاگر می‌خواهید به دستگاهی در سرور عمومی دسترسی پیدا کنید، \"<id>@public\" را وارد کنید؛ برای سرور عمومی نیازی به کلید نیست."),
 
         ("privacy_mode_impl_mag_tip", "حالت 1"),
 
@@ -1095,41 +1093,41 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Exit privacy mode", "خروج از حالت حریم خصوصی"),
 
-        ("idd_not_support_under_win10_2004_tip", "درایور نمایش غیر مستقیم پشتیبانی نمی شود. ویندوز 10، نسخه 2004 یا جدیدتر مورد نیاز است"),
+        ("idd_not_support_under_win10_2004_tip", "درایور نمایش غیرمستقیم پشتیبانی نمی‌شود. ویندوز 10 نسخه 2004 یا جدیدتر مورد نیاز است."),
 
         ("input_source_1_tip", "منبع ورودی 1"),
 
         ("input_source_2_tip", "منبع ورودی 2"),
 
-        ("Swap control-command key", "گرفتن چندین نمایشگر در حالت کاربر زیاد پشتیبانی نمی شود. اگر می‌خواهید چند نمایشگر را کنترل کنید، لطفاً پس از نصب دوباره امتحان کنید."),
+        ("Swap control-command key", "جابه‌جایی کلیدهای Control و Command"),
 
-        ("swap-left-right-mouse", "دکمه چپ و راست ماوس را عوض کنید"),
+        ("swap-left-right-mouse", "جابه‌جایی دکمه چپ و راست ماوس"),
 
-        ("2FA code", "کد ورود 2 مرحله ای"),
+        ("2FA code", "کد احراز هویت دومرحله‌ای"),
 
         ("More", "بیشتر"),
 
-        ("enable-2fa-title", "احراز هویت دو مرحله ای را فعال کنید"),
+        ("enable-2fa-title", "فعال‌سازی احراز هویت دومرحله‌ای"),
 
-        ("enable-2fa-desc", "بارکد سه بعدی را اسکن کنید و کد نمایش داده شده در برنامه را وارد کنید تا احراز هویت دو مرحله ای فعال گردد n\n برروی تلفن همراه خود استفاده کنید ، Authy, Microsoft یا Google Authenticator لطفاً هم اکنون برنامه تأیید کننده خود را تنظیم کنید. می توانید از یک برنامه احراز هویت مانند"),
+        ("enable-2fa-desc", "لطفاً هم‌اکنون برنامه احراز هویت خود را تنظیم کنید. می‌توانید از برنامه‌هایی مانند Google Authenticator، Microsoft Authenticator یا Authy روی تلفن همراه خود استفاده کنید.\n\nکد QR را اسکن کرده و کد نمایش‌داده‌شده در برنامه را وارد کنید تا احراز هویت دومرحله‌ای فعال شود."),
 
-        ("wrong-2fa-code", "نمی توان کد را تأیید کرد. بررسی کنید که تنظیمات کد و زمان محلی درست باشد"),
+        ("wrong-2fa-code", "تأیید کد ناموفق بود. بررسی کنید که کد و تنظیمات زمان محلی درست باشد"),
 
-        ("enter-2fa-title", "احراز هویت دو مرحله ای"),
+        ("enter-2fa-title", "احراز هویت دومرحله‌ای"),
 
-        ("Email verification code must be 6 characters.", "کد تأیید ایمیل باید 6 کاراکتر باشد"),
+        ("Email verification code must be 6 characters.", "کد تأیید ایمیل باید 6 کاراکتر باشد."),
 
-        ("2FA code must be 6 digits.", "کد احراز هویت دو مرحله ای باید 6 رقم باشد"),
+        ("2FA code must be 6 digits.", "کد احراز هویت دومرحله‌ای باید 6 رقم باشد."),
 
-        ("Multiple Windows sessions found", "چندین جلسه پیدا شد"),
+        ("Multiple Windows sessions found", "چندین نشست ویندوز پیدا شد"),
 
-        ("Please select the session you want to connect to", "لطفاً جلسه ای را که می خواهید به آن متصل شوید انتخاب کنید"),
+        ("Please select the session you want to connect to", "لطفاً نشستی را که می‌خواهید به آن متصل شوید انتخاب کنید"),
 
         ("powered_by_me", "Powered by MyDesk"),
 
-        ("outgoing_only_desk_tip", "این یک نسخه سفارشی شده است.\nشما می توانید به دستگاه های دیگر متصل شوید، اما دستگاه های دیگر نمی توانند به دستگاه شما متصل شوند"),
+        ("outgoing_only_desk_tip", "این یک نسخه سفارشی‌شده است.\nشما می‌توانید به دستگاه‌های دیگر متصل شوید، اما دستگاه‌های دیگر نمی‌توانند به دستگاه شما متصل شوند"),
 
-        ("preset_password_warning", "این نسخه سفارشی شده با رمز عبور از پیش تعیین شده ارائه می شود. هر کسی که این رمز عبور را بداند می تواند کنترل کامل دستگاه شما را به دست آورد. اگر انتظار این را نداشتید، بلافاصله نرم افزار را حذف نصب کنید"),
+        ("preset_password_warning", "این نسخه سفارشی‌شده با رمز عبور از پیش تعیین‌شده ارائه می‌شود. هر کسی که این رمز عبور را بداند می‌تواند کنترل کامل دستگاه شما را به دست آورد. اگر انتظار این را نداشتید، بلافاصله نرم‌افزار را حذف کنید."),
 
         ("Security Alert", "هشدار امنیتی"),
 
@@ -1141,31 +1139,31 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Set shared password", "تنظیم رمز عبور مشترک"),
 
-        ("Exist in", "وجود داشته باشد"),
+        ("Exist in", "موجود در"),
 
         ("Read-only", "فقط خواندنی"),
 
         ("Read/Write", "خواندن/نوشتن"),
 
-        ("Full Control", "تسلط کامل"),
+        ("Full Control", "کنترل کامل"),
 
-        ("share_warning_tip", "فیلدهای بالا به اشتراک گذاشته شده و برای دیگران قابل مشاهده است"),
+        ("share_warning_tip", "فیلدهای بالا به اشتراک گذاشته شده‌اند و برای دیگران قابل مشاهده هستند"),
 
-        ("Everyone", "هر کس"),
+        ("Everyone", "همه"),
 
         ("ab_web_console_tip", "اطلاعات بیشتر در کنسول وب"),
 
-        ("allow-only-conn-window-open-tip", "باز است اتصال برقرار شود MyDesk زمانی که"),
+        ("allow-only-conn-window-open-tip", "فقط زمانی که پنجره MyDesk باز است اجازه اتصال داده شود"),
 
-        ("no_need_privacy_mode_no_physical_displays_tip", "بدون نمایشگر فیزیکی نیازی به استفاده از حالت خصوصی نیست"),
+        ("no_need_privacy_mode_no_physical_displays_tip", "بدون نمایشگر فیزیکی نیازی به استفاده از حالت حریم خصوصی نیست"),
 
-        ("Follow remote cursor", "مکان نما ریموت را دنبال کنید"),
+        ("Follow remote cursor", "دنبال کردن نشانگر راه دور"),
 
         ("Follow remote window focus", "دنبال کردن فوکوس پنجره راه دور"),
 
-        ("default_proxy_tip", "و پورت 1080 می باشد Sock5 پرونکل پیش فرض"),
+        ("default_proxy_tip", "پروتکل پیش‌فرض Socks5 و پورت 1080 است"),
 
-        ("no_audio_input_device_tip", "دستگاه ورودی صوتی پیدا نشد"),
+        ("no_audio_input_device_tip", "دستگاه ورودی صدا پیدا نشد"),
 
         ("Incoming", "ورودی"),
 
@@ -1173,33 +1171,33 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Clear Wayland screen selection", "پاک کردن انتخاب صفحه Wayland"),
 
-        ("clear_Wayland_screen_selection_tip", "پس از پاک کردن صفحه انتخابی، می توانید صفحه را برای اشتراک گذاری مجدد انتخاب کنید"),
+        ("clear_Wayland_screen_selection_tip", "پس از پاک کردن انتخاب صفحه، می‌توانید صفحه را برای اشتراک‌گذاری مجدداً انتخاب کنید"),
 
-        ("confirm_clear_Wayland_screen_selection_tip", "را پاک می کنید؟ Wayland آیا مطمئن هستید که انتخاب صفحه"),
+        ("confirm_clear_Wayland_screen_selection_tip", "آیا مطمئن هستید که انتخاب صفحه Wayland را پاک می‌کنید؟"),
 
-        ("android_new_voice_call_tip", "یک درخواست تماس صوتی جدید دریافت شد. اگر بپذیرید، صدا به ارتباط صوتی تغییر خواهد کرد."),
+        ("android_new_voice_call_tip", "درخواست تماس صوتی جدیدی دریافت شد. اگر بپذیرید، صدا به تماس صوتی تغییر خواهد کرد."),
 
-        ("texture_render_tip", "از رندر بافت برای صاف کردن تصاویر استفاده کنید. اگر با مشکل رندر مواجه شدید، می توانید این گزینه را غیرفعال کنید."),
+        ("texture_render_tip", "از رندر بافت برای نرم‌تر کردن تصاویر استفاده کنید. اگر با مشکل رندر مواجه شدید، می‌توانید این گزینه را غیرفعال کنید."),
 
-        ("Use texture rendering", "از رندر بافت استفاده کنید"),
+        ("Use texture rendering", "استفاده از رندر بافت"),
 
         ("Floating window", "پنجره شناور"),
 
-        ("floating_window_tip", "کمک می کند MyDesk این به حفظ سرویس پس زمینه"),
+        ("floating_window_tip", "این گزینه به حفظ سرویس پس‌زمینه MyDesk کمک می‌کند"),
 
-        ("Keep screen on", "صفحه نمایش را روشن نگه دارید"),
+        ("Keep screen on", "روشن نگه داشتن صفحه"),
 
         ("Never", "هرگز"),
 
-        ("During controlled", "در حین کنترل"),
+        ("During controlled", "هنگام کنترل شدن"),
 
-        ("During service is on", "در حین سرویس روشن است"),
+        ("During service is on", "هنگامی که سرویس روشن است"),
 
-        ("Capture screen using DirectX", "DirectX تصویربرداری از صفحه نمایش با استفاده از"),
+        ("Capture screen using DirectX", "ضبط صفحه با استفاده از DirectX"),
 
         ("Back", "برگشت"),
 
-        ("Apps", "برنامه ها"),
+        ("Apps", "برنامه‌ها"),
 
         ("Volume up", "افزایش صدا"),
 
@@ -1209,29 +1207,29 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Telegram bot", "ربات تلگرام"),
 
-        ("enable-bot-tip", "اگر این ویژگی را فعال کنید، می توانید کد تائید دو مرحله ای را از ربات خود دریافت کنید. همچنین می تواند به عنوان یک اعلان اتصال عمل کند."),
+        ("enable-bot-tip", "اگر این ویژگی را فعال کنید، می‌توانید کد احراز هویت دومرحله‌ای را از ربات خود دریافت کنید. همچنین می‌تواند به‌عنوان اعلان اتصال عمل کند."),
 
-        ("enable-bot-desc", "ربات، اعلان‌های اتصال و کدهای تأیید دو مرحله‌ای را برای شما ارسال می‌کند."),
+        ("enable-bot-desc", "ربات، اعلان‌های اتصال و کدهای احراز هویت دومرحله‌ای را برای شما ارسال می‌کند."),
 
-        ("cancel-2fa-confirm-tip", "آیا مطمئن هستید که می خواهید تائید دو مرحله ای را لغو کنید؟"),
+        ("cancel-2fa-confirm-tip", "آیا مطمئن هستید که می‌خواهید احراز هویت دومرحله‌ای را لغو کنید؟"),
 
-        ("cancel-bot-confirm-tip", "آیا مطمئن هستید که می خواهید ربات تلگرام را لغو کنید؟"),
+        ("cancel-bot-confirm-tip", "آیا مطمئن هستید که می‌خواهید ربات تلگرام را لغو کنید؟"),
 
-        ("About RustDesk", "MyDesk درباره"),
+        ("About RustDesk", "درباره MyDesk"),
 
-        ("Send clipboard keystrokes", "ارسال کلیدهای کلیپ بورد"),
+        ("Send clipboard keystrokes", "ارسال کلیدهای کلیپ‌بورد"),
 
-        ("network_error_tip", "لطفاً اتصال شبکه خود را بررسی کنید، سپس روی امتحان مجدد کلیک کنید."),
+        ("network_error_tip", "لطفاً اتصال شبکه خود را بررسی کنید، سپس روی تلاش مجدد کلیک کنید."),
 
         ("Unlock with PIN", "باز کردن قفل با پین"),
 
-        ("Requires at least {} characters", "حداقل به {} کاراکترها نیاز دارد"),
+        ("Requires at least {} characters", "حداقل به {} کاراکتر نیاز است"),
 
         ("Wrong PIN", "پین اشتباه است"),
 
-        ("Set PIN", "پین را تنظیم کنید"),
+        ("Set PIN", "تنظیم پین"),
 
-        ("Enable trusted devices", "فعال کردن دستگاه‌های مورد اعتماد"),
+        ("Enable trusted devices", "فعال‌سازی دستگاه‌های مورد اعتماد"),
 
         ("Manage trusted devices", "مدیریت دستگاه‌های مورد اعتماد"),
 
@@ -1241,7 +1239,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("enable-trusted-devices-tip", "فعال کردن این گزینه فقط به دستگاه‌های مورد اعتماد اجازه اتصال می‌دهد"),
 
-        ("Parent directory", "فهرست والد"),
+        ("Parent directory", "پوشه والد"),
 
         ("Resume", "ادامه دادن"),
 
@@ -1253,7 +1251,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Authenticate", "احراز هویت"),
 
-        ("web_id_input_tip", "لطفاً شناسه وب را وارد کنید"),
+        ("web_id_input_tip", "می‌توانید شناسه‌ای در همان سرور وارد کنید؛ دسترسی مستقیم IP در کلاینت وب پشتیبانی نمی‌شود.\nاگر می‌خواهید به دستگاهی در سرور دیگری دسترسی پیدا کنید، آدرس سرور را اضافه کنید (<id>@<server_address>?key=<key_value>)، برای مثال:\n9123456234@192.168.16.1:31117?key=5Qbwsde3unUcJBtrx9ZkvUmwFNoExHzpryHuPUdqlWM=."),
 
         ("Download", "دانلود"),
 
@@ -1261,9 +1259,9 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Upload files", "آپلود فایل‌ها"),
 
-        ("Clipboard is synchronized", "کلیپ‌بورد همگام‌سازی شده است"),
+        ("Clipboard is synchronized", "کلیپ‌بورد همگام‌سازی شد"),
 
-        ("Update client clipboard", "به‌روزرسانی کلیپ‌بورد کاربر"),
+        ("Update client clipboard", "به‌روزرسانی کلیپ‌بورد کلاینت"),
 
         ("Untagged", "بدون برچسب"),
 
@@ -1273,7 +1271,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("upgrade_remote_mydesk_client_to_{}_tip", "لطفاً MyDesk را به نسخه {} یا جدیدتر در سمت راه دور ارتقا دهید"),
 
-        ("d3d_render_tip", "فعال کردن رندر D3D برای عملکرد بهتر"),
+        ("d3d_render_tip", "فعال‌سازی رندر D3D برای عملکرد بهتر"),
 
         ("Use D3D rendering", "استفاده از رندر D3D"),
 
@@ -1287,7 +1285,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("printer-{}-ready-tip", "چاپگر {} آماده است"),
 
-        ("Install {} Printer", "{} نصب چاپگر"),
+        ("Install {} Printer", "نصب چاپگر {}"),
 
         ("Outgoing Print Jobs", "وظایف چاپ خروجی"),
 
@@ -1301,51 +1299,51 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("auto-print-tip", "چاپ خودکار فعال است"),
 
-        ("print-incoming-job-confirm-tip", "آیا می‌خواهید کار چاپ ورودی را تأیید کنید"),
+        ("print-incoming-job-confirm-tip", "آیا می‌خواهید وظیفه چاپ ورودی را تأیید کنید؟"),
 
         ("remote-printing-disallowed-tile-tip", "چاپ از راه دور غیرفعال است"),
 
         ("remote-printing-disallowed-text-tip", "شما مجوز لازم برای چاپ از راه دور را ندارید"),
 
-        ("save-settings-tip", "تنظیمات را ذخیره کنید"),
+        ("save-settings-tip", "ذخیره تنظیمات"),
 
         ("dont-show-again-tip", "دیگر نمایش داده نشود"),
 
-        ("Take screenshot", "عکس گرفتن"),
+        ("Take screenshot", "گرفتن اسکرین‌شات"),
 
-        ("Taking screenshot", "در حال گرفتن عکس"),
+        ("Taking screenshot", "در حال گرفتن اسکرین‌شات"),
 
-        ("screenshot-merged-screen-not-supported-tip", "ادغام تصاویر از نمایشگرهای متعدد در حال حاضر پشتیبانی نمی شود. لطفاً به یک صفحه نمایش واحد تغییر دهید و دوباره امتحان کنید."),
+        ("screenshot-merged-screen-not-supported-tip", "ادغام اسکرین‌شات از نمایشگرهای متعدد در حال حاضر پشتیبانی نمی‌شود. لطفاً به یک نمایشگر واحد تغییر دهید و دوباره تلاش کنید."),
 
-        ("screenshot-action-tip", "لطفاً نحوه ادامه با تصویر را انتخاب کنید."),
+        ("screenshot-action-tip", "لطفاً نحوه ادامه با اسکرین‌شات را انتخاب کنید."),
 
-        ("Save as", "ذخیره به عنوان"),
+        ("Save as", "ذخیره به‌عنوان"),
 
-        ("Export", "خروجی گرفتن"),
+        ("Export", "برون‌ریزی"),
 
-        ("Export Logs", "خروجی گرفتن از گزارش‌ها"),
+        ("Export Logs", "برون‌ریزی گزارش‌ها"),
 
         ("Import Folder", "درون‌ریزی پوشه"),
 
-        ("Copy to clipboard", "در کلیپ بورد کپی کنید"),
+        ("Copy to clipboard", "کپی در کلیپ‌بورد"),
 
-        ("Enable remote printer", "چاپگر از راه دور را فعال کنید"),
+        ("Enable remote printer", "فعال‌سازی چاپگر راه دور"),
 
-        ("Downloading {}", "بارگیری {}"),
+        ("Downloading {}", "در حال دانلود {}"),
 
-        ("{} Update", "{} به روز رسانی"),
+        ("{} Update", "به‌روزرسانی {}"),
 
-        ("{}-to-update-tip", "{} اکنون بسته خواهد شد و نسخه جدید را نصب می کند."),
+        ("{}-to-update-tip", "{} اکنون بسته می‌شود و نسخه جدید را نصب می‌کند."),
 
-        ("download-new-version-failed-tip", "بارگیری ناموفق بود. می توانید دوباره امتحان کنید یا روی دکمه 'بارگیری' کلیک کنید تا از صفحه انتشار بارگیری کنید و به صورت دستی ارتقا دهید."),
+        ("download-new-version-failed-tip", "دانلود ناموفق بود. می‌توانید دوباره تلاش کنید یا روی دکمه «دانلود» کلیک کنید تا از صفحه انتشار دانلود کرده و به‌صورت دستی ارتقا دهید."),
 
-        ("Auto update", "بروزرسانی خودکار"),
+        ("Auto update", "به‌روزرسانی خودکار"),
 
-        ("update-failed-check-msi-tip", "بررسی روش نصب انجام نشد. لطفاً برای بارگیری از صفحه انتشار ، روی دکمه 'بارگیری' کلیک کنید و به صورت دستی ارتقا دهید."),
+        ("update-failed-check-msi-tip", "بررسی روش نصب انجام نشد. لطفاً برای دانلود از صفحه انتشار، روی دکمه «دانلود» کلیک کنید و به‌صورت دستی ارتقا دهید."),
 
-        ("websocket_tip", "فقط اتصالات رله پشتیبانی می شوند ، WebSocket هنگام استفاده از ."),
+        ("websocket_tip", "هنگام استفاده از WebSocket، فقط اتصالات رله پشتیبانی می‌شوند."),
 
-        ("Use WebSocket", "استفاده کنید WebSocket از"),
+        ("Use WebSocket", "استفاده از WebSocket"),
 
         ("Trackpad speed", "سرعت ترک‌پد"),
 
@@ -1353,17 +1351,17 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Numeric one-time password", "رمز عبور یک‌بار مصرف عددی"),
 
-        ("Enable IPv6 P2P connection", "فعال‌سازی اتصال همتا‌به‌همتای IPv6"),
+        ("Enable IPv6 P2P connection", "فعال‌سازی اتصال نظیر‌به‌نظیر IPv6"),
 
-        ("Enable UDP hole punching", "فعال‌سازی تکنیک UDP hole punching"),
+        ("Enable UDP hole punching", "فعال‌سازی UDP hole punching"),
 
         ("View camera", "نمایش دوربین"),
 
-        ("Enable camera", "فعال کردن دوربین"),
+        ("Enable camera", "فعال‌سازی دوربین"),
 
         ("No cameras", "هیچ دوربینی یافت نشد"),
 
-        ("view_camera_unsupported_tip", "ریموت از مشاهده دوربین پشتیبانی نمی کند."),
+        ("view_camera_unsupported_tip", "دستگاه راه دور از نمایش دوربین پشتیبانی نمی‌کند."),
 
         ("Terminal", "ترمینال"),
 
@@ -1371,11 +1369,11 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("New tab", "زبانه جدید"),
 
-        ("Keep terminal sessions on disconnect", "حفظ جلسات ترمینال پس از قطع اتصال"),
+        ("Keep terminal sessions on disconnect", "حفظ نشست‌های ترمینال پس از قطع اتصال"),
 
-        ("Terminal (Run as administrator)", "ترمینال (اجرای به عنوان مدیر سیستم)"),
+        ("Terminal (Run as administrator)", "ترمینال (اجرا به‌عنوان مدیر سیستم)"),
 
-        ("terminal-admin-login-tip", "برای اجرای ترمینال به‌ عنوان مدیر، نام کاربری و رمز عبور مدیر سیستم ریموت را وارد کنید."),
+        ("terminal-admin-login-tip", "برای اجرای ترمینال به‌عنوان مدیر سیستم، نام کاربری و رمز عبور مدیر سیستم راه دور را وارد کنید."),
 
         ("Failed to get user token.", "دریافت توکن کاربر ناموفق بود."),
 
@@ -1385,9 +1383,9 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Failed to check if the user is an administrator.", "بررسی وضعیت مدیر سیستم برای کاربر ناموفق بود."),
 
-        ("Supported only in the installed version.", "فقط در نسخه نصب‌ شده پشتیبانی می‌شود."),
+        ("Supported only in the installed version.", "فقط در نسخه نصب‌شده پشتیبانی می‌شود."),
 
-        ("elevation_username_tip", "وارد نمایید domain\\username یا username نام کاربری را به صورت"),
+        ("elevation_username_tip", "نام کاربری را به‌صورت username یا domain\\username وارد کنید"),
 
         ("Preparing for installation ...", "در حال آماده‌سازی برای نصب..."),
 
@@ -1415,27 +1413,27 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Alias", "نام مستعار"),
 
-        ("ScrollEdge", "ScrollEdge"),
+        ("ScrollEdge", "اسکرول لبه‌ای"),
 
-        ("Allow insecure TLS fallback", "استفاده از TLS غیر امن در ارتباط"),
+        ("Allow insecure TLS fallback", "اجازه بازگشت به TLS ناامن"),
 
-        ("allow-insecure-tls-fallback-tip", "به‌طور پیش‌فرض، MyDesk گواهی سرور را برای پروتکل‌ها با استفاده از TLS تأیید می‌کند.\nبا فعال بودن این گزینه، MyDesk دوباره مرحله تأیید را رد می‌کند و در صورت عدم موفقیت تأیید ادامه می‌دهد."),
+        ("allow-insecure-tls-fallback-tip", "به‌طور پیش‌فرض، MyDesk گواهی سرور را برای پروتکل‌های مبتنی بر TLS تأیید می‌کند.\nبا فعال بودن این گزینه، MyDesk در صورت ناموفق بودن تأیید، از مرحله تأیید عبور کرده و ادامه می‌دهد."),
 
-        ("Disable UDP", "UDP غیر فعال کردن"),
+        ("Disable UDP", "غیرفعال‌سازی UDP"),
 
-        ("disable-udp-tip", "کنترل می کند که آیا فقط از TCP استفاده شود یا خیر.\nوقتی این گزینه فعال باشد، MyDesk دیگر از UDP 31116 استفاده نمی کند، به جای آن از TCP 31116 استفاده می شود."),
+        ("disable-udp-tip", "کنترل می‌کند که آیا فقط از TCP استفاده شود یا خیر.\nوقتی این گزینه فعال باشد، MyDesk دیگر از UDP 31116 استفاده نمی‌کند و به‌جای آن از TCP 31116 استفاده می‌شود."),
 
         ("server-oss-not-support-tip", "توجه: سرور MyDesk OSS این ویژگی را ندارد."),
 
         ("input note here", "یادداشت را اینجا وارد کنید"),
 
-        ("note-at-conn-end-tip", "در پایان اتصال، یادداشت بخواهید"),
+        ("note-at-conn-end-tip", "درخواست یادداشت در پایان اتصال"),
 
         ("Show terminal extra keys", "نمایش کلیدهای اضافی ترمینال"),
 
         ("Relative mouse mode", "حالت ماوس نسبی"),
 
-        ("rel-mouse-not-supported-peer-tip", "حالت ماوس نسبی توسط همتای متصل‌شده پشتیبانی نمی‌شود."),
+        ("rel-mouse-not-supported-peer-tip", "حالت ماوس نسبی توسط میزبانی متصل‌شده پشتیبانی نمی‌شود."),
 
         ("rel-mouse-not-ready-tip", "حالت ماوس نسبی هنوز آماده نیست. لطفاً دوباره تلاش کنید."),
 
@@ -1443,13 +1441,13 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("rel-mouse-exit-{}-tip", "برای خروج {} را فشار دهید."),
 
-        ("rel-mouse-permission-lost-tip", "مجوز صفحه کلید لغو شد. حالت ماوس نسبی غیرفعال شد."),
+        ("rel-mouse-permission-lost-tip", "مجوز صفحه‌کلید لغو شد. حالت ماوس نسبی غیرفعال شد."),
 
         ("Changelog", "تغییرات نسخه"),
 
-        ("keep-awake-during-outgoing-sessions-label", "نگه داشتن صفحه در حالت بیدار در طول جلسات خروجی"),
+        ("keep-awake-during-outgoing-sessions-label", "بیدار نگه داشتن سیستم در طول نشست‌های خروجی"),
 
-        ("keep-awake-during-incoming-sessions-label", "نگه داشتن صفحه در حالت بیدار در طول جلسات ورودی"),
+        ("keep-awake-during-incoming-sessions-label", "بیدار نگه داشتن سیستم در طول نشست‌های ورودی"),
 
         ("Continue with {}", "ادامه با {}"),
 
@@ -1461,7 +1459,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Enable privacy mode", "فعال‌سازی حالت حریم خصوصی"),
 
-        ("allow-remote-toolbar-docking-any-edge", "اجازه اتصال نوار ابزار از راه دور به هر لبه پنجره"),
+        ("allow-remote-toolbar-docking-any-edge", "اجازه چسباندن نوار ابزار راه دور به هر لبه پنجره"),
 
         ("API Token", "توکن API"),
 
@@ -1475,17 +1473,17 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Unknown response.", "پاسخ ناشناخته."),
 
-        ("wayland-keyboard-input-disabled-tip", "اجازه ورودی صفحه کلید داده شود؟"),
+        ("wayland-keyboard-input-disabled-tip", "اجازه ورودی صفحه‌کلید داده شود؟"),
 
-        ("wayland-keyboard-input-consent-tip", "آنچه روی این رایانه از راه دور تایپ می‌کنید (از جمله رمزهای عبور) ممکن است توسط سایر برنامه‌های روی آن خوانده شود."),
+        ("wayland-keyboard-input-consent-tip", "آنچه روی این رایانه راه دور تایپ می‌کنید (از جمله رمزهای عبور) ممکن است توسط سایر برنامه‌های روی آن خوانده شود."),
 
         ("wayland-keyboard-input-applies-to-tip", "این انتخاب برای موارد زیر اعمال می‌شود:"),
 
-        ("wayland-soft-keyboard-input-label", "ورودی صفحه کلید نرم‌افزاری"),
+        ("wayland-soft-keyboard-input-label", "ورودی صفحه‌کلید نرم‌افزاری"),
 
-        ("wayland-keyboard-input-reset-choice-tip", "بازنشانی انتخاب ورودی صفحه کلید"),
+        ("wayland-keyboard-input-reset-choice-tip", "بازنشانی انتخاب ورودی صفحه‌کلید"),
 
-        ("remember-wayland-keyboard-choice-tip", "برای این رایانه از راه دور دوباره نپرس"),
+        ("remember-wayland-keyboard-choice-tip", "برای این رایانه راه دور دوباره نپرس"),
 
         ("Why this happens", "چرا این اتفاق می‌افتد"),
 
@@ -1501,27 +1499,27 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("conn-e2ee-unavailable-tip", "رمزنگاری سرتاسری قابل تأیید نیست.\nدستگاه راه دور ممکن است هنوز در حال آماده‌سازی باشد. بعداً دوباره تلاش کنید.\nاگر این مشکل ادامه داشت، سرور ممکن است نامطمئن باشد.\nبا این حال ادامه می‌دهید؟"),
 
-        ("ID whitelisting", "لیست شناسه های مجاز"),
+        ("ID whitelisting", "لیست شناسه‌های مجاز"),
 
-        ("Use ID whitelisting", "استفاده از لیست شناسه های مجاز"),
+        ("Use ID whitelisting", "استفاده از لیست شناسه‌های مجاز"),
 
-        ("id_whitelist_tip", "فقط شناسه های مجاز می توانند به این دسکتاپ متصل شوند"),
+        ("id_whitelist_tip", "فقط شناسه‌های مجاز می‌توانند به این دسکتاپ متصل شوند"),
 
-        ("id_whitelist_wildcard_tip", "نویسه های عام پشتیبانی می شوند: '*' با هر تعداد نویسه و '?' دقیقا با یک نویسه مطابقت دارد"),
+        ("id_whitelist_wildcard_tip", "کاراکترهای عام پشتیبانی می‌شوند: '*' با هر تعداد کاراکتر و '?' دقیقاً با یک کاراکتر مطابقت دارد"),
 
         ("Invalid ID", "شناسه نامعتبر است"),
 
-        ("Your ID is blocked by the peer", "شناسه شما توسط طرف مقابل مسدود شده است"),
+        ("Your ID is blocked by the peer", "شناسه شما توسط میزبان مسدود شده است"),
 
-        ("Your ip is blocked by the peer", "نشانی IP شما توسط طرف مقابل مسدود شده است"),
+        ("Your ip is blocked by the peer", "آدرس IP شما توسط میزبان مسدود شده است"),
 
-        ("id_whitelist_caveat_tip", "شناسه توسط کلاینت متصل شونده گزارش می شود. لیست مجاز سطح در معرض بودن را کاهش می دهد و جایگزین رمز عبور یا 2FA نیست"),
+        ("id_whitelist_caveat_tip", "شناسه توسط کلاینت متصل‌شونده گزارش می‌شود. لیست مجاز سطح در معرض بودن را کاهش می‌دهد و جایگزین رمز عبور یا احراز هویت دومرحله‌ای نیست."),
 
-        ("whitelist_cidr_tip", "نماد CIDR پشتیبانی می شود، برای مثال 192.168.1.0/24"),
+        ("whitelist_cidr_tip", "نماد CIDR پشتیبانی می‌شود، برای مثال 192.168.1.0/24"),
 
         ("Continue", "ادامه"),
 
-        ("Browser didn't open? Use the url below to sign in.", "مرورگر باز نشد؟ برای ورود از نشانی زیر استفاده کنید."),
+        ("Browser didn't open? Use the url below to sign in.", "مرورگر باز نشد؟ برای ورود از آدرس زیر استفاده کنید."),
 
         ("Lock canvas", "قفل کردن صفحه"),
 
@@ -1529,7 +1527,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("sync-clipboard-between-sessions-tip", "متن یا تصاویری که در یک نشست راه دور کپی می‌شوند به کلیپ‌بورد سایر نشست‌های متصل شما نیز ارسال می‌شوند."),
 
-        ("terminal-clipboard-write-tip", ""),
+        ("terminal-clipboard-write-tip", "یک برنامه در ترمینال می‌خواهد متنی را در کلیپ‌بورد این دستگاه کپی کند. در صورت اجازه، این مجوز برای برنامه‌های ترمینال در همه اتصالات اعمال می‌شود تا زمانی که آن را در تنظیمات خاموش کنید. کپی و درج دستی تحت تأثیر قرار نمی‌گیرد."),
 
         ("Allow terminal apps to copy to clipboard", ""),
 
@@ -1537,11 +1535,11 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Reuse one connection for port forwarding", "استفاده مجدد از یک اتصال برای هدایت پورت"),
 
-        ("port-forward-mux-tip", "همه اتصال‌های یک هدایت پورت از یک اتصال واحد به دستگاه مقابل عبور می‌کنند، به‌جای اتصال و ورود دوباره برای هر کدام."),
+        ("port-forward-mux-tip", "همه اتصالات یک هدایت پورت از یک اتصال واحد به میزبان عبور می‌کنند، به‌جای اتصال و ورود دوباره برای هر کدام."),
 
-        ("Enable WebRTC P2P connection", "فعال‌سازی اتصال همتا‌به‌همتای WebRTC"),
+        ("Enable WebRTC P2P connection", "فعال‌سازی اتصال نظیر‌به‌نظیر WebRTC"),
 
-        ("Enable TCP hole punching", "فعال‌سازی تکنیک TCP hole punching"),
+        ("Enable TCP hole punching", "فعال‌سازی TCP hole punching"),
 
         ("doc_mac_permission", "https://rustdesk.com/docs/en/client/mac/#enable-permissions"),
         ("doc_fix_wayland", "https://rustdesk.com/docs/en/client/linux/#x11-required"),
@@ -1549,9 +1547,9 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("The screen sharing request timed out on the remote device", "مهلت درخواست اشتراک‌گذاری صفحه در دستگاه راه دور به پایان رسید"),
 
-        ("RustDesk cannot reach the desktop session on the remote device, check that a desktop session is running and that RustDesk can use it", "MyDesk نمی‌تواند به نشست میزکار دستگاه راه دور دسترسی پیدا کند، بررسی کنید که نشست میزکار در حال اجرا باشد و MyDesk بتواند از آن استفاده کند"),
+        ("RustDesk cannot reach the desktop session on the remote device, check that a desktop session is running and that RustDesk can use it", "MyDesk نمی‌تواند به نشست دسکتاپ دستگاه راه دور دسترسی پیدا کند، بررسی کنید که نشست دسکتاپ در حال اجرا باشد و MyDesk بتواند از آن استفاده کند"),
 
-        ("The desktop portal on the remote device is missing a capability needed for screen sharing or remote control, its backend may not be installed", "درگاه میزکار در دستگاه راه دور قابلیت لازم برای اشتراک‌گذاری صفحه یا کنترل از راه دور را ندارد، شاید پیاده‌سازی آن نصب نشده باشد"),
+        ("The desktop portal on the remote device is missing a capability needed for screen sharing or remote control, its backend may not be installed", "پورتال دسکتاپ در دستگاه راه دور قابلیت لازم برای اشتراک‌گذاری صفحه یا کنترل از راه دور را ندارد، ممکن است پیاده‌سازی آن نصب نشده باشد"),
 
         ("Screen sharing was approved on the remote device, but the PipeWire connection could not be opened", "اشتراک‌گذاری صفحه در دستگاه راه دور تأیید شد، اما اتصال PipeWire باز نشد"),
 
@@ -1563,20 +1561,20 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Relay fallback delay in seconds", "تأخیر بازگشت به رله بر حسب ثانیه"),
 
-        ("relay-fallback-delay-tip", "یک اتصال رله که از قبل برقرار شده چقدر منتظر اتصال مستقیم WebRTC می ماند پیش از آنکه به جای آن استفاده شود. آن را افزایش دهید تا به اتصال مستقیم کند فرصت بیشتری داده شود؛ کاهش دهید تا در شبکه هایی که اتصال مستقیم ممکن نیست، زودتر به رله بازگردد. برای مقدار پیش فرض 2.5 ثانیه خالی بگذارید."),
+        ("relay-fallback-delay-tip", "یک اتصال رله که از قبل برقرار شده چقدر منتظر اتصال مستقیم WebRTC می‌ماند پیش از آنکه به‌جای آن استفاده شود. آن را افزایش دهید تا به اتصال مستقیم کُند فرصت بیشتری داده شود؛ کاهش دهید تا در شبکه‌هایی که اتصال مستقیم ممکن نیست، زودتر به رله بازگردد. برای مقدار پیش‌فرض 2.5 ثانیه خالی بگذارید."),
 
         ("To start a voice call, enable \"Audio capture\" on the \"Share screen\" page.", ""),
-        ("Keyboard shortcuts", ""),
+        ("Keyboard shortcuts", "میانبرهای صفحه‌کلید"),
 
         ("Configure shortcuts...", ""),
 
-        ("Enable keyboard shortcuts in remote session", ""),
+        ("Enable keyboard shortcuts in remote session", "فعال‌سازی میانبرهای صفحه‌کلید در نشست راه دور"),
 
-        ("shortcut-page-description", ""),
+        ("shortcut-page-description", "میانبرهای صفحه‌کلید را برای کارهای رایج در نشست راه دور تنظیم کنید."),
 
-        ("shortcut-passthrough-tip", ""),
+        ("shortcut-passthrough-tip", "با فعال بودن ارسال مستقیم، میانبرهای فعال‌شده به‌جای دستگاه محلی به دستگاه راه دور ارسال می‌شوند."),
 
-        ("Pass-through to remote", ""),
+        ("Pass-through to remote", "ارسال مستقیم به دستگاه راه دور"),
 
         ("Reset to defaults", ""),
 
@@ -1584,9 +1582,9 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Monitor", ""),
 
-        ("Keyboard", ""),
+        ("Keyboard", "صفحه‌کلید"),
 
-        ("Toggle fullscreen", ""),
+        ("Toggle fullscreen", "تغییر حالت تمام‌صفحه"),
 
         ("Switch to next display", ""),
 
@@ -1596,7 +1594,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Switch to previous tab", ""),
 
-        ("Toggle session recording", ""),
+        ("Toggle session recording", "تغییر وضعیت ضبط نشست"),
 
         ("Close tab", ""),
 
@@ -1622,7 +1620,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Valid", ""),
 
-        ("shortcut-mobile-physical-keyboard-tip", ""),
+        ("shortcut-mobile-physical-keyboard-tip", "این میانبرها فقط با صفحه‌کلید فیزیکی متصل کار می‌کنند."),
 
         ("shortcut-key-not-supported", ""),
 
@@ -1631,7 +1629,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("Off", ""),
 
         ("api_server_connection_tip", "سرور سفارشی شما از HTTP رمزنگاری‌نشده استفاده می‌کند. برای فعال‌سازی HTTPS با مدیر سیستم خود تماس بگیرید."),
-        ("api_server_empty_tip", "وقتی «API سرور» خالی باشد، سرور سفارشی شما به‌طور پیش‌فرض از HTTP استفاده می‌کند. برای فعال‌سازی HTTPS با مدیر سیستم خود تماس بگیرید."),
+        ("api_server_empty_tip", "وقتی «سرور API» خالی باشد، سرور سفارشی شما به‌طور پیش‌فرض از HTTP استفاده می‌کند. برای فعال‌سازی HTTPS با مدیر سیستم خود تماس بگیرید."),
         ("RustDesk storage", "حافظه MyDesk"),
         ("Other folders", "پوشه‌های دیگر"),
         ("Choose which folder remote devices can access.", "انتخاب کنید دستگاه‌های راه دور به کدام پوشه دسترسی داشته باشند."),
@@ -1643,6 +1641,16 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("install-directory-not-empty-tip", "پوشه انتخاب‌شده خالی نیست. نصب ممکن است داده‌های موجود را حذف کند. بهتر است پوشه دیگری انتخاب کنید."),
         ("Request approval", "درخواست تأیید"),
         ("Forever", "برای همیشه"),
+
+        ("username-login-disabled-oidc-unavailable", "ورود با نام کاربری و گذرواژه غیرفعال است و هیچ روش ورود OIDC در دسترس نیست."),
+
+        ("Use DRM screen capture", "استفاده از ضبط صفحه با DRM"),
+
+        ("drm-capture-tip", "صفحه را از طریق سرویس MyDesk مستقیماً از کارت گرافیک ضبط می‌کند، بدون درخواست اشتراک‌گذاری صفحه Wayland، حتی در صفحه ورود. ممکن است روی همه دستگاه‌ها کار نکند؛ اگر اتصال‌ها هنوز اجازه اشتراک‌گذاری صفحه می‌خواهند، این گزینه را خاموش کنید یا از X11 استفاده کنید. تغییر این گزینه نشست‌های فعلی را قطع می‌کند."),
+
+        ("wayland-drm-tip", "برای دسترسی بدون مراقبت در Wayland، ضبط صفحه با DRM را امتحان کنید و اگر کار نکرد از X11 استفاده کنید."),
+
+        ("login-wayland-drm-tip", "برای دسترسی به صفحه ورود Wayland، ضبط صفحه با DRM را امتحان کنید یا آن را به X11 تغییر دهید."),
     ].iter().cloned().collect();
 }
 

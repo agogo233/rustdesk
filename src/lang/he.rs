@@ -1067,8 +1067,6 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Use all my displays for the remote session", "השתמש בכל המסכים שלי עבור ההפעלה המרוחקת"),
 
-        ("selinux_tip", "SELinux מופעל במכשיר שלך, מה שעלול למנוע מ-MyDesk לפעול כראוי כצד הנשלט."),
-
         ("Change view", "שנה תצוגה"),
 
         ("Big tiles", "אריחים גדולים"),
@@ -1643,6 +1641,16 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("install-directory-not-empty-tip", "התיקייה שנבחרה אינה ריקה. ההתקנה עלולה למחוק נתונים קיימים. מומלץ לבחור תיקייה אחרת."),
         ("Request approval", "בקש אישור"),
         ("Forever", "לתמיד"),
+
+        ("username-login-disabled-oidc-unavailable", "כניסה באמצעות שם משתמש וסיסמה מושבתת, ואין שיטות כניסה זמינות באמצעות OIDC."),
+
+        ("Use DRM screen capture", "שימוש בלכידת מסך באמצעות DRM"),
+
+        ("drm-capture-tip", "לוכד את המסך ישירות מכרטיס המסך דרך שירות MyDesk, ללא בקשת שיתוף המסך של Wayland, גם במסך ההתחברות. ייתכן שלא יעבוד בכל מכשיר; אם חיבורים עדיין מבקשים לשתף את המסך, כבה אפשרות זו או השתמש ב-X11. שינוי ההגדרה מנתק את ההפעלות הנוכחיות."),
+
+        ("wayland-drm-tip", "לגישה ללא ליווי ב-Wayland, נסה לכידת מסך באמצעות DRM, או השתמש ב-X11 אם זה לא עובד."),
+
+        ("login-wayland-drm-tip", "לגישה למסך ההתחברות של Wayland, נסה לכידת מסך באמצעות DRM או העבר אותו ל-X11."),
     ].iter().cloned().collect();
 }
 

@@ -534,7 +534,6 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("Open in new window", ""),
         ("Show displays as individual windows", ""),
         ("Use all my displays for the remote session", ""),
-        ("selinux_tip", ""),
         ("Change view", ""),
         ("Big tiles", ""),
         ("Small tiles", ""),
@@ -830,5 +829,10 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("install-directory-not-empty-tip", ""),
         ("Request approval", ""),
         ("Forever", ""),
+        ("username-login-disabled-oidc-unavailable", ""),
+        ("Use DRM screen capture", ""),
+        ("drm-capture-tip", ""),
+        ("wayland-drm-tip", ""),
+        ("login-wayland-drm-tip", ""),
     ].iter().cloned().collect();
 }

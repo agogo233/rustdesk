@@ -1067,8 +1067,6 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Use all my displays for the remote session", "Utilitza tots els meus monitors per a la connexió remota"),
 
-        ("selinux_tip", "SELinux està activat al vostre dispositiu, la qual cosa evita que el MyDesk funcioni correctament com a equip controlable."),
-
         ("Change view", "Canvia la vista"),
 
         ("Big tiles", "Mosaic gran"),
@@ -1643,5 +1641,15 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("install-directory-not-empty-tip", "La carpeta seleccionada no és buida. La instal·lació pot suprimir les dades existents. Considereu triar una altra carpeta."),
         ("Request approval", "Sol·licita aprovació"),
         ("Forever", "Per sempre"),
+
+        ("username-login-disabled-oidc-unavailable", "L'inici de sessió amb nom d'usuari i contrasenya està desactivat i no hi ha cap mètode d'inici de sessió OIDC disponible."),
+
+        ("Use DRM screen capture", "Usa la captura de pantalla DRM"),
+
+        ("drm-capture-tip", "Captura la pantalla directament de la targeta gràfica a través del servei de MyDesk, sense la sol·licitud de compartir pantalla de Wayland, també a la pantalla d'inici de sessió. Pot no funcionar en tots els dispositius; si les connexions encara demanen compartir la pantalla, desactiveu-ho o useu X11. Canviar-ho desconnecta les sessions actuals."),
+
+        ("wayland-drm-tip", "Per a l'accés desatès a Wayland, proveu la captura de pantalla DRM, o useu X11 si no funciona."),
+
+        ("login-wayland-drm-tip", "Per accedir a la pantalla d'inici de sessió de Wayland, proveu la captura DRM o canvieu-la a X11."),
     ].iter().cloned().collect();
 }

@@ -1067,8 +1067,6 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Use all my displays for the remote session", "Použiť všetky moje obrazovky pre vzdialenú reláciu"),
 
-        ("selinux_tip", "Na vašom zariadení je povolený SELinux, čo môže brániť správnemu spusteniu MyDesku ako spravovanej strany."),
-
         ("Change view", "Zmeniť pohľad"),
 
         ("Big tiles", "Veľké dlaždice"),
@@ -1643,6 +1641,16 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("install-directory-not-empty-tip", "Vybraný priečinok nie je prázdny. Inštalácia môže odstrániť existujúce údaje. Zvážte výber iného priečinka."),
         ("Request approval", "Požiadať o schválenie"),
         ("Forever", "Navždy"),
+
+        ("username-login-disabled-oidc-unavailable", "Prihlásenie používateľským menom a heslom je zakázané a nie sú k dispozícii žiadne spôsoby prihlásenia cez OIDC."),
+
+        ("Use DRM screen capture", "Použiť snímanie obrazovky cez DRM"),
+
+        ("drm-capture-tip", "Sníma obrazovku priamo z grafickej karty prostredníctvom služby MyDesk, bez výzvy Waylandu na zdieľanie obrazovky, a to aj na prihlasovacej obrazovke. Nemusí fungovať na všetkých zariadeniach; ak pripojenia stále žiadajú o zdieľanie obrazovky, vypnite túto voľbu alebo použite X11. Zmena tejto voľby odpojí aktuálne relácie."),
+
+        ("wayland-drm-tip", "Pre bezobslužný prístup vo Waylande skúste snímanie obrazovky cez DRM, alebo použite X11, ak nefunguje."),
+
+        ("login-wayland-drm-tip", "Pre prístup k prihlasovacej obrazovke Waylandu skúste snímanie cez DRM alebo ju prepnite na X11."),
     ].iter().cloned().collect();
 }
 

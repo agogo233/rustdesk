@@ -1067,8 +1067,6 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Use all my displays for the remote session", "Kasuta kõiki minu kuvarid kaugseansi jaoks"),
 
-        ("selinux_tip", "SELinux on su seadmes lubatud, mis võib MyDeskil takistada juhitud poolel toimimist."),
-
         ("Change view", "Muuda vaadet"),
 
         ("Big tiles", "Suured plaadid"),
@@ -1643,6 +1641,16 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("install-directory-not-empty-tip", "Valitud kaust ei ole tühi. Paigaldamine võib olemasolevad andmed kustutada. Kaalu teise kausta valimist."),
         ("Request approval", "Küsi heakskiitu"),
         ("Forever", "Igavesti"),
+
+        ("username-login-disabled-oidc-unavailable", "Kasutajanime ja parooliga sisselogimine on keelatud ja ühtegi OIDC sisselogimisviisi pole saadaval."),
+
+        ("Use DRM screen capture", "Kasuta DRM-ekraanihõivet"),
+
+        ("drm-capture-tip", "Hõivab ekraani MyDeski teenuse kaudu otse graafikakaardilt, ilma Waylandi ekraani jagamise päringuta, ka sisselogimisekraanil. Ei pruugi töötada igas seadmes; kui ühendused küsivad endiselt ekraani jagamist, lülita see välja või kasuta X11. Muutmine katkestab praegused seansid."),
+
+        ("wayland-drm-tip", "Järelvalveta juurdepääsuks Waylandis proovi DRM-ekraanihõivet või kasuta X11, kui see ei tööta."),
+
+        ("login-wayland-drm-tip", "Waylandi sisselogimisekraanile juurdepääsuks proovi DRM-ekraanihõivet või lülita see X11 peale."),
     ].iter().cloned().collect();
 }
 

@@ -88,6 +88,14 @@ pub fn major_version() -> u32 {
     unsafe { majorVersion() }
 }
 
+pub(crate) fn is_host_unreachable_error(err: &hbb_common::anyhow::Error) -> bool {
+    err.chain().any(|cause| {
+        cause
+            .downcast_ref::<std::io::Error>()
+            .is_some_and(|err| err.raw_os_error() == Some(hbb_common::libc::EHOSTUNREACH))
+    })
+}
+
 pub fn is_process_trusted(prompt: bool) -> bool {
     autoreleasepool(|| unsafe_is_process_trusted(prompt))
 }
@@ -301,6 +309,7 @@ fn update_daemon_agent(agent_plist_file: String, update_source_dir: String, sync
         std::thread::spawn(func);
     }
 }
+
 
 fn correct_app_name(s: &str) -> String {
     let mut s = s.to_owned();
@@ -2118,5 +2127,34 @@ fn get_bundle_id() -> Option<String> {
             .to_string_lossy()
             .to_string();
         Some(bundle_id_str)
+    }
+}
+
+#[cfg(test)]
+mod network_error_tests {
+    use super::is_host_unreachable_error;
+    use hbb_common::{anyhow, libc, thiserror};
+    use std::io;
+
+    #[derive(Debug, thiserror::Error)]
+    #[error("transport error: {0}")]
+    struct TransportError(#[source] io::Error);
+
+    #[test]
+    fn host_unreachable_matches_direct_and_context_errors() {
+        for (code, expected) in [(libc::EHOSTUNREACH, true), (libc::ECONNREFUSED, false)] {
+            let err = anyhow::Error::new(io::Error::from_raw_os_error(code));
+            assert_eq!(is_host_unreachable_error(&err), expected);
+            assert_eq!(is_host_unreachable_error(&err.context("connect")), expected);
+        }
+    }
+
+    #[test]
+    fn host_unreachable_matches_nested_sources() {
+        for (code, expected) in [(libc::EHOSTUNREACH, true), (libc::ECONNREFUSED, false)] {
+            let err = anyhow::Error::new(TransportError(io::Error::from_raw_os_error(code)))
+                .context("connect");
+            assert_eq!(is_host_unreachable_error(&err), expected);
+        }
     }
 }

@@ -1067,8 +1067,6 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Use all my displays for the remote session", "Erabili nire pantaila guztiak urruneko saiorako"),
 
-        ("selinux_tip", "SELinux zure gailuan gaituta dago. Honek MyDesk kontrolatutako alde gisa dagoenean behar bezala ez exekutatzea ekarri dezake."),
-
         ("Change view", "Aldatu ikuspegia"),
 
         ("Big tiles", "Baldosa handiak"),
@@ -1643,6 +1641,16 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("install-directory-not-empty-tip", "Hautatutako karpeta ez dago hutsik. Instalazioak lehendik dauden datuak ezaba ditzake. Beste karpeta bat aukeratzea gomendatzen da."),
         ("Request approval", "Eskatu onespena"),
         ("Forever", "Betiko"),
+
+        ("username-login-disabled-oidc-unavailable", "Erabiltzaile-izenarekin eta pasahitzarekin saioa hastea desgaituta dago, eta ez dago OIDC saioa hasteko metodorik erabilgarri."),
+
+        ("Use DRM screen capture", "Erabili DRM pantaila-kaptura"),
+
+        ("drm-capture-tip", "Pantaila zuzenean txartel grafikotik kapturatzen du MyDesk zerbitzuaren bidez, Wayland-en pantaila partekatzeko eskaerarik gabe, saio-hasierako pantailan ere bai. Baliteke gailu guztietan ez ibiltzea; konexioek pantaila partekatzeko eskatzen jarraitzen badute, desaktibatu hau edo erabili X11. Aldatzeak uneko saioak deskonektatzen ditu."),
+
+        ("wayland-drm-tip", "Wayland-en arretarik gabeko sarrerarako, probatu DRM pantaila-kaptura, edo erabili X11 ez badabil."),
+
+        ("login-wayland-drm-tip", "Wayland-en saio-hasierako pantailara sartzeko, probatu DRM pantaila-kaptura edo aldatu X11-ra."),
     ].iter().cloned().collect();
 }
 

@@ -42,6 +42,8 @@ lazy_static::lazy_static! {
 }
 
 fn initialize(app_dir: &str, custom_client_config: &str) {
+    // On mobile `global_init` below comes after the custom client's signature is verified.
+    crate::common::init_sodium();
     flutter::async_tasks::start_flutter_async_runner();
     // `APP_DIR` is set in `main_get_data_dir_ios()` on iOS.
     #[cfg(not(target_os = "ios"))]
@@ -2624,17 +2626,6 @@ pub fn is_support_multi_ui_session(version: String) -> SyncReturn<bool> {
     SyncReturn(crate::common::is_support_multi_ui_session(&version))
 }
 
-pub fn is_selinux_enforcing() -> SyncReturn<bool> {
-    #[cfg(target_os = "linux")]
-    {
-        SyncReturn(crate::platform::linux::is_selinux_enforcing())
-    }
-    #[cfg(not(target_os = "linux"))]
-    {
-        SyncReturn(false)
-    }
-}
-
 pub fn main_default_privacy_mode_impl() -> SyncReturn<String> {
     SyncReturn(crate::privacy_mode::DEFAULT_PRIVACY_MODE_IMPL.to_owned())
 }
@@ -2787,6 +2778,12 @@ pub fn main_get_common(key: String) -> String {
         #[cfg(target_os = "windows")]
         return crate::platform::is_win_10_or_greater().to_string();
         #[cfg(not(target_os = "windows"))]
+        return false.to_string();
+    } else if key == "is-drm-capture-supported" {
+        // The bundled libdrmtap may not load (a glibc older than its build): then DRM cannot work.
+        #[cfg(all(target_os = "linux", feature = "drm"))]
+        return scrap::drmtap_dl::get().is_some().to_string();
+        #[cfg(not(all(target_os = "linux", feature = "drm")))]
         return false.to_string();
     } else if key == "transfer-job-id" {
         return base::fs::get_next_job_id().to_string();
@@ -3102,6 +3099,8 @@ pub mod server_side {
         custom_client_config: JString,
     ) {
         log::debug!("startServer from jvm");
+        // Started at boot, the service runs without the Flutter side and its `initialize`.
+        crate::common::init_sodium();
         let mut env = env;
         if let Ok(app_dir) = env.get_string(&app_dir) {
             *config::APP_DIR.write().unwrap() = app_dir.into();

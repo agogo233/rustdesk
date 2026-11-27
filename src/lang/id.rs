@@ -1067,8 +1067,6 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Use all my displays for the remote session", "Gunakan semua layar untuk sesi remote"),
 
-        ("selinux_tip", "Pada perangkat Anda, SELinux sedang aktif, yang mana itu dapat mencegah MyDesk berfungsi dengan baik sebagai sisi yang dikontrol."),
-
         ("Change view", "Sesuaikan tampilan"),
 
         ("Big tiles", "Kotak besar"),
@@ -1643,6 +1641,16 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("install-directory-not-empty-tip", "Folder yang dipilih tidak kosong. Instalasi dapat menghapus data yang ada. Pertimbangkan untuk memilih folder lain."),
         ("Request approval", "Minta persetujuan"),
         ("Forever", "Selamanya"),
+
+        ("username-login-disabled-oidc-unavailable", "Login dengan nama pengguna dan kata sandi dinonaktifkan dan tidak ada metode login OIDC yang tersedia."),
+
+        ("Use DRM screen capture", "Gunakan tangkapan layar DRM"),
+
+        ("drm-capture-tip", "Menangkap layar langsung dari kartu grafis melalui layanan MyDesk, tanpa permintaan berbagi layar Wayland, termasuk di layar login. Mungkin tidak berfungsi di semua perangkat; jika koneksi masih meminta berbagi layar, matikan opsi ini atau gunakan X11. Mengubahnya akan memutus sesi saat ini."),
+
+        ("wayland-drm-tip", "Untuk akses tanpa pengawasan di Wayland, coba tangkapan layar DRM, atau gunakan X11 jika tidak berfungsi."),
+
+        ("login-wayland-drm-tip", "Untuk mengakses layar login Wayland, coba tangkapan layar DRM atau ubah ke X11."),
     ].iter().cloned().collect();
 }
 

@@ -1067,8 +1067,6 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
 
         ("Use all my displays for the remote session", "Összes kijelző használata a távoli munkamenethez"),
 
-        ("selinux_tip", "A SELinux engedélyezve van az eszközén, ami azt okozhatja, hogy a MyDesk nem fut megfelelően, mint ellenőrzött."),
-
         ("Change view", "Nézet módosítása"),
 
         ("Big tiles", "Nagy csempék"),
@@ -1643,5 +1641,15 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("install-directory-not-empty-tip", "A kiválasztott mappa nem üres. A telepítés törölheti a meglévő adatokat. Fontolja meg egy másik mappa kiválasztását."),
         ("Request approval", "Jóváhagyás kérése"),
         ("Forever", "Örökre"),
+
+        ("username-login-disabled-oidc-unavailable", "A felhasználónévvel és jelszóval történő bejelentkezés le van tiltva, és nem érhető el OIDC bejelentkezési mód."),
+
+        ("Use DRM screen capture", "DRM-képernyőrögzítés használata"),
+
+        ("drm-capture-tip", "A MyDesk szolgáltatáson keresztül közvetlenül a videokártyáról rögzíti a képernyőt, a Wayland képernyőmegosztási kérése nélkül, a bejelentkezési képernyőn is. Nem biztos, hogy minden eszközön működik; ha a kapcsolatok továbbra is képernyőmegosztást kérnek, kapcsolja ki ezt, vagy használja az X11-et. A módosítás bontja az aktuális munkameneteket."),
+
+        ("wayland-drm-tip", "Felügyelet nélküli hozzáféréshez Waylanden próbálja ki a DRM-képernyőrögzítést, vagy használja az X11-et."),
+
+        ("login-wayland-drm-tip", "A Wayland bejelentkezési képernyőjéhez próbálja ki a DRM-képernyőrögzítést, vagy váltson X11-re."),
     ].iter().cloned().collect();
 }
