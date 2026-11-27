@@ -1,0 +1,272 @@
+diff --git a/build.py b/build.py
+index f70e1ad67..011bed494 100755
+--- a/build.py
++++ b/build.py
+@@ -936,9 +936,7 @@ def build_flutter_dmg(version, features):
+         # set minimum osx build target, now is 10.14, which is the same as the flutter xcode project
+         system2(
+             f'MACOSX_DEPLOYMENT_TARGET=10.14 cargo build --locked --features {features} --release')
+-    # copy dylib
+-    system2(
+-        "cp target/release/liblibmydesk.dylib target/release/libmydesk.dylib")
++    # copy dylib (Xcode project references liblibmydesk.dylib from target/release/)
+     os.chdir('flutter')
+     # cargo builds a single-arch dylib for the host; restrict Xcode to the same arch
+     # so the universal-by-default ARCHS_STANDARD doesn't try to link a missing slice.
+@@ -1045,18 +1043,9 @@ def main():
+             return
+         system2('cargo build --locked --release --features ' + features)
+         # system2('upx.exe target/release/mydesk.exe')
+-        system2('mv target/release/mydesk.exe target/release/MyDesk.exe')
+-        pa = os.environ.get('P')
+-        if pa:
+-            # https://certera.com/kb/tutorial-guide-for-safenet-authentication-client-for-code-signing/
+-            system2(
+-                f'signtool sign /a /v /p {pa} /debug /f .\\cert.pfx /t http://timestamp.digicert.com  '
+-                'target\\release\\mydesk.exe')
+-        else:
+-            print('Not signed')
+         os.makedirs(res_dir, exist_ok=True)
+         system2(
+-            f'cp -rf target/release/MyDesk.exe {res_dir}')
++            f'cp -rf target/release/mydesk.exe {res_dir}')
+         os.chdir('libs/portable')
+         system2('pip3 install -r requirements.txt')
+         system2(
+diff --git a/flutter/ios/Runner.xcodeproj/project.pbxproj b/flutter/ios/Runner.xcodeproj/project.pbxproj
+index baf35a17a..8b1c3a421 100644
+--- a/flutter/ios/Runner.xcodeproj/project.pbxproj
++++ b/flutter/ios/Runner.xcodeproj/project.pbxproj
+@@ -438,7 +438,7 @@
+ 					"-framework",
+ 					"\"wakelock_plus\"",
+ 				);
+-				PRODUCT_BUNDLE_IDENTIFIER = com.carriez.flutterHbb;
++				PRODUCT_BUNDLE_IDENTIFIER = com.mydesk.mydesk;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 				STRIP_STYLE = "non-global";
+ 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
+@@ -634,7 +634,7 @@
+ 					"-framework",
+ 					"\"wakelock_plus\"",
+ 				);
+-				PRODUCT_BUNDLE_IDENTIFIER = com.carriez.flutterHbb;
++				PRODUCT_BUNDLE_IDENTIFIER = com.mydesk.mydesk;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 				STRIP_STYLE = "non-global";
+ 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
+@@ -722,7 +722,7 @@
+ 					"-framework",
+ 					"\"wakelock_plus\"",
+ 				);
+-				PRODUCT_BUNDLE_IDENTIFIER = com.carriez.flutterHbb;
++				PRODUCT_BUNDLE_IDENTIFIER = com.mydesk.mydesk;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 				STRIP_STYLE = "non-global";
+ 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
+diff --git a/flutter/ios/Runner/Info.plist b/flutter/ios/Runner/Info.plist
+index c2e86fd0c..4fe24b934 100644
+--- a/flutter/ios/Runner/Info.plist
++++ b/flutter/ios/Runner/Info.plist
+@@ -30,7 +30,7 @@
+ 			<key>CFBundleURLIconFile</key>
+ 			<string></string>
+ 			<key>CFBundleURLName</key>
+-			<string>com.carriez.mydesk</string>
++			<string>com.mydesk.mydesk</string>
+ 			<key>CFBundleURLSchemes</key>
+ 			<array>
+ 				<string>mydesk</string>
+diff --git a/flutter/ios/exportOptions.plist b/flutter/ios/exportOptions.plist
+index 95d01ee5c..576313e83 100644
+--- a/flutter/ios/exportOptions.plist
++++ b/flutter/ios/exportOptions.plist
+@@ -8,7 +8,7 @@
+  <string>HZF9JMC8YN</string>
+  <key>provisioningProfiles</key>
+  <dict>
+- <key>com.carriez.flutterHbb</key>
++ <key>com.mydesk.mydesk</key>
+  <string>mydesk-ios-prod-app-store</string>
+  </dict>
+  </dict>
+diff --git a/flutter/linux/CMakeLists.txt b/flutter/linux/CMakeLists.txt
+index 8ad885941..f34ec74d1 100644
+--- a/flutter/linux/CMakeLists.txt
++++ b/flutter/linux/CMakeLists.txt
+@@ -7,7 +7,7 @@ project(runner LANGUAGES C CXX)
+ set(BINARY_NAME "mydesk")
+ # The unique GTK application identifier for this application. See:
+ # https://wiki.gnome.org/HowDoI/ChooseApplicationID
+-set(APPLICATION_ID "com.carriez.flutter_hbb")
++set(APPLICATION_ID "com.mydesk.mydesk")
+ 
+ # Explicitly opt into modern CMake behaviors to avoid warnings with recent
+ # versions of CMake.
+diff --git a/flutter/macos/Runner.xcodeproj/project.pbxproj b/flutter/macos/Runner.xcodeproj/project.pbxproj
+index 232086b47..2ad9b44bb 100644
+--- a/flutter/macos/Runner.xcodeproj/project.pbxproj
++++ b/flutter/macos/Runner.xcodeproj/project.pbxproj
+@@ -445,7 +445,7 @@
+ 					../../target/profile,
+ 				);
+ 				MACOSX_DEPLOYMENT_TARGET = 10.14;
+-				PRODUCT_BUNDLE_IDENTIFIER = com.carriez.mydesk;
++				PRODUCT_BUNDLE_IDENTIFIER = com.mydesk.mydesk;
+ 				PROVISIONING_PROFILE_SPECIFIER = "";
+ 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
+ 				SWIFT_VERSION = 5.0;
+@@ -590,7 +590,7 @@
+ 					../../target/debug,
+ 				);
+ 				MACOSX_DEPLOYMENT_TARGET = 10.14;
+-				PRODUCT_BUNDLE_IDENTIFIER = com.carriez.mydesk;
++				PRODUCT_BUNDLE_IDENTIFIER = com.mydesk.mydesk;
+ 				PROVISIONING_PROFILE_SPECIFIER = "";
+ 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
+ 				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = Runner/bridge_generated.h;
+@@ -627,7 +627,7 @@
+ 					__cgpreloginapp,
+ 					/dev/null,
+ 				);
+-				PRODUCT_BUNDLE_IDENTIFIER = com.carriez.mydesk;
++				PRODUCT_BUNDLE_IDENTIFIER = com.mydesk.mydesk;
+ 				PROVISIONING_PROFILE_SPECIFIER = "";
+ 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
+ 				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = Runner/bridge_generated.h;
+diff --git a/flutter/macos/Runner/Configs/AppInfo.xcconfig b/flutter/macos/Runner/Configs/AppInfo.xcconfig
+index 9a6dba41c..64efaf5b9 100644
+--- a/flutter/macos/Runner/Configs/AppInfo.xcconfig
++++ b/flutter/macos/Runner/Configs/AppInfo.xcconfig
+@@ -8,7 +8,7 @@
+ PRODUCT_NAME = MyDesk
+ 
+ // The application's bundle identifier
+-PRODUCT_BUNDLE_IDENTIFIER = com.carriez.flutterHbb
++PRODUCT_BUNDLE_IDENTIFIER = com.mydesk.mydesk
+ 
+ // The copyright displayed in application information
+ PRODUCT_COPYRIGHT = Copyright © 2026 Purslane Tech Pte. Ltd. All rights reserved.
+diff --git a/flutter/macos/Runner/Info.plist b/flutter/macos/Runner/Info.plist
+index eb162949b..bd17a4c2e 100644
+--- a/flutter/macos/Runner/Info.plist
++++ b/flutter/macos/Runner/Info.plist
+@@ -26,7 +26,7 @@
+ 			<key>CFBundleURLIconFile</key>
+ 			<string></string>
+ 			<key>CFBundleURLName</key>
+-			<string>com.carriez.mydesk</string>
++			<string>com.mydesk.mydesk</string>
+ 			<key>CFBundleURLSchemes</key>
+ 			<array>
+ 				<string>mydesk</string>
+diff --git a/libs/portable/Cargo.toml b/libs/portable/Cargo.toml
+index e77fcb2e5..618645e3f 100644
+--- a/libs/portable/Cargo.toml
++++ b/libs/portable/Cargo.toml
+@@ -20,14 +20,13 @@ windows = { version = "0.61", features = [
+     "Wdk_System",
+     "Wdk_System_SystemServices",
+     "Win32",
+-    "Win32_Storage_FileSystem",
+     "Win32_System",
+     "Win32_System_SystemInformation",
+ ] }
+ native-windows-gui = {version = "1.0", default-features = false, features = ["animation-timer", "image-decoder"]}
+ 
+ [package.metadata.winres]
+-LegalCopyright = "Copyright © 2026 Purslane Tech Pte. Ltd. All rights reserved."
++LegalCopyright = "Copyright © 2026 Purslane Ltd. All rights reserved."
+ ProductName = "MyDesk"
+ OriginalFilename = "mydesk.exe"
+ FileDescription = "MyDesk Remote Desktop"
+@@ -37,3 +36,4 @@ FileDescription = "MyDesk Remote Desktop"
+ winres = "0.1"
+ winapi = { version = "0.3", features = [ "winnt", "pdh", "synchapi" ] }
+ 
++
+diff --git a/libs/portable/src/bin_reader.rs b/libs/portable/src/bin_reader.rs
+index ae41f890f..795b5db8e 100644
+--- a/libs/portable/src/bin_reader.rs
++++ b/libs/portable/src/bin_reader.rs
+@@ -17,7 +17,7 @@ const PACKAGE_RESOURCE_NAME: &str = "RDPKG";
+ // 4bytes
+ const LENGTH: usize = 4;
+ const IDENTIFIER: &[u8] = b"mydesk";
+-const IDENTIFIER_LENGTH: usize = 8;
++const IDENTIFIER_LENGTH: usize = 6;
+ const MD5_LENGTH: usize = 32;
+ const BUF_SIZE: usize = 4096;
+ 
+diff --git a/libs/portable/src/main.rs b/libs/portable/src/main.rs
+index fdf18a6a9..ff02555ca 100644
+--- a/libs/portable/src/main.rs
++++ b/libs/portable/src/main.rs
+@@ -19,8 +19,6 @@ const APP_METADATA_CONFIG: &str = "meta.toml";
+ const META_LINE_PREFIX_TIMESTAMP: &str = "timestamp = ";
+ const META_LINE_PREFIX_FILE: &str = "file = ";
+ const APP_PREFIX: &str = "mydesk";
+-#[cfg(windows)]
+-const VERIFIED_UPDATE_FILE_PREFIX: &str = "mydesk-verified-";
+ const APPNAME_RUNTIME_ENV_KEY: &str = "MYDESK_APPNAME";
+ #[cfg(windows)]
+ const SET_FOREGROUND_WINDOW_ENV_KEY: &str = "SET_FOREGROUND_WINDOW";
+@@ -289,13 +287,6 @@ fn main() -> Result<(), String> {
+     #[cfg(not(windows))]
+     let quick_support = false;
+ 
+-    #[cfg(windows)]
+-    if args.first().is_some_and(|arg| arg == "--update") {
+-        if let Err(err) = win::schedule_verified_update_cleanup() {
+-            eprintln!("Failed to schedule verified update file cleanup: {}", err);
+-        }
+-    }
+-
+     let mut ui = false;
+     let reader = BinaryReader::new()?;
+     if let Some(exe) = setup(
+@@ -323,33 +314,6 @@ mod win {
+     pub const RUNTIME_BROKER_EXE: &'static str = "C:\\Windows\\System32\\RuntimeBroker.exe";
+     pub const WIN_TOPMOST_INJECTED_PROCESS_EXE: &'static str = "RuntimeBroker_mydesk.exe";
+ 
+-    pub(super) fn schedule_verified_update_cleanup() -> std::io::Result<()> {
+-        use windows::{
+-            core::{HSTRING, PCWSTR},
+-            Win32::Storage::FileSystem::{MoveFileExW, MOVEFILE_DELAY_UNTIL_REBOOT},
+-        };
+-
+-        let current_exe = std::env::current_exe()?;
+-        let is_verified_update = current_exe
+-            .file_name()
+-            .and_then(|name| name.to_str())
+-            .is_some_and(|name| {
+-                name.starts_with(super::VERIFIED_UPDATE_FILE_PREFIX) && name.ends_with(".exe")
+-            });
+-        if !is_verified_update {
+-            return Ok(());
+-        }
+-
+-        unsafe {
+-            MoveFileExW(
+-                &HSTRING::from(current_exe.as_path()),
+-                PCWSTR::null(),
+-                MOVEFILE_DELAY_UNTIL_REBOOT,
+-            )
+-        }
+-        .map_err(std::io::Error::other)
+-    }
+-
+     pub(super) fn copy_runtime_broker(dir: &Path) {
+         let src = RUNTIME_BROKER_EXE;
+         let tgt = WIN_TOPMOST_INJECTED_PROCESS_EXE;
+diff --git a/res/pacman_install b/res/pacman_install
+index 09b8d20ee..00ec48004 100644
+--- a/res/pacman_install
++++ b/res/pacman_install
+@@ -44,4 +44,4 @@ post_remove() {
+ 	rm /usr/share/applications/mydesk.desktop || true
+ 	rm /usr/share/applications/mydesk-link.desktop || true
+ 	update-desktop-database
+-}
++}
+\ No newline at end of file
