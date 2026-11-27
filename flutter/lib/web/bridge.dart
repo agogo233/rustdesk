@@ -113,6 +113,7 @@ class MydeskImpl {
     return completer.future;
   }
 
+
   Future<void> stopGlobalEventStream({required String appType, dynamic hint}) {
     throw UnimplementedError("stopGlobalEventStream");
   }

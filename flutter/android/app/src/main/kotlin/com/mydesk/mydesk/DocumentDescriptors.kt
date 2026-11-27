@@ -1,4 +1,4 @@
-package com.carriez.flutter_hbb
+package com.mydesk.mydesk
 
 import android.os.ParcelFileDescriptor
 import org.json.JSONObject

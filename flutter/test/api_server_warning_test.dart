@@ -10,9 +10,9 @@ void main() {
       'https://api.example.com': false,
       'http://api.example.com': true,
       'http://192.168.1.13:13000': true,
-      'http://localhost:21114': false,
-      'http://127.0.0.1:21114': false,
-      'http://[::1]:21114': false,
+      'http://localhost:31114': false,
+      'http://127.0.0.1:31114': false,
+      'http://[::1]:31114': false,
     };
     for (final entry in cases.entries) {
       expect(shouldWarnApiServer(entry.key), entry.value, reason: entry.key);

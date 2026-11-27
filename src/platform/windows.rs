@@ -1,4 +1,4 @@
-use super::{validate_install_app_name, CursorData, ResultType};
+use super::{CursorData, ResultType};
 use crate::{
     common::PORTABLE_APPNAME_RUNTIME_ENV_KEY,
     custom_server::*,
@@ -127,6 +127,7 @@ pub const SET_FOREGROUND_WINDOW: &'static str = "SET_FOREGROUND_WINDOW";
 
 const REG_NAME_INSTALL_DESKTOPSHORTCUTS: &str = "DESKTOPSHORTCUTS";
 const REG_NAME_INSTALL_STARTMENUSHORTCUTS: &str = "STARTMENUSHORTCUTS";
+pub const REG_NAME_INSTALL_STARTUPSHORTCUTS: &str = "STARTUPSHORTCUTS";
 pub const REG_NAME_INSTALL_PRINTER: &str = "PRINTER";
 const REG_NAME_MSI_PRODUCT_CODE: &str = "MsiProductCode";
 const REG_NAME_UNINSTALL_STRING: &str = "UninstallString";
@@ -135,6 +136,17 @@ const MSI_WINDOWS_INSTALLER_VALUE: u32 = 1;
 const MSI_EXIT_SUCCESS_REBOOT_INITIATED: u32 = 1641;
 const MSI_EXIT_SUCCESS_REBOOT_REQUIRED: u32 = 3010;
 const HKLM_PREFIX: &str = "HKEY_LOCAL_MACHINE\\";
+
+fn validate_install_app_name(app_name: &str) -> ResultType<()> {
+    if app_name.is_empty()
+        || !app_name
+            .chars()
+            .all(|character| character.is_ascii_alphanumeric() || character == '-')
+    {
+        bail!("Application name must match [a-zA-Z0-9-]+");
+    }
+    Ok(())
+}
 
 pub fn get_focused_display(displays: Vec<DisplayInfo>) -> Option<usize> {
     unsafe {
@@ -563,6 +575,7 @@ const SERVICE_TYPE: ServiceType = ServiceType::OWN_PROCESS;
 
 extern "C" {
     fn get_current_session(rdp: BOOL) -> DWORD;
+    fn is_session_locked(session_id: DWORD) -> BOOL;
     fn LaunchProcessWin(
         cmd: *const u16,
         session_id: DWORD,
@@ -1392,10 +1405,6 @@ pub fn get_install_options() -> String {
 }
 
 pub fn get_silent_install_options(printer_override: Option<bool>) -> &'static str {
-    if !is_win_10_or_greater() {
-        return "desktopicon startmenu";
-    }
-
     let install_printer = match printer_override {
         Some(override_value) => override_value,
         None => {
@@ -1403,13 +1412,9 @@ pub fn get_silent_install_options(printer_override: Option<bool>) -> &'static st
             let subkey = format!(".{}", app_name.to_lowercase());
             let printer = get_reg_of_hkcr(&subkey, REG_NAME_INSTALL_PRINTER);
             printer.as_deref() == Some("1")
-                && remote_printer::is_rd_printer_installed(&app_name).unwrap_or_else(|err| {
-                    log::warn!("Failed to check printer installation status: {err}; skipping printer installation");
-                    false
-                })
         }
     };
-    if install_printer {
+    if install_printer && is_win_10_or_greater() {
         "desktopicon startmenu printer"
     } else {
         "desktopicon startmenu"
@@ -1781,9 +1786,11 @@ if exist \"{tmp_path}\\{app_name} Tray.lnk\" del /f /q \"{tmp_path}\\{app_name} 
     let tray_shortcuts = if config::is_outgoing_only() {
         "".to_owned()
     } else {
+        let subkey = format!(".{}", app_name.to_lowercase());
         format!("
 {tray_shortcut_commands}
 copy /Y \"{tmp_path}\\{app_name} Tray.lnk\" \"%PROGRAMDATA%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\\"
+reg add HKEY_CLASSES_ROOT\\{subkey} /f /v {REG_NAME_INSTALL_STARTUPSHORTCUTS} /t REG_SZ /d \"1\"
 ")
     };
 
@@ -2037,6 +2044,167 @@ pub fn is_installed() -> bool {
     std::fs::metadata(exe).is_ok()
 }
 
+pub fn set_start_on_boot(enabled: bool) {
+    // Always clean legacy per-user mechanisms left by the old scheme.
+    delete_hkcu_run();
+    delete_startup_shortcut();
+
+    if is_installed() && is_cur_exe_the_installed() {
+        // The autostart artifact lives in the common (all users) startup folder
+        // and is tracked by the MSI property of the same name. Both are touched
+        // in one elevated batch, so the shortcut and the property stay in sync
+        // with a single UAC prompt.
+        let cmds = match start_on_boot_commands(enabled) {
+            Ok(cmds) => cmds,
+            Err(err) => {
+                log::warn!("failed to build start-on-boot commands: {}", err);
+                return;
+            }
+        };
+        if let Err(e) = run_cmds(cmds, false, "set_start_on_boot") {
+            log::warn!("failed to set start-on-boot: {}", e);
+        }
+    } else {
+        // Portable version: HKCU Run, no elevation needed.
+        if enabled {
+            if let Ok(exe_path) = std::env::current_exe() {
+                let hkcu = RegKey::predef(HKEY_CURRENT_USER);
+                if let Some(run_key) = hkcu
+                    .open_subkey_with_flags(
+                        "Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+                        KEY_WRITE,
+                    )
+                    .ok()
+                {
+                    let exe_str = exe_path.to_string_lossy().to_string();
+                    if let Err(e) = run_key.set_value(
+                        crate::get_app_name(),
+                        &format!("\"{}\" --tray", exe_str),
+                    ) {
+                        log::warn!("failed to set HKCU Run value: {}", e);
+                    }
+                }
+            }
+        }
+    }
+}
+
+fn start_on_boot_commands(enabled: bool) -> ResultType<InstallCommands> {
+    let app_name = crate::get_app_name();
+    let (_, _, _, exe) = get_install_info();
+    validate_install_value(&exe)?;
+    let shortcut_icon_location = get_custom_icon("", &exe);
+    if let Some(icon) = shortcut_icon_location.as_deref() {
+        validate_install_value(icon)?;
+    }
+    let subkey = format!(".{}", app_name.to_lowercase());
+    let startup_dir = "%PROGRAMDATA%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup";
+    let legacy_name = format!("{} 托盘.lnk", app_name);
+    if enabled {
+        let (tray_shortcut_commands, tray_shortcut_file) =
+            staged_tray_shortcut_commands(&app_name, &exe, shortcut_icon_location.as_deref())?;
+        Ok(InstallCommands {
+            script: format!(
+                "
+{tray_shortcut_commands}
+copy /Y \"%RUSTDESK_OUTPUT_DIR%\\{app_name} Tray.lnk\" \"{startup_dir}\\\" || exit /b 1
+if exist \"{startup_dir}\\{legacy_name}\" del /f /q \"{startup_dir}\\{legacy_name}\"
+reg add HKEY_CLASSES_ROOT\\{subkey} /f /v {REG_NAME_INSTALL_STARTUPSHORTCUTS} /t REG_SZ /d \"1\" || exit /b 1
+"
+            ),
+            files: vec![tray_shortcut_file],
+        })
+    } else {
+        Ok(InstallCommands {
+            script: format!(
+                "
+if exist \"{startup_dir}\\{app_name} Tray.lnk\" del /f /q \"{startup_dir}\\{app_name} Tray.lnk\"
+if exist \"{startup_dir}\\{legacy_name}\" del /f /q \"{startup_dir}\\{legacy_name}\"
+reg add HKEY_CLASSES_ROOT\\{subkey} /f /v {REG_NAME_INSTALL_STARTUPSHORTCUTS} /t REG_SZ /d \"0\" || exit /b 1
+"
+            ),
+            files: Vec::new(),
+        })
+    }
+}
+
+pub fn get_start_on_boot() -> String {
+    if is_installed() && is_cur_exe_the_installed() {
+        // The common startup shortcut is the source of truth; the MSI
+        // property is only a persistence hint for MSI maintenance.
+        if common_startup_shortcut_path()
+            .map(|p| p.is_file())
+            .unwrap_or(false)
+        {
+            return "Y".to_owned();
+        }
+    } else {
+        // Portable version: check HKCU Run
+        let hkcu = RegKey::predef(HKEY_CURRENT_USER);
+        if let Some(run_key) = hkcu
+            .open_subkey_with_flags(
+                "Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+                KEY_READ,
+            )
+            .ok()
+        {
+            if let Ok(v) = run_key.get_value::<String, _>(crate::get_app_name()) {
+                if !v.is_empty() {
+                    if let Ok(exe_path) = std::env::current_exe() {
+                        let exe_str = exe_path.to_string_lossy().to_lowercase();
+                        if v.to_lowercase().contains(&exe_str) {
+                            return "Y".to_owned();
+                        }
+                    }
+                }
+            }
+        }
+    }
+    "N".to_owned()
+}
+
+fn startup_shortcut_name() -> String {
+    format!("{} Tray.lnk", crate::get_app_name())
+}
+
+fn startup_shortcut_path() -> Option<PathBuf> {
+    let appdata = std::env::var("APPDATA").ok()?;
+    Some(PathBuf::from(appdata).join(r"Microsoft\Windows\Start Menu\Programs\Startup")
+        .join(startup_shortcut_name()))
+}
+
+fn common_startup_shortcut_path() -> Option<PathBuf> {
+    let program_data = std::env::var("ProgramData").ok()?;
+    Some(
+        PathBuf::from(program_data)
+            .join(r"Microsoft\Windows\Start Menu\Programs\Startup")
+            .join(startup_shortcut_name()),
+    )
+}
+
+fn delete_startup_shortcut() {
+    if let Some(path) = startup_shortcut_path() {
+        if let Err(e) = std::fs::remove_file(path) {
+            log::warn!("failed to delete startup shortcut: {}", e);
+        }
+    }
+}
+
+fn delete_hkcu_run() {
+    let hkcu = RegKey::predef(HKEY_CURRENT_USER);
+    if let Some(run_key) = hkcu
+        .open_subkey_with_flags(
+            "Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+            KEY_WRITE,
+        )
+        .ok()
+    {
+        if let Err(e) = run_key.delete_value(crate::get_app_name()) {
+            log::warn!("failed to delete HKCU Run value: {}", e);
+        }
+    }
+}
+
 pub fn get_reg(name: &str) -> String {
     let (subkey, _, _, _) = get_install_info();
     get_reg_of(&subkey, name)
@@ -2257,7 +2425,7 @@ pub fn bootstrap() -> bool {
     }
     #[cfg(not(debug_assertions))]
     {
-        // This function will cause `'sciter.dll' was not found neither in PATH nor near the current executable.` when debugging MyDesk.
+        // This function will cause `'sciter.dll' was not found neither in PATH nor near the current executable.` when debugging mydesk.
         // Only call set_safe_load_dll() on Windows 10 or greater
         if is_win_10_or_greater() {
             set_safe_load_dll()
@@ -3457,15 +3625,19 @@ fn get_install_service_commands(path: &str, exe: &str) -> ResultType<InstallComm
     if let Some(icon) = shortcut_icon_location.as_deref() {
         validate_install_value(icon)?;
     }
-    let (tray_shortcut_commands, tray_shortcut_file) =
+    let (mut tray_shortcut_commands, tray_shortcut_file) =
         staged_tray_shortcut_commands(&app_name, exe, shortcut_icon_location.as_deref())?;
+    if is_installed() && is_cur_exe_the_installed() && get_start_on_boot() == "Y" {
+        tray_shortcut_commands.push_str(&format!(
+            "\ncopy /Y \"%RUSTDESK_OUTPUT_DIR%\\{app_name} Tray.lnk\" \"%PROGRAMDATA%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\\"\n"
+        ));
+    }
     let filter = format!(" /FI \"PID ne {}\"", get_current_pid());
     let script = format!(
         "
 chcp 65001
 taskkill /F /IM {app_name}.exe{filter}
 {tray_shortcut_commands}
-copy /Y \"%RUSTDESK_OUTPUT_DIR%\\{app_name} Tray.lnk\" \"%PROGRAMDATA%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\\"
 {import_config}
 {create_service}
     ",
@@ -4016,6 +4188,33 @@ pub fn handle_custom_client_staging_dir_before_update(
     Ok(())
 }
 
+// Used for auto update and manual update in the main window.
+pub fn update_to(file: &str) -> ResultType<()> {
+    if file.ends_with(".exe") {
+        let custom_client_staging_dir = get_custom_client_staging_dir();
+        if crate::is_custom_client() {
+            handle_custom_client_staging_dir_before_update(&custom_client_staging_dir)?;
+        } else {
+            // Clean up any residual staging directory from previous custom client
+            allow_err!(remove_custom_client_staging_dir(&custom_client_staging_dir));
+        }
+        if !run_uac(file, "--update")? {
+            bail!(
+                "Failed to run the update exe with UAC, error: {:?}",
+                std::io::Error::last_os_error()
+            );
+        }
+    } else if file.ends_with(".msi") {
+        if let Err(e) = update_me_msi(file, false) {
+            bail!("Failed to run the update msi: {}", e);
+        }
+    } else {
+        // unreachable!()
+        bail!("Unsupported update file format: {}", file);
+    }
+    Ok(())
+}
+
 // Don't launch tray app when running with `\qn`.
 // 1. Because `/qn` requires administrator permission and the tray app should be launched with user permission.
 //   Or launching the main window from the tray app will cause the main window to be launched with administrator permission.
@@ -4026,8 +4225,12 @@ pub fn handle_custom_client_staging_dir_before_update(
 //    3. Restore the tray app sessions.
 //    `1` and `3` must be done in custom actions.
 //    We need also to handle the command line parsing to find the tray processes.
-pub fn update_me_msi(msi: &str, expected_sha256: &str, quiet: bool) -> ResultType<()> {
-    verified_update::install_verified_msi(msi, expected_sha256, quiet)
+pub fn update_me_msi(msi: &str, quiet: bool) -> ResultType<()> {
+    let quiet_args = if quiet { " /qn LAUNCH_TRAY_APP=N" } else { "" };
+    let cmds =
+        format!("chcp 65001 && msiexec /i \"{msi}\"{quiet_args} REBOOT=ReallySuppress /norestart");
+    run_cmds(cmds, false, "update-msi")?;
+    Ok(())
 }
 
 fn native_after_install_commands(
@@ -4175,10 +4378,9 @@ pub fn try_remove_temp_update_files() {
         if let Ok(entry) = entry {
             let path = entry.path();
             if let Some(file_name) = path.file_name().and_then(|n| n.to_str()) {
-                // Match downloaded installers, verified copies, and abandoned handoff scripts.
-                if (file_name.starts_with("mydesk-")
-                    && (file_name.ends_with(".msi") || file_name.ends_with(".exe")))
-                    || (file_name.starts_with("mydesk_install_") && file_name.ends_with(".bat"))
+                // Match files like mydesk-*.msi or mydesk-*.exe
+                if file_name.starts_with("mydesk-")
+                    && (file_name.ends_with(".msi") || file_name.ends_with(".exe"))
                 {
                     // Skip files modified within the last hour to avoid deleting files being downloaded
                     if let Ok(metadata) = std::fs::metadata(&path) {
@@ -4394,6 +4596,14 @@ pub fn is_x64() -> bool {
         GetNativeSystemInfo(&mut sys_info as _);
     }
     unsafe { sys_info.u.s().wProcessorArchitecture == PROCESSOR_ARCHITECTURE_AMD64 }
+}
+
+pub fn release_arch_suffix() -> Option<&'static str> {
+    match std::env::consts::ARCH {
+        "x86_64" => Some("x86_64"),
+        "aarch64" => Some("aarch64"),
+        _ => None,
+    }
 }
 
 pub fn try_kill_mydesk_main_window_process() -> ResultType<()> {
@@ -5012,6 +5222,110 @@ pub(super) fn get_pids_with_first_arg_by_wmic<S1: AsRef<str>, S2: AsRef<str>>(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    // Test-only reusable Win32 HANDLE RAII helper.
+    // If a future non-test path needs the same pattern, move it out of this test module.
+    //
+    // This struct is similar to `base::platform::windows::RAIIHandle`,
+    // but `RAIIHandle` depends on `WinApi` crate, while this `HandleGuard` only depends on `windows` crate.
+    struct HandleGuard(WinHANDLE);
+
+    impl HandleGuard {
+        #[inline]
+        fn new(handle: WinHANDLE) -> Self {
+            Self(handle)
+        }
+
+        #[inline]
+        fn get(&self) -> WinHANDLE {
+            self.0
+        }
+    }
+
+    impl Drop for HandleGuard {
+        fn drop(&mut self) {
+            unsafe {
+                if !self.0.is_invalid() {
+                    let _ = WinCloseHandle(self.0);
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn test_is_process_running_as_system_invalid_pid_errors() {
+        assert!(is_process_running_as_system(u32::MAX).is_err());
+    }
+
+    #[test]
+    fn test_is_process_running_as_system_matches_current_process_token_user() {
+        let pid = unsafe { windows::Win32::System::Threading::GetCurrentProcessId() };
+        let actual = is_process_running_as_system(pid).unwrap();
+
+        let expected = unsafe {
+            // Keep this test consistent: use only the `windows` crate APIs/types.
+            let process = HandleGuard::new(
+                WinOpenProcess(WIN_PROCESS_QUERY_LIMITED_INFORMATION, false, pid)
+                    .expect("WinOpenProcess should succeed for current process"),
+            );
+            let mut token = WinHANDLE::default();
+            WinOpenProcessToken(process.get(), WIN_TOKEN_QUERY, &mut token)
+                .expect("WinOpenProcessToken should succeed for current process");
+            let token = HandleGuard::new(token);
+
+            let mut token_user_size = 0u32;
+            let _ = WinGetTokenInformation(token.get(), TokenUser, None, 0, &mut token_user_size);
+            assert_ne!(token_user_size, 0, "TokenUser size should be non-zero");
+
+            let mut buffer = vec![0u8; token_user_size as usize];
+            WinGetTokenInformation(
+                token.get(),
+                TokenUser,
+                Some(buffer.as_mut_ptr() as *mut core::ffi::c_void),
+                token_user_size,
+                &mut token_user_size,
+            )
+            .expect("WinGetTokenInformation(TokenUser) should succeed for current process");
+
+            let min_size = std::mem::size_of::<TOKEN_USER>();
+            assert!(
+                buffer.len() >= min_size,
+                "TokenUser buffer too small (got {}, need >= {})",
+                buffer.len(),
+                min_size
+            );
+            let token_user: TOKEN_USER =
+                std::ptr::read_unaligned(buffer.as_ptr() as *const TOKEN_USER);
+            let expected = IsWellKnownSid(token_user.User.Sid, WinLocalSystemSid).as_bool();
+            expected
+        };
+
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn test_uninstall_cert() {
+        println!("uninstall driver certs: {:?}", cert::uninstall_cert());
+    }
+
+    #[test]
+    fn test_get_unicode_char_by_vk() {
+        let chr = get_char_from_vk(0x41); // VK_A
+        assert_eq!(chr, Some('a'));
+        let chr = get_char_from_vk(VK_ESCAPE as u32); // VK_ESC
+        assert_eq!(chr, None)
+    }
+
+    #[test]
+    fn install_app_names_enforce_ascii_command_safety() {
+        assert!(validate_install_app_name("RustDesk-Admin1").is_ok());
+        for app_name in ["", "RustDesk_Admin", "RustDesk&whoami", "RustDesk应用"] {
+            assert!(
+                validate_install_app_name(app_name).is_err(),
+                "unsafe application name was accepted: {app_name}"
+            );
+        }
+    }
 
     #[test]
     fn vbs_files_use_utf16le_with_bom_and_crlf() {

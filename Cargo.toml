@@ -259,7 +259,7 @@ webrtc-util = { git = "https://github.com/rustdesk-org/webrtc", rev = "49c89bd8d
 webrtc-sctp = { git = "https://github.com/rustdesk-org/webrtc", rev = "49c89bd8d30e6e62e4c1a96cee38fdc11f79ef63" }
 
 [package.metadata.winres]
-LegalCopyright = "Copyright © 2026 Purslane Tech Pte. Ltd. All rights reserved."
+LegalCopyright = "Copyright © 2026 Purslane Ltd. All rights reserved."
 ProductName = "MyDesk"
 FileDescription = "MyDesk Remote Desktop"
 OriginalFilename = "mydesk.exe"
@@ -280,7 +280,7 @@ tokio = { version = "1.44", features = ["test-util"] }
 
 [package.metadata.bundle]
 name = "MyDesk"
-identifier = "com.carriez.mydesk"
+identifier = "com.mydesk.mydesk"
 icon = ["res/32x32.png", "res/128x128.png", "res/128x128@2x.png"]
 osx_minimum_system_version = "10.14"
 # View Camera needs NSCameraUsageDescription or macOS kills the process at the

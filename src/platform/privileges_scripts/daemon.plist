@@ -3,10 +3,10 @@
 <plist version="1.0">
     <dict>
         <key>Label</key>
-        <string>com.carriez.MyDesk_service</string>
+        <string>com.mydesk.MyDesk_service</string>
 
 	<key>AssociatedBundleIdentifiers</key>
-	<string>com.carriez.mydesk</string>
+	<string>com.mydesk.mydesk</string>
     
         <key>KeepAlive</key>
         <true/>

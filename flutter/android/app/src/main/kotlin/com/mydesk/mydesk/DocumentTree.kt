@@ -1,4 +1,4 @@
-package com.carriez.flutter_hbb
+package com.mydesk.mydesk
 
 import android.content.Context
 import android.net.Uri

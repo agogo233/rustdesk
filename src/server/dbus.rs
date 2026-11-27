@@ -1,7 +1,7 @@
 /// Url handler based on dbus
 ///
 /// Note:
-/// On linux, we use dbus to communicate between multiple mydesk processes.
+/// On linux, we use dbus to communicate multiple mydesk process.
 /// [Flutter]: handle uni links for linux
 use dbus::blocking::Connection;
 use dbus_crossroads::{Crossroads, IfaceBuilder};

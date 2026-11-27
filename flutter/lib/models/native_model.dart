@@ -58,7 +58,7 @@ class PlatformFFI {
   static final PlatformFFI instance = PlatformFFI._();
   final _toAndroidChannel = const MethodChannel('mChannel');
 
-  MydeskImpl get ffiBind => _ffiBind;
+MydeskImpl get ffiBind => _ffiBind;
   @visibleForTesting
   void setBindingForTesting(MydeskImpl binding) => _ffiBind = binding;
 

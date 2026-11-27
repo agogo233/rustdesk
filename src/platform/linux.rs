@@ -411,7 +411,10 @@ pub fn is_login_screen_wayland() -> bool {
 /// does, so the login gate does not refuse a greeter the service serves over X11.
 #[cfg(feature = "drm")]
 fn is_wayland_tty_greeter(sid: &str, uid: &str) -> bool {
-    std::env::var("MYDESK_FORCED_DISPLAY_SERVER").as_deref() != Ok(DISPLAY_SERVER_X11)
+    std::env::var("MYDESK_FORCED_DISPLAY_SERVER")
+        .or_else(|_| std::env::var("RUSTDESK_FORCED_DISPLAY_SERVER"))
+        .as_deref()
+        != Ok(DISPLAY_SERVER_X11)
         && has_wayland_socket(uid)
         && is_tty_greeter_session(sid)
 }
@@ -530,9 +533,12 @@ pub fn drm_capture_enabled() -> bool {
 /// forwards it to the per-user server on purpose: the greeter correction may only fix an
 /// AUTO-detected answer, never argue with the operator — a half-applied override would leave
 /// `get_display_server()` and the DRM routing gates disagreeing with each other.
+/// `RUSTDESK_FORCED_DISPLAY_SERVER` is still honored as a fallback for existing setups.
 #[cfg(feature = "drm")]
 pub(crate) fn display_server_forced() -> bool {
-    std::env::var("MYDESK_FORCED_DISPLAY_SERVER").is_ok()
+    std::env::var("MYDESK_FORCED_DISPLAY_SERVER")
+        .or_else(|_| std::env::var("RUSTDESK_FORCED_DISPLAY_SERVER"))
+        .is_ok()
 }
 
 /// X11 as far as the DRM path is concerned: a Wayland greeter is not, unless the operator
@@ -1111,6 +1117,7 @@ fn try_start_server_(desktop: Option<&Desktop>) -> ResultType<Option<Child>> {
             }
             if let Ok(forced_display_server) =
                 std::env::var("MYDESK_FORCED_DISPLAY_SERVER")
+                    .or_else(|_| std::env::var("RUSTDESK_FORCED_DISPLAY_SERVER"))
             {
                 if !forced_display_server.is_empty() {
                     envs.push((
@@ -2459,7 +2466,9 @@ mod desktop {
         fn adopt_wayland_tty_greeter(&mut self) {
             if self.tty_greeter
                 && !self.is_wayland()
-                && std::env::var("MYDESK_FORCED_DISPLAY_SERVER").as_deref()
+                && std::env::var("MYDESK_FORCED_DISPLAY_SERVER")
+                    .or_else(|_| std::env::var("RUSTDESK_FORCED_DISPLAY_SERVER"))
+                    .as_deref()
                     != Ok(DISPLAY_SERVER_X11)
                 && super::has_wayland_socket(&self.uid)
             {
