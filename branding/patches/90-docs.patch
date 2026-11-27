@@ -21,7 +21,7 @@ index 5a387a775..7950bd69f 100644
  /third_party/libdrmtap/
  # Local git worktrees
 diff --git a/AGENTS.md b/AGENTS.md
-index 735d8587f..f860abbd6 100644
+index f05ee611c..98b82b43a 100644
 --- a/AGENTS.md
 +++ b/AGENTS.md
 @@ -8,7 +8,7 @@
@@ -69,7 +69,7 @@ index 735d8587f..f860abbd6 100644
  
  * New English-text keys use sentence case, not Title Case: `Use ID whitelisting`, **not** `Use ID Whitelisting`. Acronyms (ID, IP, 2FA…) stay uppercase. Legacy Title-Case keys (e.g. `Use IP Whitelisting`) stay as-is — do not rename them.
 diff --git a/README.md b/README.md
-index aa60d4957..ec2dd9b88 100644
+index a5f31dd20..b134784a8 100644
 --- a/README.md
 +++ b/README.md
 @@ -31,7 +31,7 @@ RustDesk welcomes contribution from everyone. See [CONTRIBUTING.md](docs/CONTRIB
@@ -82,7 +82,7 @@ index aa60d4957..ec2dd9b88 100644
      alt="Get it on Flathub"
      height="80">](https://flathub.org/apps/com.rustdesk.RustDesk)
 diff --git a/docs/README-DE.md b/docs/README-DE.md
-index 91ba5a08c..9989273bd 100644
+index 9f31785d8..968634cc3 100644
 --- a/docs/README-DE.md
 +++ b/docs/README-DE.md
 @@ -31,7 +31,7 @@ RustDesk heißt jegliche Mitarbeit willkommen. Schauen Sie sich [CONTRIBUTING-DE
@@ -95,7 +95,7 @@ index 91ba5a08c..9989273bd 100644
      alt="Get it on Flathub"
      height="80">](https://flathub.org/apps/com.rustdesk.RustDesk)
 diff --git a/docs/README-ES.md b/docs/README-ES.md
-index bdf099ffd..79edb6c3a 100644
+index 2e3f2856f..661d54695 100644
 --- a/docs/README-ES.md
 +++ b/docs/README-ES.md
 @@ -29,7 +29,7 @@ RustDesk agradece la contribución de todo el mundo. Lee [`docs/CONTRIBUTING.md`
@@ -108,7 +108,7 @@ index bdf099ffd..79edb6c3a 100644
      alt="Get it on Flathub"
      height="80">](https://flathub.org/apps/com.rustdesk.RustDesk)
 diff --git a/docs/README-GR.md b/docs/README-GR.md
-index 1346bedbb..cd5087c6e 100644
+index 7a9845a9c..842806a6b 100644
 --- a/docs/README-GR.md
 +++ b/docs/README-GR.md
 @@ -27,7 +27,7 @@
@@ -121,7 +121,7 @@ index 1346bedbb..cd5087c6e 100644
  ## Προαπαιτούμενα για build  
  
 diff --git a/docs/README-HU.md b/docs/README-HU.md
-index fc74d4bfe..62b4dd571 100644
+index eedbca1ea..4115b93ae 100644
 --- a/docs/README-HU.md
 +++ b/docs/README-HU.md
 @@ -25,7 +25,7 @@ A RustDesk szívesen fogad minden contributiont, támogatást mindenkitől. Lás
@@ -134,7 +134,7 @@ index fc74d4bfe..62b4dd571 100644
  ## Dependencies
  
 diff --git a/docs/README-ID.md b/docs/README-ID.md
-index f802fc56c..f7e22ec3d 100644
+index 0ab71fe0e..8b73d5d0b 100644
 --- a/docs/README-ID.md
 +++ b/docs/README-ID.md
 @@ -33,10 +33,7 @@ RustDesk mengajak semua orang untuk ikut berkontribusi. Lihat [`docs/CONTRIBUTIN
@@ -150,7 +150,7 @@ index f802fc56c..f7e22ec3d 100644
  ## Dependensi
  
 diff --git a/docs/README-IT.md b/docs/README-IT.md
-index ee5351b6c..026f28ca6 100644
+index 7b2c13098..0b94a66b9 100644
 --- a/docs/README-IT.md
 +++ b/docs/README-IT.md
 @@ -29,7 +29,7 @@ RustDesk accoglie il contributo di tutti. Per ulteriori informazioni su come ini
@@ -163,7 +163,7 @@ index ee5351b6c..026f28ca6 100644
  ## Dipendenze
  
 diff --git a/docs/README-JP.md b/docs/README-JP.md
-index 6abeae5c0..5634645f1 100644
+index 1c11907c5..dcbd17a87 100644
 --- a/docs/README-JP.md
 +++ b/docs/README-JP.md
 @@ -28,7 +28,7 @@ RustDeskは皆さんの貢献を歓迎します。
@@ -176,7 +176,7 @@ index 6abeae5c0..5634645f1 100644
  ## 依存関係
  
 diff --git a/docs/README-KR.md b/docs/README-KR.md
-index 687ba24e6..cda51b0b6 100644
+index 2ab26d646..bee2fcce1 100644
 --- a/docs/README-KR.md
 +++ b/docs/README-KR.md
 @@ -31,7 +31,7 @@ RustDesk는 모든 분들의 기여를 환영합니다. 시작하는 데 도움
@@ -189,7 +189,7 @@ index 687ba24e6..cda51b0b6 100644
      alt="Get it on Flathub"
      height="80">](https://flathub.org/apps/com.rustdesk.RustDesk)
 diff --git a/docs/README-NL.md b/docs/README-NL.md
-index 45d68b20e..5f70fec3d 100644
+index be54fa821..267693462 100644
 --- a/docs/README-NL.md
 +++ b/docs/README-NL.md
 @@ -25,7 +25,7 @@ RustDesk verwelkomt bijdragen van iedereen. Zie [`docs/CONTRIBUTING.md`](CONTRIB
@@ -202,7 +202,7 @@ index 45d68b20e..5f70fec3d 100644
  ## Afhankelijkheden
  
 diff --git a/docs/README-NO.md b/docs/README-NO.md
-index 609795996..8fc476f47 100644
+index a12ee6a30..2771dcb42 100644
 --- a/docs/README-NO.md
 +++ b/docs/README-NO.md
 @@ -27,7 +27,7 @@ RustDesk er velkommen for bidrag fra alle. Se [CONTRIBUTING.md](CONTRIBUTING-NO.
@@ -215,7 +215,7 @@ index 609795996..8fc476f47 100644
      alt="Få det på Flathub"
      height="80">](https://flathub.org/apps/com.rustdesk.RustDesk)
 diff --git a/docs/README-PL.md b/docs/README-PL.md
-index 4b48b0996..8e766d7f7 100644
+index 9b27e40b8..7ac476a2b 100644
 --- a/docs/README-PL.md
 +++ b/docs/README-PL.md
 @@ -29,7 +29,7 @@ RustDesk zaprasza do współpracy każdego. Zobacz [`docs/CONTRIBUTING-PL.md`](C
@@ -228,10 +228,10 @@ index 4b48b0996..8e766d7f7 100644
  ## Zależności
  
 diff --git a/docs/README-PTBR.md b/docs/README-PTBR.md
-index 332967ea2..d24f15378 100644
+index 4431d2bd6..cdbe108f7 100644
 --- a/docs/README-PTBR.md
 +++ b/docs/README-PTBR.md
-@@ -31,7 +31,7 @@ O RustDesk acolhe a contribuição de todos. Veja [CONTRIBUTING.md](docs/CONTRIB
+@@ -31,7 +31,7 @@ O MyDesk acolhe a contribuição de todos. Veja [CONTRIBUTING.md](CONTRIBUTING.m
  
  [<img src="https://f-droid.org/badge/get-it-on.png"
      alt="Baixe no F-Droid"
@@ -241,7 +241,7 @@ index 332967ea2..d24f15378 100644
      alt="Baixe no Flathub"
      height="80">](https://flathub.org/apps/com.rustdesk.RustDesk)
 diff --git a/docs/README-RO.md b/docs/README-RO.md
-index 0f2f17466..ab53ab0a6 100644
+index 0bcbdb709..0f1d63d48 100644
 --- a/docs/README-RO.md
 +++ b/docs/README-RO.md
 @@ -31,7 +31,7 @@ RustDesk primește contribuții de la oricine. Vezi [CONTRIBUTING.md](../docs/CO
@@ -254,7 +254,7 @@ index 0f2f17466..ab53ab0a6 100644
      alt="Get it on Flathub"
      height="80">](https://flathub.org/apps/com.rustdesk.RustDesk)
 diff --git a/docs/README-RU.md b/docs/README-RU.md
-index ea03b4400..d7b492daf 100644
+index 818bc1d16..9339cdcb5 100644
 --- a/docs/README-RU.md
 +++ b/docs/README-RU.md
 @@ -33,7 +33,7 @@ RustDesk приветствует вклад каждого. Ознакомьт
@@ -267,7 +267,7 @@ index ea03b4400..d7b492daf 100644
      alt="Get it on Flathub"
      height="80">](https://flathub.org/apps/com.rustdesk.RustDesk)
 diff --git a/docs/README-TR.md b/docs/README-TR.md
-index 022335b94..34d83cdef 100644
+index e21417124..aa0a4f604 100644
 --- a/docs/README-TR.md
 +++ b/docs/README-TR.md
 @@ -33,7 +33,7 @@ RustDesk, herkesin katkısına açıktır. Başlamak için [CONTRIBUTING.md](CON
@@ -280,7 +280,7 @@ index 022335b94..34d83cdef 100644
  ## Gereksinimler
  
 diff --git a/docs/README-UA.md b/docs/README-UA.md
-index e579dbdd8..e40030db4 100644
+index d8e9aa645..944f6077e 100644
 --- a/docs/README-UA.md
 +++ b/docs/README-UA.md
 @@ -1,45 +1,39 @@
@@ -411,9 +411,9 @@ index e579dbdd8..e40030db4 100644
  
  ## Структура файлів
  
--- **[libs/hbb_common](https://github.com/mydesk/mydesk/tree/master/libs/hbb_common)**: відеокодек, конфігурація, обгортка tcp/udp та інші допоміжні функції, спільні із сервером
+-- **[libs/hbb_common](https://github.com/mydesk/hbb_common)**: відеокодек, конфігурація, обгортка tcp/udp та інші допоміжні функції, спільні із сервером
 -- **[libs/base](https://github.com/mydesk/mydesk/tree/master/libs/base)**: protobuf, функції файлової системи для передавання файлів, код клавіатури та платформоспецифічний код, що використовуються лише цим застосунком
-+- **[libs/hbb_common](https://github.com/rustdesk/rustdesk/tree/master/libs/hbb_common)**: відеокодек, конфіг, обгортка tcp/udp, protobuf, функції fs для передавання файлів і деякі інші службові функції
++- **[libs/hbb_common](https://github.com/rustdesk/hbb_common)**: відеокодек, конфіг, обгортка tcp/udp, protobuf, функції fs для передавання файлів і деякі інші службові функції
  - **[libs/scrap](https://github.com/rustdesk/rustdesk/tree/master/libs/scrap)**: захоплення екрана
 -- **[libs/enigo](https://github.com/mydesk/mydesk/tree/master/libs/enigo)**: платформоспецифічне керування клавіатурою та мишею
 -- **[libs/clipboard](https://github.com/mydesk/mydesk/tree/master/libs/clipboard)**: реалізація копіювання та вставлення файлів для Windows, Linux і macOS
@@ -446,7 +446,7 @@ index e579dbdd8..e40030db4 100644
 +![Тунелювання TCP](https://github.com/rustdesk/rustdesk/assets/28412477/78e8708f-e87e-4570-8373-1360033ea6c5)
  
 diff --git a/docs/README-VN.md b/docs/README-VN.md
-index 34cef261f..eff20a0e9 100644
+index 6be169e7f..cd0eaca30 100644
 --- a/docs/README-VN.md
 +++ b/docs/README-VN.md
 @@ -27,7 +27,7 @@ RustDesk là một phần mềm điểu khiển máy tính từ xa mã nguồn m
@@ -459,7 +459,7 @@ index 34cef261f..eff20a0e9 100644
  ## Dependencies
  
 diff --git a/docs/README-ZH.md b/docs/README-ZH.md
-index dc73d85a5..9f3a458f5 100644
+index 4bc4e6e88..a652c2daf 100644
 --- a/docs/README-ZH.md
 +++ b/docs/README-ZH.md
 @@ -32,7 +32,7 @@ RustDesk 期待各位的贡献. 如何参与开发? 详情请看 [CONTRIBUTING-Z

@@ -23,11 +23,6 @@ Cargo.lock	source = "git+https://github.com/rustdesk-org/kcp-sys?branch=rustdesk
 Cargo.lock	source = "git+https://github.com/rustdesk-org/keepawake-rs#64d568586dd16551d02120e19668d2b0fec8e3c9"
 Cargo.lock	source = "git+https://github.com/rustdesk-org/machine-uid#381ff579c1dc3a6c54db9dfec47c44bcb0246542"
 Cargo.lock	source = "git+https://github.com/rustdesk-org/magnum-opus#588c6e1f9ed50c3a01fa64f3bd3e7cdb0378a114"
-Cargo.lock	source = "git+https://github.com/rustdesk-org/nokhwa.git?branch=fix_from_raw_parts#c2f74662b6ce117f7f94301693fdfadc0b1ec91a"
-Cargo.lock	source = "git+https://github.com/rustdesk-org/nokhwa.git?branch=fix_from_raw_parts#c2f74662b6ce117f7f94301693fdfadc0b1ec91a"
-Cargo.lock	source = "git+https://github.com/rustdesk-org/nokhwa.git?branch=fix_from_raw_parts#c2f74662b6ce117f7f94301693fdfadc0b1ec91a"
-Cargo.lock	source = "git+https://github.com/rustdesk-org/nokhwa.git?branch=fix_from_raw_parts#c2f74662b6ce117f7f94301693fdfadc0b1ec91a"
-Cargo.lock	source = "git+https://github.com/rustdesk-org/nokhwa.git?branch=fix_from_raw_parts#c2f74662b6ce117f7f94301693fdfadc0b1ec91a"
 Cargo.lock	source = "git+https://github.com/rustdesk-org/parity-tokio-ipc#d0ae39bffe5d5a3e8d82a1b6bcb1ca5a9b2f1c01"
 Cargo.lock	source = "git+https://github.com/rustdesk-org/wezterm?branch=rustdesk/pty_based_0.8.1#80174f8009f41565f0fa8c66dab90d4f9211ae16"
 Cargo.lock	source = "git+https://github.com/rustdesk-org/rdev#0904f23ce496e255461a98848b85c11fa5a62eab"
@@ -101,9 +96,7 @@ README.md	docker run --rm -it -v $PWD:/home/user/rustdesk -v rustdesk-git-cache:
 README.md	target/debug/rustdesk
 README.md	target/release/rustdesk
 README.md	Please ensure that you run these commands from the root of the RustDesk repository, or the application may not find the required resources. Also note that other cargo subcommands such as `install` or `run` are not currently supported via this method as they would install or run the program inside the container instead of the host.
-README.md	- **[libs/hbb_common](https://github.com/rustdesk/rustdesk/tree/master/libs/hbb_common)**: video codec, config, tcp/udp wrapper, and some other utility functions shared with the server
 README.md	- **[libs/base](https://github.com/rustdesk/rustdesk/tree/master/libs/base)**: protobuf, fs functions for file transfer, keyboard and platform code used only by this app
-README.md	- **[libs/scrap](https://github.com/rustdesk/rustdesk/tree/master/libs/scrap)**: screen capture
 README.md	- **[libs/enigo](https://github.com/rustdesk/rustdesk/tree/master/libs/enigo)**: platform specific keyboard/mouse control
 README.md	- **[libs/clipboard](https://github.com/rustdesk/rustdesk/tree/master/libs/clipboard)**: file copy and paste implementation for Windows, Linux, macOS.
 README.md	- **[src/ui](https://github.com/rustdesk/rustdesk/tree/master/src/ui)**: obsolete Sciter UI (deprecated)
@@ -116,7 +109,6 @@ README.md	![Connection Manager](https://github.com/rustdesk/rustdesk/assets/2841
 README.md	![Connected to a Windows PC](https://github.com/rustdesk/rustdesk/assets/28412477/9baa91e9-3362-4d06-aa1a-7518edcbd7ea)
 README.md	![File Transfer](https://github.com/rustdesk/rustdesk/assets/28412477/39511ad3-aa9a-4f8c-8947-1cce286a46ad)
 README.md	![TCP Tunneling](https://github.com/rustdesk/rustdesk/assets/28412477/78e8708f-e87e-4570-8373-1360033ea6c5)
-build.py	        # package NAMED `rustdesk` carrying the consent-bypass backend and the root-side uinput
 build.py	# libdrmtap is fetched at build time from the rustdesk-org fork at a pinned
 build.py	# commit — the same way rustdesk sources its other native build deps (vcpkg,
 build.py	# pin for the drm backend: rustdesk dlopens this .so at runtime and does not depend on
@@ -148,7 +140,6 @@ docs/README-DE.md	docker run --rm -it -v $PWD:/home/user/rustdesk -v rustdesk-gi
 docs/README-DE.md	target/debug/rustdesk
 docs/README-DE.md	target/release/rustdesk
 docs/README-DE.md	Bitte stellen Sie sicher, dass Sie diese Befehle im Stammverzeichnis des RustDesk-Repositorys nutzen. Ansonsten kann es passieren, dass das Programm die Ressourcen nicht finden kann. Bitte bedenken Sie auch, dass andere Cargo-Unterbefehle wie `install` oder `run` aktuell noch nicht unterstützt werden, da sie das Programm innerhalb des Containers starten oder installieren würden, anstatt auf Ihrem eigentlichen System.
-docs/README-DE.md	- **[libs/hbb_common](https://github.com/rustdesk/rustdesk/tree/master/libs/hbb_common)**: Video-Codec, Konfiguration, TCP/UDP-Wrapper, Protokoll-Puffer, fs-Funktionen für Dateitransfer und ein paar andere nützliche Funktionen
 docs/README-DE.md	- **[libs/scrap](https://github.com/rustdesk/rustdesk/tree/master/libs/scrap)**: Bildschirmaufnahme
 docs/README-DE.md	- **[libs/enigo](https://github.com/rustdesk/rustdesk/tree/master/libs/enigo)**: Plattformspezifische Maus- und Tastatursteuerung
 docs/README-DE.md	- **[libs/clipboard](https://github.com/rustdesk/rustdesk/tree/master/libs/clipboard)**: Datei kopieren und einfügen Implementierung für Windows, Linux, macOS.
@@ -181,7 +172,6 @@ docs/README-ES.md	docker run --rm -it -v $PWD:/home/user/rustdesk -v rustdesk-gi
 docs/README-ES.md	target/debug/rustdesk
 docs/README-ES.md	target/release/rustdesk
 docs/README-ES.md	Por favor, asegurate de que estás ejecutando estos comandos desde la raíz del repositorio de RustDesk, de lo contrario la aplicación puede ser incapaz de encontrar los recursos necesarios. También ten en cuenta que otros subcomandos de cargo como `install` o `run` no estan actualmente soportados usando este metodo, ya que instalarían o ejecutarían el programa dentro del contenedor en lugar del host.
-docs/README-ES.md	- **[libs/hbb_common](https://github.com/rustdesk/rustdesk/tree/master/libs/hbb_common)**:  codec de video, configuración, tcp/udp wrapper, protobuf, funciones para transferencia de archivos, y otras funciones de utilidad.
 docs/README-ES.md	- **[libs/scrap](https://github.com/rustdesk/rustdesk/tree/master/libs/scrap)**: captura de pantalla
 docs/README-ES.md	- **[libs/enigo](https://github.com/rustdesk/rustdesk/tree/master/libs/enigo)**: control del teclado/mouse especificos de cada plataforma
 docs/README-ES.md	- **[src/ui](https://github.com/rustdesk/rustdesk/tree/master/src/ui)**: GUI
@@ -214,7 +204,6 @@ docs/README-GR.md	docker run --rm -it -v $PWD:/home/user/rustdesk -v rustdesk-gi
 docs/README-GR.md	target/debug/rustdesk
 docs/README-GR.md	target/release/rustdesk
 docs/README-GR.md	Βεβαιωθείτε ότι εκτελείτε αυτές τις εντολές από την αρχική διαδρομή του αποθετηρίου του RustDesk, διαφορετικά η εφαρμογή ενδέχεται να μην είναι σε θέση να βρεί τους απαιτούμενους πόρους. Σημειώστε επίσης ότι άλλες υποεντολές, όπως το `install` ή το `run` δεν υποστηρίζονται επί του παρόντος μέσω αυτής της μεθόδου καθώς θα εγκαταστήσουν ή θα εκτελέσουν το πρόγραμμα εντός του container αντί του κεντρικού υπολογιστή.
-docs/README-GR.md	- **[libs/hbb_common](https://github.com/rustdesk/rustdesk/tree/master/libs/hbb_common)**: video codec, config, tcp/udp wrapper, protobuf, fs functions for file transfer, and some other utility functions
 docs/README-GR.md	- **[libs/scrap](https://github.com/rustdesk/rustdesk/tree/master/libs/scrap)**: screen capture
 docs/README-GR.md	- **[libs/enigo](https://github.com/rustdesk/rustdesk/tree/master/libs/enigo)**: platform specific keyboard/mouse control
 docs/README-GR.md	- **[src/ui](https://github.com/rustdesk/rustdesk/tree/master/src/ui)**: GUI
@@ -242,7 +231,6 @@ docs/README-HU.md	docker run --rm -it -v $PWD:/home/user/rustdesk -v rustdesk-gi
 docs/README-HU.md	target/debug/rustdesk
 docs/README-HU.md	target/release/rustdesk
 docs/README-HU.md	Kérlek mindenképpen nézd meg hogy ezeket a parancsokat a root RustDesk mappában futtatod e, különben a RustDesk lehet hogy nem fogja megtalálni az építéshez szükséges elemeket. Fontos az is, hogy jelenleg más cargo subparancsok, például `install`vagy `run` nem támogatottak, mivel egy Dockeres építés esetén elindítanák a programot a containeren belül.
-docs/README-HU.md	- **[libs/hbb_common](https://github.com/rustdesk/rustdesk/tree/master/libs/hbb_common)**: video codec, config, tcp/udp wrapper, protobuf, fs functions for file transfer, and some other utility functions
 docs/README-HU.md	- **[libs/scrap](https://github.com/rustdesk/rustdesk/tree/master/libs/scrap)**: screen capture
 docs/README-HU.md	- **[libs/enigo](https://github.com/rustdesk/rustdesk/tree/master/libs/enigo)**: platform specific keyboard/mouse control
 docs/README-HU.md	- **[src/ui](https://github.com/rustdesk/rustdesk/tree/master/src/ui)**: GUI
@@ -272,7 +260,6 @@ docs/README-ID.md	docker run --rm -it -v $PWD:/home/user/rustdesk -v rustdesk-gi
 docs/README-ID.md	target/debug/rustdesk
 docs/README-ID.md	target/release/rustdesk
 docs/README-ID.md	Harap pastikan bahwa kamu menjalankan perintah ini dari repositori root RustDesk, jika tidak demikian, aplikasi mungkin tidak dapat menemukan sumber yang diperlukan. Dan juga, perintah cargo seperti `install` atau `run` saat ini tidak didukung melalui metode ini karena, proses menginstal atau menjalankan program terjadi di dalam container bukan pada host.
-docs/README-ID.md	- **[libs/hbb_common](https://github.com/rustdesk/rustdesk/tree/master/libs/hbb_common)**: video codec, config, tcp/udp wrapper, protobuf, fs functions untuk transfer file, dan beberapa fungsi utilitas lainnya
 docs/README-ID.md	- **[libs/scrap](https://github.com/rustdesk/rustdesk/tree/master/libs/scrap)**: screen capture
 docs/README-ID.md	- **[libs/enigo](https://github.com/rustdesk/rustdesk/tree/master/libs/enigo)**: spesifikasi platform keyboard/mouse control
 docs/README-ID.md	- **[src/ui](https://github.com/rustdesk/rustdesk/tree/master/src/ui)**: GUI
@@ -302,7 +289,6 @@ docs/README-IT.md	docker run --rm -it -v $PWD:/home/user/rustdesk -v rustdesk-gi
 docs/README-IT.md	target/debug/rustdesk
 docs/README-IT.md	target/release/rustdesk
 docs/README-IT.md	Assicurati di eseguire questi comandi dalla radice del repository RustDesk, altrimenti l'applicazione potrebbe non essere in grado di trovare le risorse richieste. Nota inoltre che altri sottocomandi cargo come `install` o `run` non sono attualmente supportati tramite questo metodo poiché installerebbero o eseguirebbero il programma all'interno del container anziché nell'host.
-docs/README-IT.md	- **[libs/hbb_common](https://github.com/rustdesk/rustdesk/tree/master/libs/hbb_common)**: codec video, config, wrapper tcp/udp, protobuf, funzioni per il trasferimento file, e altre funzioni utili.
 docs/README-IT.md	- **[libs/scrap](https://github.com/rustdesk/rustdesk/tree/master/libs/scrap)**: cattura dello schermo
 docs/README-IT.md	- **[libs/enigo](https://github.com/rustdesk/rustdesk/tree/master/libs/enigo)**: controllo tastiera/mouse specifico della piattaforma
 docs/README-IT.md	- **[libs/clipboard](https://github.com/rustdesk/rustdesk/tree/master/libs/clipboard)**: implementazione del copia e incolla dei file per Windows, Linux, macOS.
@@ -334,7 +320,6 @@ docs/README-JP.md	このコマンドはRustDeskをビルドする度に実行す
 docs/README-JP.md	target/debug/rustdesk
 docs/README-JP.md	target/release/rustdesk
 docs/README-JP.md	コマンドをRustDeskリポジトリのルートから実行していることを確認してください。また、`install` や `run` などの他のcargoサブコマンドは、ホストではなくコンテナ内でプログラムをインストール、実行するため、現在の方法ではサポートされていません。
-docs/README-JP.md	- **[libs/hbb_common](https://github.com/rustdesk/rustdesk/tree/master/libs/hbb_common)**: ビデオコーデック、設定、tcp/udpラッパー、protobuf、ファイル転送に利用されるfs関数やその他のユーティリティ関数
 docs/README-JP.md	- **[libs/scrap](https://github.com/rustdesk/rustdesk/tree/master/libs/scrap)**: スクリーンキャプチャ
 docs/README-JP.md	- **[libs/enigo](https://github.com/rustdesk/rustdesk/tree/master/libs/enigo)**: プラットフォーム固有のキーボード/マウス操作
 docs/README-JP.md	- **[libs/clipboard](https://github.com/rustdesk/rustdesk/tree/master/libs/clipboard)**: Windows、Linux、macOS向けのファイルのコピーと貼り付けの実装
@@ -371,7 +356,6 @@ docs/README-KR.md	docker run --rm -it -v $PWD:/home/user/rustdesk -v rustdesk-gi
 docs/README-KR.md	target/debug/rustdesk
 docs/README-KR.md	target/release/rustdesk
 docs/README-KR.md	RustDesk 리포지토리의 루트에서 이러한 명령을 실행하고 있는지 확인하세요. 그렇지 않으면 응용 프로그램이 필요한 리소스를 찾지 못할 수 있습니다. 또한 `install` 또는 `run` 과 같은 다른 cargo 하위 명령은 호스트가 아닌 컨테이너 내부에 프로그램을 설치하거나 실행하므로 현재 이 방법을 통해 지원되지 않는다는 점에 유의하세요.
-docs/README-KR.md	- **[libs/hbb_common](https://github.com/rustdesk/rustdesk/tree/master/libs/hbb_common)**: 비디오 코덱, 구성, tcp/udp wrapper, protobuf, 파일 전송을 위한 fs 함수 및 기타 유틸리티 함수
 docs/README-KR.md	- **[libs/scrap](https://github.com/rustdesk/rustdesk/tree/master/libs/scrap)**: 화면 캡쳐
 docs/README-KR.md	- **[libs/enigo](https://github.com/rustdesk/rustdesk/tree/master/libs/enigo)**: 플랫폼별 키보드/마우스 제어
 docs/README-KR.md	- **[libs/clipboard](https://github.com/rustdesk/rustdesk/tree/master/libs/clipboard)**: Windows, Linux, macOS용 파일 복사 및 붙여넣기 구현
@@ -389,7 +373,6 @@ docs/README-NL.md	  <img src="../res/logo-header.svg" alt="RustDesk - Uw bureaub
 docs/README-NL.md	  <b>Wij hebben uw hulp nodig om dit README bestand te vertalen, <a href="https://github.com/rustdesk/rustdesk/tree/master/src/lang">RustDesk UI</a> en <a href="https://github.com/rustdesk/doc.rustdesk.com">Doc</a> naar uw moedertaal</b>
 docs/README-NL.md	Chat met ons: [Discord](https://discord.gg/nDceKgxnkV) | [Twitter](https://twitter.com/rustdesk) | [Reddit](https://www.reddit.com/r/rustdesk) | [YouTube](https://www.youtube.com/@rustdesk)
 docs/README-NL.md	[![RustDesk Server Pro](https://img.shields.io/badge/RustDesk%20Server%20Pro-Geavanceerde%20Functies-blue)](https://rustdesk.com/pricing.html)
-docs/README-NL.md	Alweer een andere programma voor -bureaublad op afstand-, geschreven in Rust. Werkt -out of the box-, geen configuratie nodig. U heeft volledige controle over uw gegevens, en hoeft zich geen zorgen te maken over de beveiliging. U kunt onze rendez-vous/relay server gebruiken, [je eigen server opzetten](https://rustdesk.com/blog/id-relay-set), of [je eigen rendez-vous/relay-server schrijven](https://github.com/rustdesk/rustdesk-server-demo).
 docs/README-NL.md	RustDesk verwelkomt bijdragen van iedereen. Zie [`docs/CONTRIBUTING.md`](CONTRIBUTING.md) voor hulp om aan de slag te gaan.
 docs/README-NL.md	[**FAQ**](https://github.com/rustdesk/rustdesk/wiki/FAQ)
 docs/README-NL.md	[**BINARY DOWNLOAD**](https://github.com/rustdesk/rustdesk/releases)
@@ -404,7 +387,6 @@ docs/README-NL.md	docker run --rm -it -v $PWD:/home/user/rustdesk -v rustdesk-gi
 docs/README-NL.md	target/debug/rustdesk
 docs/README-NL.md	target/release/rustdesk
 docs/README-NL.md	Zorg ervoor dat je deze commando's van de root van de RustDesk-repository uitvoert, anders kan het programma de nodige afhankelijkheden mogelijk niet vinden. Let ook op dat andere cargo-subcommando's zoals `install` en `run` zijn momenteel niet ondersteund, aangezien deze zouden worden uitgevoerd in een container in plaats van op de host.
-docs/README-NL.md	- **[libs/hbb_common](https://github.com/rustdesk/rustdesk/tree/master/libs/hbb_common)**: videocodec, configuratie, TCP/UDP-wrapper, protobuf, bestandssysteemfuncties voor bestandsoverdracht en nog wat andere nuttige functies
 docs/README-NL.md	- **[libs/scrap](https://github.com/rustdesk/rustdesk/tree/master/libs/scrap)**: schermopname
 docs/README-NL.md	- **[libs/enigo](https://github.com/rustdesk/rustdesk/tree/master/libs/enigo)**: platformspecifieke muis- en toetsenbordbeheer
 docs/README-NL.md	- **[src/ui](https://github.com/rustdesk/rustdesk/tree/master/src/ui)**: GUI
@@ -433,7 +415,6 @@ docs/README-NO.md	docker run --rm -it -v $PWD:/home/user/rustdesk -v rustdesk-gi
 docs/README-NO.md	target/debug/rustdesk
 docs/README-NO.md	target/release/rustdesk
 docs/README-NO.md	Venligst pass på att du kjører disse kommandoene fra roten av RustDesk repositoret, eller kan det hende att applikasjon ikke finner de riktige ressursene. Pass også på att andre cargo subkommandoer som for eksempel `install` eller `run` ikke støttes med denne metoden da de vill installere eller kjøre programmet i konteineren istedet for verten.
-docs/README-NO.md	- **[libs/hbb_common](https://github.com/rustdesk/rustdesk/tree/master/libs/hbb_common)**: video kodek, configurasjon, tcp/udp innpakning, protobuf, fs funksjon for fil overføring, og noen andre verktøy funksjoner
 docs/README-NO.md	- **[libs/scrap](https://github.com/rustdesk/rustdesk/tree/master/libs/scrap)**: skjermfangst
 docs/README-NO.md	- **[libs/enigo](https://github.com/rustdesk/rustdesk/tree/master/libs/enigo)**: platform spesefik keyboard/mus kontroll
 docs/README-NO.md	- **[libs/clipboard](https://github.com/rustdesk/rustdesk/tree/master/libs/clipboard)**: fil kopi og innliming implementasjon for Windows, Linux, macOS.
@@ -464,7 +445,6 @@ docs/README-PL.md	docker run --rm -it -v $PWD:/home/user/rustdesk -v rustdesk-gi
 docs/README-PL.md	target/debug/rustdesk
 docs/README-PL.md	target/release/rustdesk
 docs/README-PL.md	Upewnij się, że uruchamiasz te polecenia z katalogu głównego repozytorium RustDesk, w przeciwnym razie aplikacja może nie być w stanie znaleźć wymaganych zasobów. Należy również pamiętać, że inne podpolecenia ładowania, takie jak `install` lub `run` nie są obecnie obsługiwane za pomocą tej metody, ponieważ instalowałyby lub uruchamiały program wewnątrz kontenera zamiast na hoście.
-docs/README-PL.md	- **[libs/hbb_common](https://github.com/rustdesk/rustdesk/tree/master/libs/hbb_common)**: kodek wideo, konfiguracja, obsługa tcp/udp, protobuf, funkcje systemu plików do transferu plików i kilka innych funkcji użytkowych
 docs/README-PL.md	- **[libs/scrap](https://github.com/rustdesk/rustdesk/tree/master/libs/scrap)**: przechwytywanie ekranu
 docs/README-PL.md	- **[libs/enigo](https://github.com/rustdesk/rustdesk/tree/master/libs/enigo)**: specyficzne dla danej platformy sterowanie klawiaturą/myszą
 docs/README-PL.md	- **[src/ui](https://github.com/rustdesk/rustdesk/tree/master/src/ui)**: GUI
@@ -479,7 +459,6 @@ docs/README-PTBR.md	> Os desenvolvedores do RustDesk não toleram ou apoiam qual
 docs/README-PTBR.md	Converse conosco: [Discord](https://discord.gg/nDceKgxnkV) | [Twitter](https://twitter.com/rustdesk) | [Reddit](https://www.reddit.com/r/rustdesk) | [YouTube](https://www.youtube.com/@rustdesk)
 docs/README-PTBR.md	[![RustDesk Server Pro](https://img.shields.io/badge/RustDesk%20Server%20Pro-Advanced%20Features-blue)](https://rustdesk.com/pricing.html)
 docs/README-PTBR.md	Mais uma solução de desktop remoto, escrita em Rust. Funciona imediatamente, sem necessidade de configuração. Você tem controle total dos seus dados, sem preocupações com segurança. Você pode usar nosso servidor de conexão/retransmissão (rendezvous/relay), [configurar o seu próprio](https://rustdesk.com/server) ou [escrever seu próprio servidor de conexão/retransmissão](https://github.com/rustdesk/rustdesk-server-demo).
-docs/README-PTBR.md	O RustDesk acolhe a contribuição de todos. Veja [CONTRIBUTING.md](docs/CONTRIBUTING.md) para ajuda em como começar.
 docs/README-PTBR.md	[**Perguntas Frequentes (FAQ)**](https://github.com/rustdesk/rustdesk/wiki/FAQ)
 docs/README-PTBR.md	[**DOWNLOAD DOS BINÁRIOS**](https://github.com/rustdesk/rustdesk/releases)
 docs/README-PTBR.md	[**VERSÕES NIGHTLY (EM DESENVOLVIMENTO)**](https://github.com/rustdesk/rustdesk/releases/tag/nightly)
@@ -495,7 +474,6 @@ docs/README-PTBR.md	docker run --rm -it -v $PWD:/home/user/rustdesk -v rustdesk-
 docs/README-PTBR.md	target/debug/rustdesk
 docs/README-PTBR.md	target/release/rustdesk
 docs/README-PTBR.md	Certifique-se de executar esses comandos a partir da raiz do repositório do RustDesk, do contrário o aplicativo pode não encontrar os recursos necessários. Note também que outros subcomandos do cargo, como `install` ou `run`, não são suportados atualmente por este método, pois instalariam ou executariam o programa dentro do contêiner em vez de no sistema hospedeiro.
-docs/README-PTBR.md	- **[libs/hbb_common](https://github.com/rustdesk/rustdesk/tree/master/libs/hbb_common)**: codec de vídeo, configuração, encapsulador (wrapper) tcp/udp, protobuf, funções de sistema de arquivos para transferência de arquivos e algumas outras funções utilitárias.
 docs/README-PTBR.md	- **[libs/scrap](https://github.com/rustdesk/rustdesk/tree/master/libs/scrap)**: captura de tela.
 docs/README-PTBR.md	- **[libs/enigo](https://github.com/rustdesk/rustdesk/tree/master/libs/enigo)**: controle de teclado/mouse específico de cada plataforma.
 docs/README-PTBR.md	- **[libs/clipboard](https://github.com/rustdesk/rustdesk/tree/master/libs/clipboard)**: implementação de copiar e colar arquivos para Windows, Linux e macOS.
@@ -531,7 +509,6 @@ docs/README-RO.md	docker run --rm -it -v $PWD:/home/user/rustdesk -v rustdesk-gi
 docs/README-RO.md	target/debug/rustdesk
 docs/README-RO.md	target/release/rustdesk
 docs/README-RO.md	Asigură-te că rulezi aceste comenzi din rădăcina repository-ului RustDesk, altfel aplicația poate să nu găsească resursele necesare. De asemenea, reține că alte subcomenzi cargo, cum ar fi `install` sau `run`, nu sunt acceptate în prezent prin această metodă, deoarece ar instala sau rula programul în interiorul containerului în loc de gazdă.
-docs/README-RO.md	- **[libs/hbb_common](https://github.com/rustdesk/rustdesk/tree/master/libs/hbb_common)**: codec video, config, wrapper tcp/udp, protobuf, funcții fs pentru transfer de fișiere și alte funcții utilitare
 docs/README-RO.md	- **[libs/scrap](https://github.com/rustdesk/rustdesk/tree/master/libs/scrap)**: capturare ecran
 docs/README-RO.md	- **[libs/enigo](https://github.com/rustdesk/rustdesk/tree/master/libs/enigo)**: control tastatură/mouse specific platformei
 docs/README-RO.md	- **[libs/clipboard](https://github.com/rustdesk/rustdesk/tree/master/libs/clipboard)**: implementare copy/paste pentru fișiere pentru Windows, Linux, macOS.
@@ -569,7 +546,6 @@ docs/README-RU.md	docker run --rm -it -v $PWD:/home/user/rustdesk -v rustdesk-gi
 docs/README-RU.md	target/debug/rustdesk
 docs/README-RU.md	target/release/rustdesk
 docs/README-RU.md	Пожалуйста, убедитесь, что вы запускаете эти команды из корня репозитория RustDesk, иначе приложение не сможет найти необходимые ресурсы. Также обратите внимание, что другие подкоманды Cargo, такие как `install` или `run`, в настоящее время не поддерживаются этим методом, поскольку они будут устанавливать или запускать программу внутри контейнера, а не на хосте.
-docs/README-RU.md	- **[libs/hbb_common](https://github.com/rustdesk/rustdesk/tree/master/libs/hbb_common)**: видеокодек, конфигурация, враппер TCP/UDP и некоторые другие служебные функции, общие с сервером
 docs/README-RU.md	- **[libs/base](https://github.com/rustdesk/rustdesk/tree/master/libs/base)**: protobuf, функции файловой системы для передачи файлов, код для клавиатуры и платформ, который используется только этим приложением
 docs/README-RU.md	- **[libs/scrap](https://github.com/rustdesk/rustdesk/tree/master/libs/scrap)**: захват экрана
 docs/README-RU.md	- **[libs/enigo](https://github.com/rustdesk/rustdesk/tree/master/libs/enigo)**: специфичное для платформы управление клавиатурой/мышью
@@ -605,7 +581,6 @@ docs/README-TR.md	docker run --rm -it -v $PWD:/home/user/rustdesk -v rustdesk-gi
 docs/README-TR.md	target/debug/rustdesk
 docs/README-TR.md	target/release/rustdesk
 docs/README-TR.md	Lütfen bu komutları RustDesk reposunun root klasöründe çalıştırdığınızdan emin olun, aksi takdirde uygulama gereken kaynakları bulamayabilir. Ayrıca, `install` veya `run` gibi diğer cargo altkomutları şu anda bu yöntem aracılığıyla desteklenmemektedir, çünkü bunlar programı konteyner içinde kurar veya çalıştırır, ana makinede değil.
-docs/README-TR.md	- **[libs/hbb_common](https://github.com/rustdesk/rustdesk/tree/master/libs/hbb_common)**: video codec, config, tcp/udp wrapper, protobuf, dosya transferi için fs fonksiyonları ve diğer bazı yardımcı işlevler
 docs/README-TR.md	- **[libs/scrap](https://github.com/rustdesk/rustdesk/tree/master/libs/scrap)**: ekran yakalama
 docs/README-TR.md	- **[libs/enigo](https://github.com/rustdesk/rustdesk/tree/master/libs/enigo)**: platforma özgü klavye/fare kontrolü
 docs/README-TR.md	- **[libs/clipboard](https://github.com/rustdesk/rustdesk/tree/master/libs/clipboard)**: platforma özgü kopyala/yapıştır implementasyonları.
@@ -635,7 +610,7 @@ docs/README-UA.md	docker run --rm -it -v $PWD:/home/user/rustdesk -v rustdesk-gi
 docs/README-UA.md	target/debug/rustdesk
 docs/README-UA.md	target/release/rustdesk
 docs/README-UA.md	Будь ласка, переконайтеся, що ви запускаєте ці команди з кореня сховища RustDesk, інакше додаток не зможе знайти необхідні ресурси. Також зверніть увагу, що інші cargo підкоманди, такі як `install` або `run`, наразі не підтримуються цим методом, оскільки вони будуть встановлювати або запускати програму всередині контейнера, а не на хості.
-docs/README-UA.md	- **[libs/hbb_common](https://github.com/rustdesk/rustdesk/tree/master/libs/hbb_common)**: відеокодек, конфіг, обгортка tcp/udp, protobuf, функції fs для передавання файлів і деякі інші службові функції
+docs/README-UA.md	- **[libs/hbb_common](https://github.com/rustdesk/hbb_common)**: відеокодек, конфіг, обгортка tcp/udp, protobuf, функції fs для передавання файлів і деякі інші службові функції
 docs/README-UA.md	- **[libs/scrap](https://github.com/rustdesk/rustdesk/tree/master/libs/scrap)**: захоплення екрана
 docs/README-UA.md	- **[libs/enigo](https://github.com/rustdesk/rustdesk/tree/master/libs/enigo)**: специфічне для платформи керування клавіатурою/мишею
 docs/README-UA.md	- **[libs/clipboard](https://github.com/rustdesk/rustdesk/tree/master/libs/clipboard)**: реалізація копіювання та вставлення файлів для Windows, Linux, macOS.
@@ -657,7 +632,6 @@ docs/README-VN.md	RustDesk là một phần mềm điểu khiển máy tính t�
 docs/README-VN.md	**RustDesk** luôn hoan nghênh mọi đóng góp từ mọi người. Hãy xem tệp [`docs/CONTRIBUTING.md`](CONTRIBUTING.md) để bắt đầu. 
 docs/README-VN.md	[**FAQ**](https://github.com/rustdesk/rustdesk/wiki/FAQ)
 docs/README-VN.md	[**BINARY DOWNLOAD**](https://github.com/rustdesk/rustdesk/releases)
-docs/README-VN.md	[**NIGHTLY BUILD**](https://github.com/rustdesk/rustdesk/FAQreleases/tag/nightly)
 docs/README-VN.md	Phiên bản máy tính sử dụng __Flutter__ hoặc __Sciter__ (đã lỗi thời) cho giao diện người dùng (GUI). Hướng dẫn này chỉ áp dụng cho phiên bản Sciter, vì nó thân thiện và dễ bắt đầu hơn. Hãy kiểm tra [CI](https://github.com/rustdesk/rustdesk/blob/master/.github/workflows/flutter-build.yml) của chúng tôi để xây dựng phiên bản Flutter.
 docs/README-VN.md	## [Build](https://rustdesk.com/docs/en/dev/build/)
 docs/README-VN.md	git clone https://github.com/rustdesk/rustdesk
@@ -669,7 +643,6 @@ docs/README-VN.md	docker run --rm -it -v $PWD:/home/user/rustdesk -v rustdesk-gi
 docs/README-VN.md	target/debug/rustdesk
 docs/README-VN.md	target/release/rustdesk
 docs/README-VN.md	Hãy đảm bảo rằng bạn đang chạy các lệnh này từ gốc của thư mục **RustDesk**, nếu không, ứng dụng có thể không thể tìm thấy các tệp tài nguyên cần thiết. Hãy lưu ý rằng các câu lệnh con khác của **cargo** như **install** hoặc **run** hiện không được hỗ trợ qua phương pháp này, vì chúng sẽ cài đặt hoặc chạy chương trình bên trong **container** thay vì trên máy tính của bạn.
-docs/README-VN.md	- **[libs/hbb_common](https://github.com/rustdesk/rustdesk/tree/master/libs/hbb_common)**: video codec, cấu hình, tcp/udp wrapper, protobuf, fs functions để truyền file, và một số hàm tiện ích khác
 docs/README-VN.md	- **[libs/scrap](https://github.com/rustdesk/rustdesk/tree/master/libs/scrap)**: ghi lại màn hình
 docs/README-VN.md	- **[libs/enigo](https://github.com/rustdesk/rustdesk/tree/master/libs/enigo)**: điều khiển máy tính/chuột trên các nền tảng khác nhau
 docs/README-VN.md	- **[src/ui](https://github.com/rustdesk/rustdesk/tree/master/src/ui)**: giao diện người dùng
@@ -703,7 +676,6 @@ docs/README-ZH.md	生成的可执行程序在 target 目录下，可直接通过
 docs/README-ZH.md	target/debug/rustdesk
 docs/README-ZH.md	target/release/rustdesk
 docs/README-ZH.md	* 请保证您运行的目录是在 RustDesk 库的根目录内，否则软件会读不到文件。
-docs/README-ZH.md	- **[libs/hbb_common](https://github.com/rustdesk/rustdesk/tree/master/libs/hbb_common)**: 视频编解码, 配置, tcp/udp 封装, protobuf, 文件传输相关文件系统操作函数, 以及一些其他实用函数
 docs/README-ZH.md	- **[libs/scrap](https://github.com/rustdesk/rustdesk/tree/master/libs/scrap)**: 屏幕截取
 docs/README-ZH.md	- **[libs/enigo](https://github.com/rustdesk/rustdesk/tree/master/libs/enigo)**: 平台相关的鼠标键盘输入
 docs/README-ZH.md	- **[libs/clipboard](https://github.com/rustdesk/rustdesk/tree/master/libs/clipboard)**: Windows、Linux、macOS 的文件复制和粘贴实现
@@ -969,12 +941,12 @@ src/lang/eu.rs	        ("RustDesk cannot reach the desktop session on the remote
 src/lang/eu.rs	        ("RustDesk could not obtain a usable screen from the XDG Desktop Portal, the PipeWire library may be too old", "MyDesk-ek ezin izan du pantaila erabilgarririk lortu XDG Desktop Portal-etik, PipeWire liburutegia zaharregia izan daiteke"),
 src/lang/eu.rs	        ("RustDesk could not load a GStreamer component needed for screen capture ({})", "MyDesk-ek ezin izan du pantaila kapturatzeko beharrezkoa den GStreamer osagai bat kargatu ({})"),
 src/lang/eu.rs	        ("RustDesk storage", "MyDesk biltegiratzea"),
-src/lang/fa.rs	        ("Keep RustDesk background service", "را در پس زمینه نگه دارید MyDesk سرویس"),
-src/lang/fa.rs	        ("Show RustDesk", "MyDesk نمایش"),
-src/lang/fa.rs	        ("About RustDesk", "MyDesk درباره"),
+src/lang/fa.rs	        ("Keep RustDesk background service", "نگه داشتن سرویس پس‌زمینه MyDesk"),
+src/lang/fa.rs	        ("Show RustDesk", "نمایش MyDesk"),
+src/lang/fa.rs	        ("About RustDesk", "درباره MyDesk"),
 src/lang/fa.rs	        ("doc_mac_permission", "https://rustdesk.com/docs/en/client/mac/#enable-permissions"),
 src/lang/fa.rs	        ("doc_fix_wayland", "https://rustdesk.com/docs/en/client/linux/#x11-required"),
-src/lang/fa.rs	        ("RustDesk cannot reach the desktop session on the remote device, check that a desktop session is running and that RustDesk can use it", "MyDesk نمی‌تواند به نشست میزکار دستگاه راه دور دسترسی پیدا کند، بررسی کنید که نشست میزکار در حال اجرا باشد و MyDesk بتواند از آن استفاده کند"),
+src/lang/fa.rs	        ("RustDesk cannot reach the desktop session on the remote device, check that a desktop session is running and that RustDesk can use it", "MyDesk نمی‌تواند به نشست دسکتاپ دستگاه راه دور دسترسی پیدا کند، بررسی کنید که نشست دسکتاپ در حال اجرا باشد و MyDesk بتواند از آن استفاده کند"),
 src/lang/fa.rs	        ("RustDesk could not obtain a usable screen from the XDG Desktop Portal, the PipeWire library may be too old", "MyDesk نتوانست صفحه‌ای قابل استفاده از XDG Desktop Portal دریافت کند، ممکن است کتابخانه PipeWire خیلی قدیمی باشد"),
 src/lang/fa.rs	        ("RustDesk could not load a GStreamer component needed for screen capture ({})", "MyDesk نتوانست مؤلفه GStreamer موردنیاز برای ضبط صفحه را بارگذاری کند ({})"),
 src/lang/fa.rs	        ("RustDesk storage", "حافظه MyDesk"),
@@ -1323,6 +1295,7 @@ src/platform/linux.rs	    // https://github.com/rustdesk/rustdesk/issues/13705
 src/platform/linux.rs	/// See issue: https://github.com/rustdesk/rustdesk/issues/9003
 src/platform/linux.rs	        .or_else(|_| std::env::var("RUSTDESK_FORCED_DISPLAY_SERVER"))
 src/platform/linux.rs	        let dir = std::env::temp_dir().join(format!("rustdesk-tty-greeter-{}", std::process::id()));
+src/platform/linux.rs	pub(crate) const ENV_DRM_CAPTURE: &str = "RUSTDESK_DRM_CAPTURE";
 src/platform/linux.rs	/// `RUSTDESK_FORCED_DISPLAY_SERVER` is still honored as a fallback for existing setups.
 src/platform/linux.rs	        .or_else(|_| std::env::var("RUSTDESK_FORCED_DISPLAY_SERVER"))
 src/platform/linux.rs	                    .or_else(|_| std::env::var("RUSTDESK_FORCED_DISPLAY_SERVER"))

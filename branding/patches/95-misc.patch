@@ -1,5 +1,5 @@
 diff --git a/Cargo.lock b/Cargo.lock
-index 0de0fc61d..4d77a22cc 100644
+index 171a40012..4ebdff704 100644
 --- a/Cargo.lock
 +++ b/Cargo.lock
 @@ -6881,6 +6881,7 @@ version = "0.12.28"
@@ -19,7 +19,7 @@ index 0de0fc61d..4d77a22cc 100644
   "tower-http",
   "tower-service",
 diff --git a/Cargo.toml b/Cargo.toml
-index debdc196b..c988934f4 100644
+index 021f6d279..84e228c90 100644
 --- a/Cargo.toml
 +++ b/Cargo.toml
 @@ -259,7 +259,7 @@ webrtc-util = { git = "https://github.com/rustdesk-org/webrtc", rev = "49c89bd8d
@@ -39,7 +39,7 @@ index debdc196b..c988934f4 100644
 +identifier = "com.mydesk.mydesk"
  icon = ["res/32x32.png", "res/128x128.png", "res/128x128@2x.png"]
  osx_minimum_system_version = "10.14"
- 
+ # View Camera needs NSCameraUsageDescription or macOS kills the process at the
 diff --git a/libs/remote_printer/src/lib.rs b/libs/remote_printer/src/lib.rs
 index dbb10bd01..8ddbebe04 100644
 --- a/libs/remote_printer/src/lib.rs
@@ -76,7 +76,7 @@ index 6778a08f8..62309670f 100644
 +    }
 +}
 diff --git a/src/flutter_ffi.rs b/src/flutter_ffi.rs
-index 4ff89becd..4886ea39e 100644
+index dd4821387..5ee563212 100644
 --- a/src/flutter_ffi.rs
 +++ b/src/flutter_ffi.rs
 @@ -27,11 +27,12 @@ use base::{
@@ -93,7 +93,7 @@ index 4ff89becd..4886ea39e 100644
  };
  
  pub type SessionID = uuid::Uuid;
-@@ -1236,6 +1237,10 @@ pub fn main_http_request(url: String, method: String, body: Option<String>, head
+@@ -1238,6 +1239,10 @@ pub fn main_http_request(url: String, method: String, body: Option<String>, head
  }
  
  pub fn main_get_local_option(key: String) -> SyncReturn<String> {
@@ -104,7 +104,7 @@ index 4ff89becd..4886ea39e 100644
      SyncReturn(get_local_option(key))
  }
  
-@@ -1279,6 +1284,11 @@ pub fn main_set_env(key: String, value: Option<String>) -> SyncReturn<()> {
+@@ -1281,6 +1286,11 @@ pub fn main_set_env(key: String, value: Option<String>) -> SyncReturn<()> {
  pub fn main_set_local_option(key: String, value: String) {
      let is_texture_render_key = key.eq(keys::OPTION_TEXTURE_RENDER);
      let is_d3d_render_key = key.eq(keys::OPTION_ALLOW_D3D_RENDER);
@@ -116,7 +116,7 @@ index 4ff89becd..4886ea39e 100644
      set_local_option(key, value.clone());
      let is_render_target =
          |session: &crate::flutter::FlutterSession| session.is_default() || session.is_view_camera();
-@@ -2813,12 +2823,36 @@ pub fn main_get_common(key: String) -> String {
+@@ -2810,12 +2820,36 @@ pub fn main_get_common(key: String) -> String {
                      format!("error:{}", e)
                  }
              }
@@ -158,7 +158,7 @@ index 4ff89becd..4886ea39e 100644
                  };
              }
              #[cfg(not(any(target_os = "windows", target_os = "macos")))]
-@@ -2850,27 +2884,6 @@ pub fn main_get_common_sync(key: String) -> SyncReturn<String> {
+@@ -2847,27 +2881,6 @@ pub fn main_get_common_sync(key: String) -> SyncReturn<String> {
      SyncReturn(main_get_common(key))
  }
  
@@ -186,7 +186,7 @@ index 4ff89becd..4886ea39e 100644
  pub fn main_set_common(_key: String, _value: String) {
      #[cfg(target_os = "windows")]
      if _key == "install-printer" && crate::platform::is_win_10_or_greater() {
-@@ -2906,94 +2919,96 @@ pub fn main_set_common(_key: String, _value: String) {
+@@ -2903,94 +2916,96 @@ pub fn main_set_common(_key: String, _value: String) {
      }
      #[cfg(any(target_os = "windows", target_os = "macos"))]
      {
@@ -370,10 +370,10 @@ index 929c427e5..472c69de6 100644
                  && !name.starts_with("upgrade_mydesk_server_pro")
                  && name != "powered_by_me"
 diff --git a/src/platform/linux.rs b/src/platform/linux.rs
-index c4ebe65e1..2ae305c02 100644
+index 78314647c..6b7dd8a33 100644
 --- a/src/platform/linux.rs
 +++ b/src/platform/linux.rs
-@@ -407,7 +407,10 @@ pub fn is_login_screen_wayland() -> bool {
+@@ -411,7 +411,10 @@ pub fn is_login_screen_wayland() -> bool {
  /// does, so the login gate does not refuse a greeter the service serves over X11.
  #[cfg(feature = "drm")]
  fn is_wayland_tty_greeter(sid: &str, uid: &str) -> bool {
@@ -385,7 +385,7 @@ index c4ebe65e1..2ae305c02 100644
          && has_wayland_socket(uid)
          && is_tty_greeter_session(sid)
  }
-@@ -504,9 +507,12 @@ mod tty_greeter_tests {
+@@ -530,9 +533,12 @@ pub fn drm_capture_enabled() -> bool {
  /// forwards it to the per-user server on purpose: the greeter correction may only fix an
  /// AUTO-detected answer, never argue with the operator — a half-applied override would leave
  /// `get_display_server()` and the DRM routing gates disagreeing with each other.
@@ -399,7 +399,7 @@ index c4ebe65e1..2ae305c02 100644
  }
  
  /// X11 as far as the DRM path is concerned: a Wayland greeter is not, unless the operator
-@@ -1055,6 +1061,7 @@ fn try_start_server_(desktop: Option<&Desktop>) -> ResultType<Option<Child>> {
+@@ -1111,6 +1117,7 @@ fn try_start_server_(desktop: Option<&Desktop>) -> ResultType<Option<Child>> {
              }
              if let Ok(forced_display_server) =
                  std::env::var("MYDESK_FORCED_DISPLAY_SERVER")
@@ -407,7 +407,7 @@ index c4ebe65e1..2ae305c02 100644
              {
                  if !forced_display_server.is_empty() {
                      envs.push((
-@@ -2325,7 +2332,9 @@ mod desktop {
+@@ -2459,7 +2466,9 @@ mod desktop {
          fn adopt_wayland_tty_greeter(&mut self) {
              if self.tty_greeter
                  && !self.is_wayland()
@@ -419,7 +419,7 @@ index c4ebe65e1..2ae305c02 100644
                  && super::has_wayland_socket(&self.uid)
              {
 diff --git a/src/ui/index.tis b/src/ui/index.tis
-index 30c7944f4..4c09d9722 100644
+index 1c7956796..d16c54438 100644
 --- a/src/ui/index.tis
 +++ b/src/ui/index.tis
 @@ -604,7 +604,7 @@ class MyIdMenu: Reactor.Component {
@@ -441,7 +441,7 @@ index 30c7944f4..4c09d9722 100644
      msgbox(type_str, translate('Direct IP Access Settings'), <div .form .set-password>
              <div><span style={"width: 60px;" + greyStyle}>{translate('Port')}:</span>{port}</div>
 diff --git a/src/virtual_display_manager.rs b/src/virtual_display_manager.rs
-index 90a5d43ef..d9e80d522 100644
+index 92141e2d0..d252ee56a 100644
 --- a/src/virtual_display_manager.rs
 +++ b/src/virtual_display_manager.rs
 @@ -3,7 +3,7 @@ use hbb_common::{bail, ResultType};

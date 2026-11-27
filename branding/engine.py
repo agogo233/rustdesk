@@ -112,6 +112,12 @@ def is_binary_head(path):
 
 
 def main():
+    # 基线守卫: 只在未品牌化的上游基线上运行, 防止误在已品牌化树上执行造成 token 误替换
+    with open(os.path.join(WT, 'Cargo.toml'), encoding='utf-8') as f:
+        cargo = f.read()
+    m = re.search(r'^name\s*=\s*"([^"]+)"', cargo, re.M)
+    if not m or 'mydesk' in m.group(1).lower():
+        sys.exit(f'拒绝执行: Cargo.toml name={m.group(1) if m else "?"}, 目标必须是未品牌化的上游基线')
     # 干净守卫: 脏树上运行会把无关改动卷入 branding 提交
     for flag in (['diff', '--quiet'], ['diff', '--cached', '--quiet']):
         if subprocess.run(GIT + flag, cwd=WT).returncode != 0:
