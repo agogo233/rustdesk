@@ -38,3 +38,4 @@ D	appimage/build-apprun.sh
 D	flutter/build_fdroid.sh
 D	res/rustdesk-link.desktop
 D	res/rustdesk.service
+D	.github/workflows/pr-evidence-check.yml

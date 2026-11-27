@@ -57,7 +57,7 @@ grep -q 'agogo233/hbb_common' .gitmodules || fail ".gitmodules URL 非本 fork"
 # ---------- 4. CI 清单 ----------
 note "4. CI 清单检查"
 [ -f .github/workflows/build-New.yml ] || fail "build-New.yml 缺失"
-for f in bridge ci clear-cache fdroid flutter-build flutter-ci flutter-nightly flutter-tag playground third-party-RustDeskTempTopMostWindow update-webpki-roots; do
+for f in bridge ci clear-cache fdroid flutter-build flutter-ci flutter-nightly flutter-tag playground third-party-RustDeskTempTopMostWindow update-webpki-roots pr-evidence-check; do
     [ -f ".github/workflows/$f.yml" ] && fail "上游 workflow 未删除: $f.yml"
 done
 
