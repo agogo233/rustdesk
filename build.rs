@@ -4,7 +4,7 @@ fn build_windows() {
     let file2 = "src/platform/windows_delete_test_cert.cc";
     let mut build = cc::Build::new();
     if !cfg!(feature = "flutter") {
-        build.cpp(true).std("c++17").define("RUSTDESK_SCITER", None);
+        build.cpp(true).std("c++17").define("MYDESK_SCITER", None);
         println!("cargo:rerun-if-changed=flutter/windows/runner/service_control.h");
     }
     build.file(file).file(file2).compile("windows");

@@ -36,7 +36,7 @@ RustDesk mengajak semua orang untuk ikut berkontribusi. Lihat [`docs/CONTRIBUTIN
     height="80">](https://f-droid.org/en/packages/com.carriez.flutter_hbb)
 [<img src="https://flathub.org/api/badge?svg&locale=en"
     alt="Get it on Flathub"
-    height="80">](https://flathub.org/apps/com.rustdesk.RustDesk)
+    height="80">](https://flathub.org/apps/com.mydesk.MyDesk)
 
 ## Dependensi
 
@@ -153,7 +153,7 @@ Harap pastikan bahwa kamu menjalankan perintah ini dari repositori root RustDesk
 
 ## Struktur File
 
-- **[libs/hbb_common](https://github.com/rustdesk/hbb_common)**: video codec, config, tcp/udp wrapper, protobuf, fs functions untuk transfer file, dan beberapa fungsi utilitas lainnya
+- **[libs/hbb_common](https://github.com/mydesk/hbb_common)**: video codec, config, tcp/udp wrapper, protobuf, fs functions untuk transfer file, dan beberapa fungsi utilitas lainnya
 - **[libs/scrap](https://github.com/rustdesk/rustdesk/tree/master/libs/scrap)**: screen capture
 - **[libs/enigo](https://github.com/rustdesk/rustdesk/tree/master/libs/enigo)**: spesifikasi platform keyboard/mouse control
 - **[src/ui](https://github.com/rustdesk/rustdesk/tree/master/src/ui)**: GUI

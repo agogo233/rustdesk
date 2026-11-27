@@ -15,7 +15,7 @@
 #include <sddl.h>
 #include <memory>
 
-#ifdef RUSTDESK_SCITER
+#ifdef MYDESK_SCITER
 // Share the runner's service operations without loading either UI framework.
 #include "../../flutter/windows/runner/service_control.h"
 
@@ -36,7 +36,7 @@ extern "C" uint32_t get_session_user_info(PWSTR bufin, uint32_t nin, uint32_t id
 
 void flog(char const *fmt, ...)
 {
-    FILE *h = fopen("C:\\Windows\\temp\\test_rustdesk.log", "at");
+    FILE *h = fopen("C:\\Windows\\temp\\test_mydesk.log", "at");
     if (!h)
         return;
     va_list arg;

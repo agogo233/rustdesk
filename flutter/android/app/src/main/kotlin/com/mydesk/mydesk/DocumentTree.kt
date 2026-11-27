@@ -187,7 +187,7 @@ internal class DocumentTree(
         fun temporaryName(name: String, purpose: String): String {
             // Providers can append the MIME extension when renaming; preserve it for temporary files.
             val extension = name.substringAfterLast('.', "").let { if (it.isEmpty()) "" else ".$it" }
-            return ".rustdesk-${UUID.randomUUID()}.$purpose$extension"
+            return ".mydesk-${UUID.randomUUID()}.$purpose$extension"
         }
 
         fun mime(name: String): String = MimeTypeMap.getSingleton()

@@ -460,7 +460,7 @@ class MainActivity : FlutterActivity() {
                             var errorCode = "import_failed"
                             try {
                                 val temporaryFile = File.createTempFile(
-                                    ".rustdesk-import-",
+                                    ".mydesk-import-",
                                     ".tmp",
                                     destination.parentFile
                                 )
@@ -564,7 +564,7 @@ class MainActivity : FlutterActivity() {
                                 val parent = destination.parentFile
                                     ?: throw IllegalStateException("The destination has no parent")
                                 temporary = File.createTempFile(
-                                    ".rustdesk-import-dir-",
+                                    ".mydesk-import-dir-",
                                     ".tmp",
                                     parent
                                 ).also {
@@ -580,7 +580,7 @@ class MainActivity : FlutterActivity() {
                                         throw IllegalStateException("The destination already exists")
                                     }
                                     val backupFile = File.createTempFile(
-                                        ".rustdesk-import-backup-",
+                                        ".mydesk-import-backup-",
                                         ".tmp",
                                         parent
                                     )

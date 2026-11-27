@@ -25,13 +25,13 @@ typedef F3 = Pointer<Uint8> Function(Pointer<Utf8>, int);
 typedef F3Dart = Pointer<Uint8> Function(Pointer<Utf8>, Int32);
 typedef HandleEvent = Future<void> Function(Map<String, dynamic> evt);
 
-/// The Linux bundle keeps the core library at lib/librustdesk.so next to the
+/// The Linux bundle keeps the core library at lib/libmydesk.so next to the
 /// executable. Prefer that copy, mirroring flutter/linux/main.cc: the plain
 /// name relies on the loader search path, which repackaged installs may not
 /// cover. https://github.com/rustdesk/rustdesk/discussions/14407
 DynamicLibrary _openLinuxCoreLib() {
   final bundled =
-      '${File(Platform.resolvedExecutable).parent.path}/lib/librustdesk.so';
+      '${File(Platform.resolvedExecutable).parent.path}/lib/libmydesk.so';
   try {
     if (File(bundled).existsSync()) {
       return DynamicLibrary.open(bundled);
@@ -39,7 +39,7 @@ DynamicLibrary _openLinuxCoreLib() {
   } catch (e) {
     debugPrint("Failed to load '$bundled': $e");
   }
-  return DynamicLibrary.open('librustdesk.so');
+  return DynamicLibrary.open('libmydesk.so');
 }
 
 /// FFI wrapper around the native Rust core.
@@ -49,7 +49,7 @@ class PlatformFFI {
   // _homeDir is only needed for Android and IOS.
   String _homeDir = '';
   final _eventHandlers = <String, Map<String, HandleEvent>>{};
-  late RustdeskImpl _ffiBind;
+  late MydeskImpl _ffiBind;
   late String _appType;
   StreamEventHandler? _eventCallback;
 
@@ -58,9 +58,9 @@ class PlatformFFI {
   static final PlatformFFI instance = PlatformFFI._();
   final _toAndroidChannel = const MethodChannel('mChannel');
 
-  RustdeskImpl get ffiBind => _ffiBind;
+  MydeskImpl get ffiBind => _ffiBind;
   @visibleForTesting
-  void setBindingForTesting(RustdeskImpl binding) => _ffiBind = binding;
+  void setBindingForTesting(MydeskImpl binding) => _ffiBind = binding;
 
   F3? _session_get_rgba;
 
@@ -138,17 +138,17 @@ class PlatformFFI {
   Future<void> init(String appType) async {
     _appType = appType;
     final dylib = isAndroid
-        ? DynamicLibrary.open('librustdesk.so')
+        ? DynamicLibrary.open('libmydesk.so')
         : isLinux
             ? _openLinuxCoreLib()
             : isWindows
-                ? DynamicLibrary.open('librustdesk.dll')
+                ? DynamicLibrary.open('libmydesk.dll')
                 :
                 // Use executable itself as the dynamic library for MacOS.
                 // Multiple dylib instances will cause some global instances to be invalid.
                 // eg. `lazy_static` objects in rust side, will be created more than once, which is not expected.
                 //
-                // isMacOS? DynamicLibrary.open("liblibrustdesk.dylib") :
+                // isMacOS? DynamicLibrary.open("liblibmydesk.dylib") :
                 DynamicLibrary.process();
     debugPrint('initializing FFI $_appType');
     try {
@@ -159,7 +159,7 @@ class PlatformFFI {
       } catch (e) {
         debugPrint('Failed to get documents directory: $e');
       }
-      _ffiBind = RustdeskImpl(dylib);
+      _ffiBind = MydeskImpl(dylib);
 
       if (isLinux) {
         if (isMain) {
@@ -261,10 +261,10 @@ class PlatformFFI {
   }
 
   /// Start listening to the Rust core's events and frames.
-  void _startListenEvent(RustdeskImpl rustdeskImpl) {
+  void _startListenEvent(MydeskImpl mydeskImpl) {
     final appType =
         _appType == kAppTypeDesktopRemote ? '$_appType,$kWindowId' : _appType;
-    var sink = rustdeskImpl.startGlobalEventStream(appType: appType);
+    var sink = mydeskImpl.startGlobalEventStream(appType: appType);
     sink.listen((message) {
       () async {
         try {

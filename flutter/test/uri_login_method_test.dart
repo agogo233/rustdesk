@@ -15,21 +15,21 @@ void main() {
     ]) {
       expect(
         urlLinkToCmdArgs(
-            Uri.parse('rustdesk://$type/123456789?request-approval=true')),
+            Uri.parse('mydesk://$type/123456789?request-approval=true')),
         ['--$type', '123456789', '--request-approval'],
       );
     }
     expect(
-      urlLinkToCmdArgs(Uri.parse('rustdesk://123456789?request-approval=true')),
+      urlLinkToCmdArgs(Uri.parse('mydesk://123456789?request-approval=true')),
       ['--connect', '123456789', '--request-approval'],
     );
   });
 
   test('omitted and empty passwords retain automatic login', () {
-    expect(urlLinkToCmdArgs(Uri.parse('rustdesk://123456789')),
+    expect(urlLinkToCmdArgs(Uri.parse('mydesk://123456789')),
         ['--connect', '123456789']);
     for (final query in ['password=', 'password=&request-approval=false']) {
-      expect(urlLinkToCmdArgs(Uri.parse('rustdesk://123456789?$query')),
+      expect(urlLinkToCmdArgs(Uri.parse('mydesk://123456789?$query')),
           ['--connect', '123456789', '--password', '']);
     }
   });
@@ -39,7 +39,7 @@ void main() {
       'password=provided&request-approval=true',
       'request-approval=true&password=provided',
     ]) {
-      expect(urlLinkToCmdArgs(Uri.parse('rustdesk://123456789?$query')),
+      expect(urlLinkToCmdArgs(Uri.parse('mydesk://123456789?$query')),
           ['--connect', '123456789', '--request-approval']);
     }
   });

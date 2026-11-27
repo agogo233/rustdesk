@@ -51,7 +51,7 @@ pub enum GrabState {
 pub type NotifyMessageBox = fn(String, String, String, String) -> dyn Future<Output = ()>;
 
 // the executable name of the portable version
-pub const PORTABLE_APPNAME_RUNTIME_ENV_KEY: &str = "RUSTDESK_APPNAME";
+pub const PORTABLE_APPNAME_RUNTIME_ENV_KEY: &str = "MYDESK_APPNAME";
 
 pub const PLATFORM_WINDOWS: &str = "Windows";
 pub const PLATFORM_LINUX: &str = "Linux";
@@ -1106,10 +1106,10 @@ pub(crate) fn release_id_from_update_url(update_url: &str) -> ResultType<String>
     };
     let segments = segments.collect::<Vec<_>>();
     let release_id = match segments.as_slice() {
-        ["rustdesk", "rustdesk", "releases", "tag", release_id] => *release_id,
-        ["rustdesk", "rustdesk", "releases", "tag", release_id, ""] => *release_id,
+        ["mydesk", "mydesk", "releases", "tag", release_id] => *release_id,
+        ["mydesk", "mydesk", "releases", "tag", release_id, ""] => *release_id,
         _ => bail!(
-            "Update URL is not a RustDesk release tag URL: {}",
+            "Update URL is not a MyDesk release tag URL: {}",
             update_url
         ),
     };
@@ -1237,8 +1237,8 @@ pub fn get_app_name() -> String {
 }
 
 #[inline]
-pub fn is_rustdesk() -> bool {
-    hbb_common::config::APP_NAME.read().unwrap().eq("RustDesk")
+pub fn is_mydesk() -> bool {
+    hbb_common::config::APP_NAME.read().unwrap().eq("MyDesk")
 }
 
 #[inline]
@@ -1317,7 +1317,7 @@ fn get_api_server_(api: String, custom: String) -> String {
             return format!("http://{}", s);
         }
     }
-    "https://admin.rustdesk.com".to_owned()
+    "https://admin.mydesk.com".to_owned()
 }
 
 #[inline]
@@ -2508,10 +2508,10 @@ impl ThrottledInterval {
     }
 }
 
-pub type RustDeskInterval = ThrottledInterval;
+pub type MyDeskInterval = ThrottledInterval;
 
 #[inline]
-pub fn rustdesk_interval(i: Interval) -> ThrottledInterval {
+pub fn mydesk_interval(i: Interval) -> ThrottledInterval {
     ThrottledInterval::new(i)
 }
 
@@ -3128,8 +3128,8 @@ mod tests {
     }
 
     #[test]
-    fn parses_stable_rustdesk_release_url() {
-        let update_url = "https://github.com/rustdesk/rustdesk/releases/tag/v1.4.6";
+    fn parses_stable_mydesk_release_url() {
+        let update_url = "https://github.com/mydesk/mydesk/releases/tag/v1.4.6";
 
         assert_eq!(release_id_from_update_url(update_url).unwrap(), "v1.4.6");
         assert_eq!(display_version_from_release_id("v1.4.6").unwrap(), "1.4.6");
@@ -3142,19 +3142,19 @@ mod tests {
     #[test]
     fn rejects_untrusted_release_urls_and_unstable_versions() {
         for update_url in [
-            "http://github.com/rustdesk/rustdesk/releases/tag/v1.4.6",
-            "https://github.com:8443/rustdesk/rustdesk/releases/tag/v1.4.6",
-            "https://github.com:443/rustdesk/rustdesk/releases/tag/v1.4.6",
-            "https://user@github.com/rustdesk/rustdesk/releases/tag/v1.4.6",
-            "https://example.com/rustdesk/rustdesk/releases/tag/v1.4.6",
-            "https://github.com/other/rustdesk/releases/tag/v1.4.6",
-            "https://github.com/rustdesk/other/releases/tag/v1.4.6",
-            "https://github.com/rustdesk/rustdesk/releases/download/v1.4.6/rustdesk.exe",
-            "https://github.com/rustdesk/rustdesk/releases/tag/v1.4.6?x=1",
-            "https://github.com/rustdesk/rustdesk/releases/tag/v1.4.6#asset",
-            "https://github.com/rustdesk/rustdesk/releases/tag/v1.4.6/extra",
-            "https://github.com/rustdesk/rustdesk/releases/tag/v1%2F4%2F6",
-            "https://github.com/rustdesk/rustdesk/releases/tag/%2e%2e",
+            "http://github.com/mydesk/mydesk/releases/tag/v1.4.6",
+            "https://github.com:8443/mydesk/mydesk/releases/tag/v1.4.6",
+            "https://github.com:443/mydesk/mydesk/releases/tag/v1.4.6",
+            "https://user@github.com/mydesk/mydesk/releases/tag/v1.4.6",
+            "https://example.com/mydesk/mydesk/releases/tag/v1.4.6",
+            "https://github.com/other/mydesk/releases/tag/v1.4.6",
+            "https://github.com/mydesk/other/releases/tag/v1.4.6",
+            "https://github.com/mydesk/mydesk/releases/download/v1.4.6/mydesk.exe",
+            "https://github.com/mydesk/mydesk/releases/tag/v1.4.6?x=1",
+            "https://github.com/mydesk/mydesk/releases/tag/v1.4.6#asset",
+            "https://github.com/mydesk/mydesk/releases/tag/v1.4.6/extra",
+            "https://github.com/mydesk/mydesk/releases/tag/v1%2F4%2F6",
+            "https://github.com/mydesk/mydesk/releases/tag/%2e%2e",
         ] {
             assert!(release_id_from_update_url(update_url).is_err());
         }
@@ -3243,10 +3243,10 @@ mod tests {
     // The clock is paused, so a stalled runner cannot make two ticks look close together.
     #[allow(non_snake_case)]
     #[tokio::test(start_paused = true)]
-    async fn test_RustDesk_interval_sleep() {
+    async fn test_MyDesk_interval_sleep() {
         let base_intervals = [interval_maker, interval_at_maker];
         for (i, maker) in base_intervals.into_iter().enumerate() {
-            let mut timer = rustdesk_interval(maker());
+            let mut timer = mydesk_interval(maker());
             let mut times = Vec::new();
             sleep(Duration::from_secs(3)).await;
             loop {

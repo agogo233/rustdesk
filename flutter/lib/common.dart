@@ -742,12 +742,12 @@ Future<void> windowOnTop(int? id) async {
     }
     await windowManager.show();
     await windowManager.focus();
-    await rustDeskWinManager.registerActiveWindow(kWindowMainId);
+    await myDeskWinManager.registerActiveWindow(kWindowMainId);
   } else {
     WindowController.fromWindowId(id)
       ..focus()
       ..show();
-    rustDeskWinManager.call(WindowType.Main, kWindowEventShow, {"id": id});
+    myDeskWinManager.call(WindowType.Main, kWindowEventShow, {"id": id});
   }
 }
 
@@ -2026,7 +2026,7 @@ Future<Offset?> _adjustRestoreMainWindowOffset(
 Future<bool> restoreWindowPosition(WindowType type,
     {int? windowId, String? peerId, int? display}) async {
   if (bind
-      .mainGetEnv(key: "DISABLE_RUSTDESK_RESTORE_WINDOW_POSITION")
+      .mainGetEnv(key: "DISABLE_MYDESK_RESTORE_WINDOW_POSITION")
       .isNotEmpty) {
     return false;
   }
@@ -2257,7 +2257,7 @@ bool handleUriLink({List<String>? cmdArgs, Uri? uri, String? uriString}) {
   List<String>? args;
   if (cmdArgs != null && cmdArgs.isNotEmpty) {
     args = cmdArgs;
-    // rustdesk <uri link>
+    // mydesk <uri link>
     if (args[0].startsWith(bind.mainUriPrefixSync())) {
       final uri = Uri.tryParse(args[0]);
       if (uri != null) {
@@ -2351,7 +2351,7 @@ bool handleUriLink({List<String>? cmdArgs, Uri? uri, String? uriString}) {
     switch (type) {
       case UriLinkType.remoteDesktop:
         Future.delayed(Duration.zero, () {
-          rustDeskWinManager.newRemoteDesktop(id!,
+          myDeskWinManager.newRemoteDesktop(id!,
               loginMethod: loginMethod,
               password: password,
               switchUuid: switchUuid,
@@ -2360,35 +2360,35 @@ bool handleUriLink({List<String>? cmdArgs, Uri? uri, String? uriString}) {
         break;
       case UriLinkType.fileTransfer:
         Future.delayed(Duration.zero, () {
-          rustDeskWinManager.newFileTransfer(id!,
+          myDeskWinManager.newFileTransfer(id!,
               loginMethod: loginMethod,
               password: password, forceRelay: forceRelay);
         });
         break;
       case UriLinkType.viewCamera:
         Future.delayed(Duration.zero, () {
-          rustDeskWinManager.newViewCamera(id!,
+          myDeskWinManager.newViewCamera(id!,
               loginMethod: loginMethod,
               password: password, forceRelay: forceRelay);
         });
         break;
       case UriLinkType.portForward:
         Future.delayed(Duration.zero, () {
-          rustDeskWinManager.newPortForward(id!, false,
+          myDeskWinManager.newPortForward(id!, false,
               loginMethod: loginMethod,
               password: password, forceRelay: forceRelay);
         });
         break;
       case UriLinkType.rdp:
         Future.delayed(Duration.zero, () {
-          rustDeskWinManager.newPortForward(id!, true,
+          myDeskWinManager.newPortForward(id!, true,
               loginMethod: loginMethod,
               password: password, forceRelay: forceRelay);
         });
         break;
       case UriLinkType.terminal:
         Future.delayed(Duration.zero, () {
-          rustDeskWinManager.newTerminal(id!,
+          myDeskWinManager.newTerminal(id!,
               loginMethod: loginMethod,
               password: password, forceRelay: forceRelay);
         });
@@ -2428,7 +2428,7 @@ List<String>? urlLinkToCmdArgs(Uri uri) {
               'Y';
       if (!allowDeepLinkServerSettings) {
         debugPrint(
-            "Ignore rustdesk://config because $kOptionAllowDeepLinkServerSettings is not enabled.");
+            "Ignore mydesk://config because $kOptionAllowDeepLinkServerSettings is not enabled.");
         // Keep the user-facing error generic; detailed rejection reason is in debug logs.
         // Delay toast to avoid missing overlay during cold-start deeplink handling.
         Timer(Duration(seconds: 1), () {
@@ -2449,7 +2449,7 @@ List<String>? urlLinkToCmdArgs(Uri uri) {
           bind.mainGetBuildinOption(key: kOptionAllowDeepLinkPassword) == 'Y';
       if (!allowDeepLinkPassword) {
         debugPrint(
-            "Ignore rustdesk://password because $kOptionAllowDeepLinkPassword is not enabled.");
+            "Ignore mydesk://password because $kOptionAllowDeepLinkPassword is not enabled.");
         // Keep the user-facing error generic; detailed rejection reason is in debug logs.
         // Delay toast to avoid missing overlay during cold-start deeplink handling.
         Timer(Duration(seconds: 1), () {
@@ -2474,9 +2474,9 @@ List<String>? urlLinkToCmdArgs(Uri uri) {
   } else if (uri.authority.length > 2 &&
       (uri.path.length <= 1 ||
           (uri.path == '/r' || uri.path.startsWith('/r@')))) {
-    // rustdesk://<connect-id>
-    // rustdesk://<connect-id>/r
-    // rustdesk://<connect-id>/r@<server>
+    // mydesk://<connect-id>
+    // mydesk://<connect-id>/r
+    // mydesk://<connect-id>/r@<server>
     command = '--connect';
     id = uri.authority;
     if (uri.path.length > 1) {
@@ -2558,35 +2558,35 @@ connectMainDesktop(String id,
     bool? isSharedPassword,
     String loginMethod = ''}) async {
   if (isFileTransfer) {
-    await rustDeskWinManager.newFileTransfer(id,
+    await myDeskWinManager.newFileTransfer(id,
         loginMethod: loginMethod,
         password: password,
         isSharedPassword: isSharedPassword,
         connToken: connToken,
         forceRelay: forceRelay);
   } else if (isViewCamera) {
-    await rustDeskWinManager.newViewCamera(id,
+    await myDeskWinManager.newViewCamera(id,
         loginMethod: loginMethod,
         password: password,
         isSharedPassword: isSharedPassword,
         connToken: connToken,
         forceRelay: forceRelay);
   } else if (isTcpTunneling || isRDP) {
-    await rustDeskWinManager.newPortForward(id, isRDP,
+    await myDeskWinManager.newPortForward(id, isRDP,
         loginMethod: loginMethod,
         password: password,
         isSharedPassword: isSharedPassword,
         connToken: connToken,
         forceRelay: forceRelay);
   } else if (isTerminal) {
-    await rustDeskWinManager.newTerminal(id,
+    await myDeskWinManager.newTerminal(id,
         loginMethod: loginMethod,
         password: password,
         isSharedPassword: isSharedPassword,
         connToken: connToken,
         forceRelay: forceRelay);
   } else {
-    await rustDeskWinManager.newRemoteDesktop(id,
+    await myDeskWinManager.newRemoteDesktop(id,
         loginMethod: loginMethod,
         password: password,
         isSharedPassword: isSharedPassword,
@@ -2645,7 +2645,7 @@ connect(BuildContext context, String id,
         forceRelay: forceRelay,
       );
     } else {
-      await rustDeskWinManager.call(WindowType.Main, kWindowConnect, {
+      await myDeskWinManager.call(WindowType.Main, kWindowConnect, {
         'id': id,
         'isFileTransfer': isFileTransfer,
         'isViewCamera': isViewCamera,
@@ -2868,22 +2868,22 @@ bool isRunningInPortableMode() {
 /// Window status callback
 Future<void> onActiveWindowChanged() async {
   print(
-      "[MultiWindowHandler] active window changed: ${rustDeskWinManager.getActiveWindows()}");
-  if (rustDeskWinManager.getActiveWindows().isEmpty) {
+      "[MultiWindowHandler] active window changed: ${myDeskWinManager.getActiveWindows()}");
+  if (myDeskWinManager.getActiveWindows().isEmpty) {
     // close all sub windows
     try {
       if (isLinux) {
         await Future.wait([
           saveWindowPosition(WindowType.Main),
-          rustDeskWinManager.closeAllSubWindows()
+          myDeskWinManager.closeAllSubWindows()
         ]);
       } else {
-        await rustDeskWinManager.closeAllSubWindows();
+        await myDeskWinManager.closeAllSubWindows();
       }
     } catch (err) {
       debugPrintStack(label: "$err");
     } finally {
-      debugPrint("Start closing RustDesk...");
+      debugPrint("Start closing MyDesk...");
       await windowManager.setPreventClose(false);
       await windowManager.close();
       if (isMacOS) {
@@ -3100,7 +3100,7 @@ Future<void> updateSystemWindowTheme() async {
 ///
 /// Note: not found a general solution for rust based AVFoundation bingding.
 /// [AVFoundation] crate has compile error.
-const kMacOSPermChannel = MethodChannel("org.rustdesk.rustdesk/host");
+const kMacOSPermChannel = MethodChannel("org.mydesk.mydesk/host");
 
 enum PermissionAuthorizeType {
   undetermined,
@@ -3378,7 +3378,7 @@ Future<List<Rect>> getScreenListWayland() async {
       screenRectList.add(rect);
     }
   } else {
-    final screenList = await rustDeskWinManager.call(
+    final screenList = await myDeskWinManager.call(
         WindowType.Main, kWindowGetScreenList, '');
     try {
       for (var screen in jsonDecode(screenList.result) as List<dynamic>) {
@@ -3778,7 +3778,7 @@ Widget loadPowered(BuildContext context) {
     cursor: SystemMouseCursors.click,
     child: GestureDetector(
       onTap: () {
-        launchUrl(Uri.parse('https://rustdesk.com'));
+        launchUrl(Uri.parse('https://mydesk.com'));
       },
       child: Opacity(
           opacity: 0.5,
@@ -4033,7 +4033,7 @@ get defaultOptionAccessMode => isCustomClient ? 'custom' : '';
 get defaultOptionApproveMode => isCustomClient ? 'password-click' : '';
 
 bool whitelistNotEmpty() {
-  // https://rustdesk.com/docs/en/self-host/client-configuration/advanced-settings/#whitelist
+  // https://mydesk.com/docs/en/self-host/client-configuration/advanced-settings/#whitelist
   final v = bind.mainGetOptionSync(key: kOptionWhitelist);
   return v != '' && v != ',';
 }

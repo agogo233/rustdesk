@@ -85,7 +85,7 @@ const PRIVILEGED_UPDATE_BODY: &str = r#"
 	    set check_source to "if [ -n " & expected_sha256_q & " ]; then test -f " & source_path_q & "; else test -d " & source_path_q & "; fi;"
 	    set kill_others to "pids=$(pgrep -x '" & app_name & "' | grep -vx " & cur_pid & " || true); if [ -n \"$pids\" ]; then echo \"$pids\" | xargs kill -9 || true; fi;"
 	    -- Rehash the root-owned copy in a clean environment before staging bytes.
-	    set prepare_verified to "verified_dir=$(/usr/bin/mktemp -d /tmp/.rustdeskupdate-verified.XXXXXX); /bin/chmod 0700 \"$verified_dir\"; verified_app=\"$verified_dir/" & app_name & ".app\"; dmg_attached=0; if [ -n " & expected_sha256_q & " ]; then verified_dmg=\"$verified_dir/update.dmg\"; /bin/cp " & source_path_q & " \"$verified_dmg\"; /usr/sbin/chown root:wheel \"$verified_dmg\"; /bin/chmod 0400 \"$verified_dmg\"; actual_sha256=$(/usr/bin/env -i /usr/bin/shasum -a 256 \"$verified_dmg\"); actual_sha256=${actual_sha256%% *}; if [ \"$actual_sha256\" != " & expected_sha256_q & " ]; then echo 'Update DMG SHA256 mismatch' >&2; exit 1; fi; dmg_mount=\"$verified_dir/mount\"; /bin/mkdir \"$dmg_mount\"; dmg_attached=1; " & attach_dmg & "; /usr/bin/ditto \"$dmg_mount/" & app_name & ".app\" \"$verified_app\"; " & detach_dmg & "; dmg_attached=0; /bin/rm -f \"$verified_dmg\"; else /usr/bin/ditto " & source_path_q & " \"$verified_app\"; fi; /usr/sbin/chown -R root:wheel \"$verified_app\"; /bin/chmod -R go-w \"$verified_app\";"
+	    set prepare_verified to "verified_dir=$(/usr/bin/mktemp -d /tmp/.mydeskupdate-verified.XXXXXX); /bin/chmod 0700 \"$verified_dir\"; verified_app=\"$verified_dir/" & app_name & ".app\"; dmg_attached=0; if [ -n " & expected_sha256_q & " ]; then verified_dmg=\"$verified_dir/update.dmg\"; /bin/cp " & source_path_q & " \"$verified_dmg\"; /usr/sbin/chown root:wheel \"$verified_dmg\"; /bin/chmod 0400 \"$verified_dmg\"; actual_sha256=$(/usr/bin/env -i /usr/bin/shasum -a 256 \"$verified_dmg\"); actual_sha256=${actual_sha256%% *}; if [ \"$actual_sha256\" != " & expected_sha256_q & " ]; then echo 'Update DMG SHA256 mismatch' >&2; exit 1; fi; dmg_mount=\"$verified_dir/mount\"; /bin/mkdir \"$dmg_mount\"; dmg_attached=1; " & attach_dmg & "; /usr/bin/ditto \"$dmg_mount/" & app_name & ".app\" \"$verified_app\"; " & detach_dmg & "; dmg_attached=0; /bin/rm -f \"$verified_dmg\"; else /usr/bin/ditto " & source_path_q & " \"$verified_app\"; fi; /usr/sbin/chown -R root:wheel \"$verified_app\"; /bin/chmod -R go-w \"$verified_app\";"
 	    set validate_verified_app to "candidate_bundle_id=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' \"$verified_app/Contents/Info.plist\"); if [ -z " & expected_bundle_id_q & " ] || [ \"$candidate_bundle_id\" != " & expected_bundle_id_q & " ]; then echo 'Update app bundle identifier mismatch' >&2; exit 1; fi; if [ -e " & app_bundle_q & " ]; then installed_bundle_id=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' " & installed_info_q & "); if [ \"$installed_bundle_id\" != " & expected_bundle_id_q & " ]; then echo 'Installed app bundle identifier mismatch' >&2; exit 1; fi; fi;"
 	    set prepare_swap_paths to "temp_bundle=" & app_bundle_q & ".new.$$; old_bundle=" & app_bundle_q & ".old.$$;"
 	    set cleanup_swap_paths to "rm -rf \"$temp_bundle\" \"$old_bundle\";"
@@ -178,7 +178,7 @@ pub fn is_can_screen_recording(prompt: bool) -> bool {
 
 // macOS >= 10.15
 // https://stackoverflow.com/questions/56597221/detecting-screen-recording-settings-on-macos-catalina/
-// remove just one app from all the permissions: tccutil reset All com.carriez.rustdesk
+// remove just one app from all the permissions: tccutil reset All com.carriez.mydesk
 fn unsafe_is_can_screen_recording(prompt: bool) -> bool {
     // we got some report that we show no permission even after set it, so we try to use new api for screen recording check
     // the new api is only available on macOS >= 10.15, but on stackoverflow, some people said it works on >= 10.16 (crash on 10.15),
@@ -391,7 +391,7 @@ fn update_daemon_agent(agent_plist_file: String, update_source: UpdateSource) ->
 fn correct_app_name(s: &str) -> String {
     let mut s = s.to_owned();
     if let Some(bundleid) = get_bundle_id() {
-        s = s.replace("com.carriez.rustdesk", &bundleid);
+        s = s.replace("com.carriez.mydesk", &bundleid);
     }
     s = s.replace("rustdesk", &crate::get_app_name().to_lowercase());
     s = s.replace("RustDesk", &crate::get_app_name());
@@ -2199,11 +2199,11 @@ mod update_tests {
     #[test]
     fn update_tree_rejects_framework_root_symlink() {
         let test_dir = std::env::temp_dir().join(format!(
-            "rustdesk-update-tree-framework-link-test-{}-{}",
+            "mydesk-update-tree-framework-link-test-{}-{}",
             std::process::id(),
             hbb_common::rand::random::<u64>()
         ));
-        let app_dir = test_dir.join("RustDesk.app");
+        let app_dir = test_dir.join("MyDesk.app");
         let frameworks_dir = app_dir.join("Contents/Frameworks");
         let external_framework = test_dir.join("External.framework");
         std::fs::create_dir_all(&frameworks_dir).unwrap();
@@ -2223,16 +2223,16 @@ mod update_tests {
     #[test]
     fn update_tree_allows_internal_framework_symlink() {
         let test_dir = std::env::temp_dir().join(format!(
-            "rustdesk-update-tree-internal-link-test-{}-{}",
+            "mydesk-update-tree-internal-link-test-{}-{}",
             std::process::id(),
             hbb_common::rand::random::<u64>()
         ));
-        let framework_dir = test_dir.join("RustDesk.app/Contents/Frameworks/Test.framework");
+        let framework_dir = test_dir.join("MyDesk.app/Contents/Frameworks/Test.framework");
         let versions_dir = framework_dir.join("Versions");
         std::fs::create_dir_all(versions_dir.join("A")).unwrap();
         std::os::unix::fs::symlink("A", versions_dir.join("Current")).unwrap();
 
-        let result = validate_update_tree(&test_dir.join("RustDesk.app"), None);
+        let result = validate_update_tree(&test_dir.join("MyDesk.app"), None);
 
         std::fs::remove_dir_all(test_dir).unwrap();
         assert!(result.is_ok());
@@ -2241,7 +2241,7 @@ mod update_tests {
     #[test]
     fn update_app_identity_requires_matching_bundles() {
         let test_dir = std::env::temp_dir().join(format!(
-            "rustdesk-update-identity-test-{}-{}",
+            "mydesk-update-identity-test-{}-{}",
             std::process::id(),
             hbb_common::rand::random::<u64>()
         ));
@@ -2255,11 +2255,11 @@ mod update_tests {
         }
         std::fs::write(
             installed.join("Contents/Info.plist"),
-            info("com.carriez.rustdesk"),
+            info("com.carriez.mydesk"),
         )
         .unwrap();
 
-        for (bundle_id, accepted) in [("com.carriez.rustdesk", true), ("example.other", false)] {
+        for (bundle_id, accepted) in [("com.carriez.mydesk", true), ("example.other", false)] {
             std::fs::write(candidate.join("Contents/Info.plist"), info(bundle_id)).unwrap();
             assert_eq!(
                 verify_update_app_identity(&installed, &candidate).is_ok(),

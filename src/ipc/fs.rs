@@ -220,7 +220,7 @@ fn remove_ipc_socket_via_secure_parent_fd(postfix: &str) -> ResultType<()> {
 // - Open parent dir with O_NOFOLLOW/O_DIRECTORY and operate on that fd.
 // - Validate inode type/owner/mode via fstat.
 // - For protected service postfix, optionally adopt owner (root only), then scrub stale
-//   rustdesk IPC artifacts when directory trust boundary changed.
+//   mydesk IPC artifacts when directory trust boundary changed.
 //
 // Main steps:
 // 1) Resolve parent path and open/create directory securely.
@@ -772,7 +772,7 @@ mod tests {
         use std::os::unix::fs::symlink;
 
         let unique = format!(
-            "rustdesk-ipc-pid-file-test-{}-{}",
+            "mydesk-ipc-pid-file-test-{}-{}",
             std::process::id(),
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
@@ -801,7 +801,7 @@ mod tests {
         use std::os::unix::fs::symlink;
 
         let unique = format!(
-            "rustdesk-ipc-secure-dir-test-{}-{}",
+            "mydesk-ipc-secure-dir-test-{}-{}",
             std::process::id(),
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
@@ -827,7 +827,7 @@ mod tests {
         use std::os::unix::fs::PermissionsExt;
 
         let unique = format!(
-            "rustdesk-ipc-secure-dir-create-test-{}-{}",
+            "mydesk-ipc-secure-dir-create-test-{}-{}",
             std::process::id(),
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
@@ -860,7 +860,7 @@ mod tests {
         use std::os::unix::ffi::OsStrExt;
 
         let unique = format!(
-            "rustdesk-ipc-scrub-test-{}-{}",
+            "mydesk-ipc-scrub-test-{}-{}",
             std::process::id(),
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
@@ -904,7 +904,7 @@ mod tests {
         use std::os::unix::ffi::OsStrExt;
 
         let unique = format!(
-            "rustdesk-ipc-scrub-fd-bind-test-{}-{}",
+            "mydesk-ipc-scrub-fd-bind-test-{}-{}",
             std::process::id(),
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
@@ -955,7 +955,7 @@ mod tests {
         use std::os::unix::fs::PermissionsExt;
 
         let unique = format!(
-            "rustdesk-ipc-secure-dir-order-test-{}-{}",
+            "mydesk-ipc-secure-dir-order-test-{}-{}",
             std::process::id(),
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
